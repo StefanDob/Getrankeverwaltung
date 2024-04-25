@@ -1,4 +1,4 @@
-package de.tu.darmstadt.views.lager;
+package de.tu.darmstadt.frontend.account;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -7,13 +7,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
-import de.tu.darmstadt.views.MainLayout;
+import de.tu.darmstadt.frontend.MainLayout;
 
-@PageTitle("Lager")
-@Route(value = "lager", layout = MainLayout.class)
-public class LagerView extends VerticalLayout {
+@PageTitle("Account")
+@Route(value = "account", layout = MainLayout.class)
+public class AccountView extends VerticalLayout {
 
-    public LagerView() {
+    public AccountView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");

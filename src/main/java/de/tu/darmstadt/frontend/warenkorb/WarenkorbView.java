@@ -1,4 +1,4 @@
-package de.tu.darmstadt.views.account;
+package de.tu.darmstadt.frontend.warenkorb;
 
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
@@ -7,13 +7,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
-import de.tu.darmstadt.views.MainLayout;
+import de.tu.darmstadt.frontend.MainLayout;
 
-@PageTitle("Account")
-@Route(value = "account", layout = MainLayout.class)
-public class AccountView extends VerticalLayout {
+@PageTitle("Warenkorb")
+@Route(value = "warenkorb", layout = MainLayout.class)
+public class WarenkorbView extends VerticalLayout {
 
-    public AccountView() {
+    public WarenkorbView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");

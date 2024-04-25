@@ -1,4 +1,4 @@
-package de.tu.darmstadt.data;
+package de.tu.darmstadt.backend.data;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

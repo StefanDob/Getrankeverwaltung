@@ -2,7 +2,7 @@ package de.tu.darmstadt;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
-import de.tu.darmstadt.data.SamplePersonRepository;
+import de.tu.darmstadt.backend.data.SamplePersonRepository;
 import javax.sql.DataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package de.tu.darmstadt.views;
+package de.tu.darmstadt.frontend;
 
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -11,10 +11,10 @@ import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-import de.tu.darmstadt.views.account.AccountView;
-import de.tu.darmstadt.views.dashboard.DashboardView;
-import de.tu.darmstadt.views.lager.LagerView;
-import de.tu.darmstadt.views.warenkorb.WarenkorbView;
+import de.tu.darmstadt.frontend.account.AccountView;
+import de.tu.darmstadt.frontend.dashboard.DashboardView;
+import de.tu.darmstadt.frontend.lager.LagerView;
+import de.tu.darmstadt.frontend.warenkorb.WarenkorbView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**

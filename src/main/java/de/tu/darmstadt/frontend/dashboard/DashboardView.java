@@ -1,4 +1,4 @@
-package de.tu.darmstadt.views.dashboard;
+package de.tu.darmstadt.frontend.dashboard;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.dependency.Uses;
@@ -7,7 +7,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import de.tu.darmstadt.views.MainLayout;
+import de.tu.darmstadt.frontend.MainLayout;
 
 @PageTitle("Dashboard")
 @Route(value = "main", layout = MainLayout.class)

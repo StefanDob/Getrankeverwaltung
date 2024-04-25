@@ -1,7 +1,7 @@
-package de.tu.darmstadt.services;
+package de.tu.darmstadt.backend.services;
 
-import de.tu.darmstadt.data.SamplePerson;
-import de.tu.darmstadt.data.SamplePersonRepository;
+import de.tu.darmstadt.backend.data.SamplePerson;
+import de.tu.darmstadt.backend.data.SamplePersonRepository;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
