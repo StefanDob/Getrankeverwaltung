@@ -3,6 +3,7 @@ package de.tu.darmstadt.frontend.store;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -20,22 +21,18 @@ public class StoreView extends VerticalLayout {
     int itemsPerLine = 4;
 
     public StoreView() {
-        setSpacing(true); // Adjust spacing as needed
+        setSpacing(false); // Adjust spacing as needed
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        add(horizontalLayout);
 
-        // Item 1
-        ItemView itemView1 = new ItemView("images/cola.jpg", "Item 1", "Large", "$10");
-        add(itemView1);
+        ItemView colaItemView = new ItemView("images/cola.jpg", "Coca Cola",  "$10");
+        horizontalLayout.add(colaItemView);
 
-        // Item 2
-        ItemView itemView2 = new ItemView("images/fanta.jpg", "Item 2", "Medium", "$15");
-        add(itemView2);
-
-        // Item 3
-        ItemView itemView3 = new ItemView("images/sprite.png", "Item 3", "Small", "$20");
-        add(itemView3);
+        ItemView fantaItemView = new ItemView("images/fanta.jpg", "Fanta", "$15");
+        horizontalLayout.add(fantaItemView);
 
         setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
+        setJustifyContentMode(JustifyContentMode.START);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
     }
