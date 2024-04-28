@@ -11,7 +11,6 @@ import de.tu.darmstadt.frontend.MainLayout;
 
 @PageTitle("Dashboard")
 @Route(value = "main", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
 @Uses(Icon.class)
 public class DashboardView extends Composite<VerticalLayout> {
 

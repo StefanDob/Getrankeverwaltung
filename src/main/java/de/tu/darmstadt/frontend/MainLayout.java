@@ -13,7 +13,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.frontend.account.AccountView;
 import de.tu.darmstadt.frontend.dashboard.DashboardView;
-import de.tu.darmstadt.frontend.lager.LagerView;
+import de.tu.darmstadt.frontend.store.StoreView;
 import de.tu.darmstadt.frontend.warenkorb.WarenkorbView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -53,8 +53,8 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
+        nav.addItem(new SideNavItem("Store", StoreView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
-        nav.addItem(new SideNavItem("Lager", LagerView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new SideNavItem("Account", AccountView.class, LineAwesomeIcon.FILE.create()));
         nav.addItem(new SideNavItem("Warenkorb", WarenkorbView.class, LineAwesomeIcon.FILE.create()));
 
