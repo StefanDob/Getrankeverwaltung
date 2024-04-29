@@ -1,40 +1,69 @@
 package de.tu.darmstadt.frontend.store;
 
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import de.tu.darmstadt.frontend.MainLayout;
 
-import java.awt.*;
+import java.util.ArrayList;
 
 @PageTitle("Store")
 @Route(value = "store", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 public class StoreView extends VerticalLayout {
 
-    int itemsPerLine = 4;
+
+
+
 
     public StoreView() {
         setSpacing(false); // Adjust spacing as needed
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        add(horizontalLayout);
 
-        ItemView colaItemView = new ItemView("images/cola.jpg", "Coca Cola",  "$10");
-        horizontalLayout.add(colaItemView);
+        ArrayList<ItemView> shopItemsList = initializeItemsList();
 
-        ItemView fantaItemView = new ItemView("images/fanta.jpg", "Fanta", "$15");
-        horizontalLayout.add(fantaItemView);
+        displayShopItems(4, shopItemsList);
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.START);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        setDefaultHorizontalComponentAlignment(Alignment.START);
         getStyle().set("text-align", "center");
+    }
+
+    private void displayShopItems(int itemsPerLine, ArrayList<ItemView> shopItemsList) {
+        VerticalLayout lines = new VerticalLayout();
+        lines.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        add(lines);
+
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        lines.add(horizontalLayout);
+        int counter = 0;
+        for(ItemView element : shopItemsList){
+            if(counter < itemsPerLine){
+                horizontalLayout.add(element);
+                counter++;
+            }else{
+                counter = 1;
+                horizontalLayout = new HorizontalLayout();
+                horizontalLayout.add(element);
+                lines.add(horizontalLayout);
+            }
+        }
+
+
+    }
+
+    private ArrayList<ItemView> initializeItemsList() {
+        ArrayList<ItemView> shopItemsList = new ArrayList<>();
+        for(int i = 0; i <= 50; i++){
+            ItemView colaItemView = new ItemView("images/cola.jpg", "Coca Cola",  "$10");
+            shopItemsList.add(colaItemView);
+
+            ItemView fantaItemView = new ItemView("images/fanta.jpg", "Fanta", "$15");
+            shopItemsList.add(fantaItemView);
+        }
+        return shopItemsList;
     }
 
 }
