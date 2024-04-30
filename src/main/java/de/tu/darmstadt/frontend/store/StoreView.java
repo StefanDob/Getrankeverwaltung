@@ -54,6 +54,10 @@ public class StoreView extends VerticalLayout {
 
     }
 
+    /**
+     * helping method for creating 100 cola and Fanta elements for the Webshop
+     * @return list of shopelements that can be used for testing porpuses
+     */
     private ArrayList<ItemView> initializeItemsList() {
         ArrayList<ItemView> shopItemsList = new ArrayList<>();
         for(int i = 0; i <= 50; i++){
