@@ -10,11 +10,9 @@ public class GetraenkImage {
 
     private String path;
 
-
     public GetraenkImage(String path) {
         this.path = path;
     }
-
 
 
     public String getPath() {
