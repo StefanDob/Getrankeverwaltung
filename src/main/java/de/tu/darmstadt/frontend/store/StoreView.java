@@ -5,6 +5,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import de.tu.darmstadt.backend.BackendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.MainLayout;
@@ -23,7 +24,7 @@ public class StoreView extends VerticalLayout {
     public StoreView() {
         setSpacing(false); // Adjust spacing as needed
 
-        ArrayList<ItemView> shopItemsList = initializeItemsList();
+        ArrayList<ItemView> shopItemsList = ItemOperations.getAllShopItems();
 
         displayShopItems(4, shopItemsList);
 
@@ -56,24 +57,6 @@ public class StoreView extends VerticalLayout {
 
     }
 
-    /**
-     * helping method for creating 100 cola and Fanta elements for the Webshop
-     * @return list of shopelements that can be used for testing porpuses
-     */
-    private ArrayList<ItemView> initializeItemsList() {
-        ArrayList<ItemView> shopItemsList = new ArrayList<>();
-        for(int i = 0; i <= 50; i++){
 
-            String description = "Zutaten: Wasser, Zucker, Kohlensäure, Farbstoff E 150d, Säuerungsmittel Phosphorsäure, Aroma, Aroma Koffein.";
-
-            ItemView colaItemView = new ItemView(new Item(10,"Coca Cola",new ItemImage("images/cola.jpg"),description));
-            shopItemsList.add(colaItemView);
-
-            ItemView fantaItemView = new ItemView(new Item(15,"Fanta",new ItemImage("images/fanta.jpg"),description));
-
-            shopItemsList.add(fantaItemView);
-        }
-        return shopItemsList;
-    }
 
 }
