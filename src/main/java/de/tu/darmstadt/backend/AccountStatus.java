@@ -1,5 +1,7 @@
 package de.tu.darmstadt.backend;
 
+import de.tu.darmstadt.dataModel.Account;
+
 public enum AccountStatus {
 
     /**

@@ -1,6 +1,7 @@
-package de.tu.darmstadt.backend;
+package de.tu.darmstadt.dataModel;
 
 
+import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.Exceptions.AccountPolicyException;
 
 import java.time.LocalDate;
