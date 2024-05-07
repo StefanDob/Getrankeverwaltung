@@ -99,3 +99,4 @@ public class ItemView extends VerticalLayout {
         itemDialog.open();
     }
 }
+
