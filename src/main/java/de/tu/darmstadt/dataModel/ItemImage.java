@@ -1,16 +1,16 @@
 package de.tu.darmstadt.dataModel;
 
 /**
- * A GetraenkImage is a superclass of those classes which represents a picture for an instance of {@link Getraenk}.
+ * A GetraenkImage is a superclass of those classes which represents a picture for an instance of {@link Item}.
  *
  * @version 30.04.2024
  * @author Toni Tan Phat Tran
  */
-public class GetraenkImage {
+public class ItemImage {
 
     private String path;
 
-    public GetraenkImage(String path) {
+    public ItemImage(String path) {
         this.path = path;
     }
 

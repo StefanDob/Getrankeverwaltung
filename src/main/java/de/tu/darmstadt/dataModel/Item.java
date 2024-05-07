@@ -1,18 +1,20 @@
 package de.tu.darmstadt.dataModel;
 
-public class Getraenk {
+public class Item {
 
     private double price;
 
     private String name;
 
-    private GetraenkImage image;
+    private ItemImage image;
 
+    private String description;
 
-    public Getraenk(double price, String name, GetraenkImage image) {
+    public Item(double price, String name, ItemImage image, String description) {
         this.price = price;
         this.name = name;
         this.image = image;
+        this.description = description;
     }
 
 
@@ -34,11 +36,19 @@ public class Getraenk {
         this.name = name;
     }
 
-    public GetraenkImage getImage() {
+    public ItemImage getImage() {
         return image;
     }
 
-    public void setImage(GetraenkImage image) {
+    public void setImage(ItemImage image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
