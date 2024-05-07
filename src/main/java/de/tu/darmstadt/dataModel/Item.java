@@ -10,7 +10,6 @@ public class Item {
 
     private String description;
 
-
     public Item(double price, String name, ItemImage image, String description) {
         this.price = price;
         this.name = name;
