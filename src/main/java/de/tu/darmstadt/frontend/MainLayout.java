@@ -46,7 +46,7 @@ public class MainLayout extends AppLayout {
         // Create a layout for the login button
         Button loginButton = new Button("Login");
         loginButton.addClickListener(e -> {
-            createAccount();
+            loginToAccount();
         });
         loginButton.getStyle().set("margin-right", "16px"); // Adjust margin as needed
 
@@ -57,9 +57,9 @@ public class MainLayout extends AppLayout {
         addToNavbar(true, toggle, viewTitle, headerRightContent);
     }
 
-    private void createAccount() {
-        LoginDialog accountDialog = new LoginDialog();
-        accountDialog.open();
+    private void loginToAccount() {
+        LoginDialog loginDialog = new LoginDialog();
+        loginDialog.open();
     }
 
     private void addDrawerContent() {
