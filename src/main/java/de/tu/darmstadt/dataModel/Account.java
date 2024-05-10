@@ -14,6 +14,9 @@ import static de.tu.darmstadt.backend.IceCreamShopProperties.*;
  */
 public class Account {
 
+    /**
+     * The email, that is the primary key of {@link Account}, is used to
+     */
     private String email;
 
     private String password;

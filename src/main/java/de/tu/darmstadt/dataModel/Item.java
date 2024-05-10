@@ -1,5 +1,8 @@
 package de.tu.darmstadt.dataModel;
 
+/**
+ * An {@link Item} is a class of instances sold in the drink shop.
+ */
 public class Item {
 
     private double price;
