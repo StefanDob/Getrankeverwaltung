@@ -1,9 +1,7 @@
 package de.tu.darmstadt.backend;
 
-
-
+// DO NOT REMOVE ANY IMPORTED CLASSES !!!
 import de.tu.darmstadt.dataModel.Account;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.function.Predicate;
@@ -14,6 +12,10 @@ import java.util.regex.Pattern;
  */
 public abstract class IceCreamShopProperties {
 
+    /**
+     * The constructor of {@link IceCreamShopProperties} is hidden with the qualifier {@code private} in order
+     * not to be instantiated.
+     */
     private IceCreamShopProperties() {
         throw new RuntimeException("Class should not be instantiated");
     }
@@ -21,12 +23,22 @@ public abstract class IceCreamShopProperties {
     // ::::::::::::::::::::::::::::::::::::: ATTRIBUTES ::::::::::::::::::::::::::::::::::::::::
 
 
-    private static final String PREFIX = "jdbc:sqlite:";
+    /**
+     * The prefix of a data source URL used in this project.
+     */
+    private static final String URL_PREFIX = "jdbc:sqlite:";
+
+
+    /**
+     * The offset of a data source URL used in this project.
+     */
+    private static final String URL_OFFSET = "src\\main\\resources\\DataBase";
+
 
     /**
      * The currently used data source.
      */
-    public static final String DATA_SOURCE_URL = PREFIX + "src\\main\\resources\\DataBase";
+    public static final String DATA_SOURCE_URL = URL_PREFIX + URL_OFFSET;
 
 
     /**
@@ -54,13 +66,13 @@ public abstract class IceCreamShopProperties {
 
 
     /**
-     * Specifies the properties for a name. A name must only consist of A-Z or a-z.
+     * Specifies the properties for a name. A name must only consist of A-Z, a-z or German umlauts.
      */
     public static final Predicate<? super String> VALID_NAME =
             s -> {
                 for(int i = 0 ; i < s.length() ; i++) {
                     char c = s.charAt(i);
-                    if( !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z') ) {
+                    if( !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || isUmlaut(c)) ) {
                         return false;
                     }
                 }
@@ -90,9 +102,19 @@ public abstract class IceCreamShopProperties {
      */
     public static final double DEFAULT_DEBT_LIMIT = -200;
 
+
     // ::::::::::::::::::::::::::::::::::::::: METHODS :::::::::::::::::::::::::::::::::::::::::
 
-
-
+    /**
+     * Checks if a specified character is a German umlaut (Ä, ä, Ö, ö, Ü, ü).
+     * @param ch the specified character to be checked.
+     * @return true if the specified character is an umlaut.
+     */
+    private static boolean isUmlaut(char ch) {
+        return switch (ch) {
+            case 'Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü', 'ß' -> true;
+            default -> false;
+        };
+    }
 
 }

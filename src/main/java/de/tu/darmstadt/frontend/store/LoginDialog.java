@@ -1,18 +1,13 @@
 package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import de.tu.darmstadt.backend.BackendService.AccountOperations;
-import de.tu.darmstadt.backend.Exceptions.AccountPolicyException;
-import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
 
 public class LoginDialog extends Dialog {
 

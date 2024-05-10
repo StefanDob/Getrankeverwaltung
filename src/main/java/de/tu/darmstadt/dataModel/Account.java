@@ -1,61 +1,98 @@
 package de.tu.darmstadt.dataModel;
 
-
+// DO NOT REMOVE ANY IMPORTED PACKAGES !!!
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.backend.Exceptions.AccountPolicyException;
+import de.tu.darmstadt.backend.exceptions.AccountPolicyException;
+import de.tu.darmstadt.backend.IceCreamShopProperties;
+import de.tu.darmstadt.backend.exceptions.InvalidPasswordFormatException;
 
 import java.time.LocalDate;
 
 import static de.tu.darmstadt.backend.IceCreamShopProperties.*;
 
-
 /**
- * An account for the ice cream shop.
+ * An {@link Account} for the drink shop is a superclass of those classes that grants a user of the drink shop an
+ * environment for performing {@link Item} purchases.
+ * <p>
+ * Each account is clearly identified by a set of attributes (primary key) that is
+ * specified by the user when creating an {@link Account}.
  */
 public class Account {
 
     /**
-     * The email, that is the primary key of {@link Account}, is used to
+     * The email, that is the primary key of {@link Account}, is used to register and to login into the account.
      */
     private String email;
 
+    /**
+     * The password of the {@link Account}.
+     * It must meet the requirements specified in the {@link IceCreamShopProperties}
+     */
     private String password;
 
+    /**
+     * The first name of the {@link Account} owner.
+     * It must only contain letters, blank spaces and no numbers or other special characters.
+     */
     private String first_name;
 
+    /**
+     * The last name of the {@link Account} owner.
+     * It must only contain letters and no numbers or other special characters.
+     */
     private String last_name;
 
+    /**
+     * The birthdate of the {@link Account} owner in the format yyyy-mm-dd.
+     */
     private LocalDate birth_date;
 
+    /**
+     * The phone number of the {@link Account} owner (optional) which may be {@code null}.
+     * It must only contain numbers.
+     */
     private String phone_number;
 
+    /**
+     * Specifies the {@link AccountStatus} of the {@link Account}.
+     */
     private AccountStatus status;
 
+    /**
+     * The debt limit of the {@link Account}.
+     * It is the amount of money that the user can overdraw (überziehen).
+     */
     private double debt_limit;
 
-    private double saldo = 0;
+    /**
+     * The current amount of money the user of the {@link Account} is currently having.
+     */
+    private double balance = 0;
 
 
     // ::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::
 
+
     public Account(String email, String password, String first_name, String last_name,
-                   LocalDate birth_date, String phone_number) throws AccountPolicyException
+                   LocalDate birth_date, String phone_number)
+            throws AccountPolicyException, InvalidPasswordFormatException
     {
         this(email, password, first_name, last_name, birth_date, phone_number,
                 AccountStatus.STANDARD, DEFAULT_DEBT_LIMIT);
     }
 
+
     public Account(String email, String password, String first_name, String last_name,
                    LocalDate birth_date, String phone_number, AccountStatus status, double debt_limit
 
-                   ) throws AccountPolicyException
+                   ) throws AccountPolicyException, InvalidPasswordFormatException
     {
         if(!EMAIL_FORMAT.test(email)) {
             throw new AccountPolicyException("E-Mail is not in a valid format");
         }
 
         if(!PASSWORD_POLICY.test(password)) {
-            throw new AccountPolicyException("Password is not safe. Enter a new password");
+            throw new InvalidPasswordFormatException("Password is not safe. Enter a new password");
         }
 
         if(!VALID_NAME.test(first_name) || !VALID_NAME.test(last_name)) {
@@ -77,4 +114,19 @@ public class Account {
         this.status = status;
     }
 
+
+    // ::::::::::::::::::::::::::::::::::::::::::: METHODS ::::::::::::::::::::::::::::::::::::::::::::
+
+    protected void setStatus(AccountStatus status) {
+        this.status = status;
+    }
+
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public double getDebt_limit() {
+        return debt_limit;
+    }
 }

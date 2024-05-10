@@ -9,8 +9,9 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import de.tu.darmstadt.backend.BackendService.AccountOperations;
-import de.tu.darmstadt.backend.Exceptions.AccountPolicyException;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.exceptions.AccountPolicyException;
+import de.tu.darmstadt.backend.exceptions.InvalidPasswordFormatException;
 import de.tu.darmstadt.dataModel.Account;
 
 public class RegistrationDialog extends Dialog {
@@ -62,7 +63,7 @@ public class RegistrationDialog extends Dialog {
             account = new Account(emailField.getValue(), passwordField.getValue(), firstNameField.getValue(), lastNameField.getValue(),
                     birthDateField.getValue(), phoneNumberField.getValue());
                     AccountOperations.createAccount(account);
-        } catch (AccountPolicyException e) {
+        } catch (AccountPolicyException | InvalidPasswordFormatException e) {
             Notification.show("Problem occured " + e.getMessage(), 3000, Notification.Position.MIDDLE);
             return;
         }

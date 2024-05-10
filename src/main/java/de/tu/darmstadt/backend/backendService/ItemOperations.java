@@ -1,4 +1,4 @@
-package de.tu.darmstadt.backend.BackendService;
+package de.tu.darmstadt.backend.backendService;
 
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;

@@ -5,9 +5,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import de.tu.darmstadt.backend.BackendService.ItemOperations;
-import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.ItemImage;
+import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.frontend.MainLayout;
 
 import java.util.ArrayList;
