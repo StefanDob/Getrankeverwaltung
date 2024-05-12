@@ -1,5 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * An {@link Item} is a class of instances sold in the drink shop.
  */
@@ -7,13 +9,13 @@ public class Item {
 
     private double price;
 
-    private String name;
+    private @NotNull String name;
 
     private ItemImage image;
 
     private String description;
 
-    public Item(double price, String name, ItemImage image, String description) {
+    public Item(double price, @NotNull String name, ItemImage image, String description) {
         this.price = price;
         this.name = name;
         this.image = image;
