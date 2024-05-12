@@ -33,11 +33,11 @@ public class Item {
         this.price = price;
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 
@@ -55,5 +55,26 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+
+        if(this == o) return true;
+
+        if( o instanceof Item item ) {
+            return item.getPrice() == getPrice()
+                    && item.getName().equals(getName())
+                    && item.getDescription().equals(getDescription())
+                    && item.getImage().equals(getImage());
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getName() + ": " + getPrice() + "]";
     }
 }

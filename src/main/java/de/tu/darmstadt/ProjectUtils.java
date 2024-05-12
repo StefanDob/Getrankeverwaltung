@@ -65,6 +65,7 @@ public class ProjectUtils {
     @NotNull
     public static String randomString(int length, char[]... chars_interval) {
 
+        // A StringBuilder is used to construct a String of chars with a loop.
         final StringBuilder sb = new StringBuilder(length);
 
         // builds the resulting String with a specified length by iterating 'length' times,
