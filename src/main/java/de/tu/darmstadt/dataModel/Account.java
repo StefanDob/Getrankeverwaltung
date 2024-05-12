@@ -72,6 +72,9 @@ public class Account {
 
     // ::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::
 
+    public Account() {
+        // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT ADD ANYTHING TO IT !!!
+    }
 
     public Account(String email, String password, String first_name, String last_name,
                    LocalDate birth_date, String phone_number)
