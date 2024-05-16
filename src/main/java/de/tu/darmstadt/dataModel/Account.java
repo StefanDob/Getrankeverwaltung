@@ -7,6 +7,7 @@ import de.tu.darmstadt.backend.IceCreamShopProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -86,13 +87,28 @@ public class Account {
 
     // ::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::
 
+    /**
+     * A default constructor is used for the entity class.
+     */
     public Account() {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT ADD ANYTHING TO IT !!!
     }
 
+    /**
+     * Constructs a new {@link Account} with specified personal data.
+     * @param email the specified email
+     * @param password the specified password
+     * @param first_name the specified first name
+     * @param last_name the specified last name
+     * @param birth_date the specified birthdate
+     * @param phone_number the specified phone number (optional). May be {@code null}
+     *
+     * @throws AccountPolicyException is thrown if any personal data does not meet the {@link Account}
+     * {@link IceCreamShopProperties policies}
+     */
     public Account(String email, String password, String first_name, String last_name,
                    LocalDate birth_date, String phone_number)
-            throws AccountPolicyException, InvalidPasswordFormatException
+            throws AccountPolicyException
     {
         this(email, password, first_name, last_name, birth_date, phone_number,
                 AccountStatus.STANDARD, DEFAULT_DEBT_LIMIT);

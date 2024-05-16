@@ -22,7 +22,6 @@ public abstract class IceCreamShopProperties {
 
     // ::::::::::::::::::::::::::::::::::::: ATTRIBUTES ::::::::::::::::::::::::::::::::::::::::
 
-
     /**
      * The prefix of a data source URL used in this project.
      */
@@ -36,7 +35,7 @@ public abstract class IceCreamShopProperties {
 
 
     /**
-     * The currently used data source.
+     * The URL of the currently used data source.
      */
     public static final String DATA_SOURCE_URL = URL_PREFIX + URL_OFFSET;
 
@@ -106,7 +105,8 @@ public abstract class IceCreamShopProperties {
     // ::::::::::::::::::::::::::::::::::::::: METHODS :::::::::::::::::::::::::::::::::::::::::
 
     /**
-     * Checks if a specified character is a German umlaut (Ä, ä, Ö, ö, Ü, ü).
+     * Checks if a specified character is a German umlaut (Ä, ä, Ö, ö, Ü, ü, ß).
+     *
      * @param ch the specified character to be checked.
      * @return true if the specified character is an umlaut.
      */
