@@ -10,8 +10,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.exceptions.AccountPolicyException;
-import de.tu.darmstadt.backend.exceptions.InvalidPasswordFormatException;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
 
 public class RegistrationDialog extends Dialog {

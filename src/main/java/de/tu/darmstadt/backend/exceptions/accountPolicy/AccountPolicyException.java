@@ -1,4 +1,4 @@
-package de.tu.darmstadt.backend.exceptions;
+package de.tu.darmstadt.backend.exceptions.accountPolicy;
 
 /**
  * An {@link AccountPolicyException} is a superclass of those checked exceptions that is thrown if an action

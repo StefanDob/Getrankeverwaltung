@@ -1,4 +1,4 @@
-package de.tu.darmstadt.backend.exceptions;
+package de.tu.darmstadt.backend.exceptions.accountPolicy;
 
 import de.tu.darmstadt.dataModel.Account;
 import org.jetbrains.annotations.NotNull;

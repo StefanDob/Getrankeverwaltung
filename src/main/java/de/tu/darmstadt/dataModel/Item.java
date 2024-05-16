@@ -1,5 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
+import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
+import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,7 +17,24 @@ public class Item {
 
     private String description;
 
-    public Item(double price, @NotNull String name, ItemImage image, String description) {
+    /**
+     * Constructs a new {@link Item} with a specified {@link #price}, {@link #name}, {@link #image} and
+     * {@link #description}.
+     *
+     * @param price the specified price
+     * @param name the specified name
+     * @param image the specified image
+     * @param description the specified description
+     *
+     * @throws ItemPropertiesException is thrown if the specified product data do not meet the specified requirements.
+     */
+    public Item(double price, @NotNull String name, ItemImage image, String description)
+        throws ItemPropertiesException
+    {
+        if(price < 0) {
+            throw new NegativePriceException(price);
+        } // end of if
+
         this.price = price;
         this.name = name;
         this.image = image;
@@ -29,7 +48,11 @@ public class Item {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(double price) throws NegativePriceException {
+        if(price < 0) {
+            throw new NegativePriceException(price);
+        } // end of if
+
         this.price = price;
     }
 

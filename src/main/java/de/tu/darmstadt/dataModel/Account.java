@@ -2,8 +2,8 @@ package de.tu.darmstadt.dataModel;
 
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.backend.exceptions.*;
 import de.tu.darmstadt.backend.IceCreamShopProperties;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -175,7 +175,11 @@ public class Account {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws InvalidEmailFormatException {
+        if(EMAIL_FORMAT.test(email)) {
+            throw new InvalidEmailFormatException(email);
+        } // end of if
+
         this.email = email;
     }
 
@@ -183,7 +187,11 @@ public class Account {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws InvalidPasswordFormatException {
+        if(PASSWORD_POLICY.test(password)) {
+            throw new InvalidPasswordFormatException("Password is not in a valid format");
+        } // end of if
+
         this.password = password;
     }
 
@@ -215,7 +223,11 @@ public class Account {
         return phone_number;
     }
 
-    public void setPhone_number(@Nullable String phone_number) {
+    public void setPhone_number(@Nullable String phone_number) throws InvalidPhoneNumberFormatException {
+        if(!PHONE_NUMBER_FORMAT.test(phone_number)) {
+            throw new InvalidPhoneNumberFormatException(phone_number);
+        } // end of if
+
         this.phone_number = phone_number;
     }
 

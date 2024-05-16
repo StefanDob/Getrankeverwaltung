@@ -3,8 +3,8 @@ package de.tu.darmstadt.dataModel;
 import static de.tu.darmstadt.backend.AccountStatus.*;
 
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.backend.exceptions.AccountPolicyException;
-import de.tu.darmstadt.backend.exceptions.InvalidPasswordFormatException;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidPasswordFormatException;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
