@@ -7,7 +7,6 @@ import de.tu.darmstadt.backend.IceCreamShopProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -241,7 +240,7 @@ public class Account {
     /**
      * Returns the {@link String} representation of the {@link Account} in the following format (without '<' and '>'):
      * <p>
-     * {@code "example@mail.org: <last name>, <first name>"}
+     * {@code "[example@mail.org: <last name>, <first name>]"}
      *
      * @return the {@link String} representation of the {@link Account}
      */
