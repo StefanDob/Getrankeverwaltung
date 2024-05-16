@@ -290,7 +290,12 @@ public class Account {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(double balance) throws DebtLimitExceedingException {
+        if(balance < debt_limit) {
+            throw new DebtLimitExceedingException("Balance should not exceed the debt limit. " +
+                    "Current debt limit: " + debt_limit + " ; Balance after setting to new value: " + balance );
+        } // end of if
+
         this.balance = balance;
     }
 

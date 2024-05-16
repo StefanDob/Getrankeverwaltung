@@ -28,4 +28,19 @@ public class DebtLimitExceedingException extends AccountPolicyException {
         );
     }
 
+    /**
+     * Constructs a new {@link DebtLimitExceedingException} with a specified detail message.
+     * @param message the specified error message
+     */
+    public DebtLimitExceedingException(String message) {
+        super(message);
+    }
+
+    /**
+     * Constructs a new {@link DebtLimitExceedingException} with a {@code null} as its detail message.
+     */
+    public DebtLimitExceedingException() {
+        super(null);
+    }
+
 }
