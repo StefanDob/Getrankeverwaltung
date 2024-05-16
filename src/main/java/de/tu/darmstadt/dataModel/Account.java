@@ -224,6 +224,7 @@ public class Account {
         this.debt_limit = debt_limit;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if(this == o) {
@@ -237,6 +238,13 @@ public class Account {
         return false;
     }
 
+    /**
+     * Returns the {@link String} representation of the {@link Account} in the following format (without '<' and '>'):
+     * <p>
+     * {@code "example@mail.org: <last name>, <first name>"}
+     *
+     * @return the {@link String} representation of the {@link Account}
+     */
     @Override
     public String toString() {
         return '[' + email + ": " + last_name + ", " + first_name + "]";
