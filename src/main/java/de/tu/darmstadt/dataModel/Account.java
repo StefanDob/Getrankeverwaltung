@@ -7,6 +7,7 @@ import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -36,6 +37,8 @@ public class Account {
     /**
      * This immutable attribute is an ID of {@link Account}. An ID is a unique attribute that can clearly identify
      * an {@link Account} without any need of other attributes.
+     * <p>
+     *     TODO: TO BE IMPLEMENTED !!!
      */
     private final String id_of_account = "";
 
@@ -130,10 +133,10 @@ public class Account {
     }
 
 
-    public Account(String email, String password, String first_name, String last_name,
-                   LocalDate birth_date, String phone_number, AccountStatus status, double debt_limit
+    public Account(@NotNull String email, @NotNull String password, String first_name, String last_name,
+                   LocalDate birth_date, @Nullable String phone_number, AccountStatus status, double debt_limit
 
-                   ) throws AccountPolicyException, InvalidPasswordFormatException
+                   ) throws AccountPolicyException
     {
 
         if(!VALID_NAME.test(first_name) || !VALID_NAME.test(last_name)) {
