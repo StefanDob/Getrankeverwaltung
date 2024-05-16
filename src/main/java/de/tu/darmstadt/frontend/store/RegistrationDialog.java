@@ -63,7 +63,7 @@ public class RegistrationDialog extends Dialog {
             account = new Account(emailField.getValue(), passwordField.getValue(), firstNameField.getValue(), lastNameField.getValue(),
                     birthDateField.getValue(), phoneNumberField.getValue());
                     AccountOperations.createAccount(account);
-        } catch (AccountPolicyException | InvalidPasswordFormatException e) {
+        } catch (AccountPolicyException e) {
             Notification.show("Problem occured " + e.getMessage(), 3000, Notification.Position.MIDDLE);
             return;
         }

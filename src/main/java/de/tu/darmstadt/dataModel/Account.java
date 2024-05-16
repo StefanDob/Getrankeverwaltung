@@ -2,9 +2,8 @@ package de.tu.darmstadt.dataModel;
 
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.backend.exceptions.AccountPolicyException;
+import de.tu.darmstadt.backend.exceptions.*;
 import de.tu.darmstadt.backend.IceCreamShopProperties;
-import de.tu.darmstadt.backend.exceptions.InvalidPasswordFormatException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -105,6 +104,11 @@ public class Account {
 
                    ) throws AccountPolicyException, InvalidPasswordFormatException
     {
+
+        if(!VALID_NAME.test(first_name) || !VALID_NAME.test(last_name)) {
+            throw new InvalidNameFormatException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.");
+        }
+
         if(!EMAIL_FORMAT.test(email)) {
             throw new AccountPolicyException("E-Mail is not in a valid format");
         }
@@ -113,18 +117,15 @@ public class Account {
             throw new InvalidPasswordFormatException("Password is not safe. Enter a new password");
         }
 
-        if(!VALID_NAME.test(first_name) || !VALID_NAME.test(last_name)) {
-            throw new AccountPolicyException("Only a-z or A-Z are allowed in names.");
-        }
-
         if(!AGE_REQUIREMENTS.test(birth_date)) {
-            throw new AccountPolicyException("Age requirements not met");
+            throw new IllegalBirthdateException("Age requirements not met");
         }
 
         if(!PHONE_NUMBER_FORMAT.test(phone_number)) {
-            throw new AccountPolicyException("Phone number is not valid");
+            throw new InvalidPhoneNumberFormatException("Phone number is not valid");
         }
 
+        // The debt limit should always be a negative value.
         if(debt_limit > 0) {
             this.debt_limit = -debt_limit;
         }

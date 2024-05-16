@@ -6,7 +6,7 @@ import de.tu.darmstadt.dataModel.Account;
  * An {@link InvalidPasswordFormatException} is a superclass of those checked exceptions that is thrown if a specified
  * password (e.g., from an {@link Account}) does not meet the requirements specified by a password policy.
  */
-public class InvalidPasswordFormatException extends Exception {
+public class InvalidPasswordFormatException extends AccountPolicyException {
 
     /**
      * Construct a new {@link InvalidPasswordFormatException} with {@code null} as its detail message.
