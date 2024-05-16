@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * This class is used to specify the properties of an ice cream shop.
  */
-public abstract class ItemShopProperties {
+public final class ItemShopProperties {
 
     /**
      * The constructor of {@link ItemShopProperties} is hidden with the qualifier {@code private} in order

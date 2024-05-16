@@ -14,6 +14,7 @@ import java.time.LocalDate;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
 import static de.tu.darmstadt.ProjectUtils.*;
+import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
 
 /**
  * An {@link Account} for the drink shop is a superclass of those classes that grants a user of the drink shop an
@@ -103,7 +104,7 @@ public class Account {
     private double balance = 0;
 
 
-    // ::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::
+    // ::::::::::::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::::::::::::::::
 
     /**
      * A default constructor is used for the entity class.
@@ -138,30 +139,18 @@ public class Account {
 
                    ) throws AccountPolicyException
     {
-
-        if(!VALID_NAME.test(first_name) || !VALID_NAME.test(last_name)) {
-            throw new InvalidNameFormatException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.");
-        }
-
-        if(!EMAIL_FORMAT.test(email)) {
-            throw new AccountPolicyException("E-Mail is not in a valid format");
-        }
-
-        if(!PASSWORD_POLICY.test(password)) {
-            throw new InvalidPasswordFormatException("Password is not safe. Enter a new password");
-        }
-
-        if(!AGE_REQUIREMENTS.test(birth_date)) {
-            throw new IllegalBirthdateException("Age requirements not met");
-        }
-
-        if(!PHONE_NUMBER_FORMAT.test(phone_number)) {
-            throw new InvalidPhoneNumberFormatException("Phone number is not valid");
-        }
+        this.first_name = check_if_name_is_in_valid_format(first_name);
+        this.last_name = check_if_name_is_in_valid_format(last_name);
+        this.email = check_if_email_is_in_valid_format(email);
+        this.password = check_if_password_is_valid(password);
+        this.birth_date = check_if_birthdate_is_legal(birth_date);
+        this.phone_number = check_if_phone_number_is_in_valid_format(phone_number);
 
         // The debt limit should always be a negative value.
         if(debt_limit > 0) {
             this.debt_limit = -debt_limit;
+        } else {
+            this.debt_limit = debt_limit;
         }
 
         this.status = status;
@@ -175,7 +164,7 @@ public class Account {
      *
      * @return the ID generated for the {@link Account}
      */
-    private static String generateID() throws AccountPolicyException {
+    private static @NotNull String generateID() throws AccountPolicyException {
 
         if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
 
@@ -207,6 +196,85 @@ public class Account {
         return resulting_ID;
     }
 
+    /**
+     * This static method is used to check if a specified name is in a valid format.
+     *
+     * @see ItemShopProperties#VALID_NAME
+     *
+     * @param name the specified name to be checked
+     * @return the specified name if successfully checked
+     * @throws InvalidNameFormatException is thrown if the name is not in a valid format
+     */
+    private static String check_if_name_is_in_valid_format(String name) throws InvalidNameFormatException {
+        return check_if_instance_is_valid(
+                name,
+                VALID_NAME,
+                new InvalidNameFormatException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified email is in a valid format.
+     *
+     * @see ItemShopProperties#EMAIL_FORMAT
+     *
+     * @param email the specified email to be checked
+     * @return the specified email if successfully checked
+     * @throws InvalidEmailFormatException is thrown if the email is not in a valid format
+     */
+    private static String check_if_email_is_in_valid_format(String email) throws InvalidEmailFormatException {
+        return check_if_instance_is_valid(
+                email,
+                EMAIL_FORMAT,
+                new InvalidEmailFormatException(email)
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified password is valid.
+     * @param password the password to be checked
+     * @return the specified password if successfully checked
+     * @throws InvalidPasswordFormatException is thrown if the password is not valid
+     */
+    private static String check_if_password_is_valid(String password) throws InvalidPasswordFormatException {
+        return check_if_instance_is_valid(
+                password,
+                PASSWORD_POLICY,
+                new InvalidPasswordFormatException("Password is not safe. Enter a new password")
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified {@link #birth_date} is legal.
+     *
+     * @param birth_date the specified birthdate to be checked
+     * @return the specified birthdate if successfully checked
+     * @throws IllegalBirthdateException is thrown if the birthdate is not legal
+     */
+    private static LocalDate check_if_birthdate_is_legal(LocalDate birth_date) throws IllegalBirthdateException {
+        return check_if_instance_is_valid(
+                birth_date,
+                AGE_REQUIREMENTS,
+                new IllegalBirthdateException("Age requirements not met")
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified {@link #phone_number} is in a valid format.
+     *
+     * @param phone_number the specified phone number to be checked
+     * @return the specified phone number if successfully checked
+     * @throws InvalidPhoneNumberFormatException is thrown if the phone number is not in a valid format
+     */
+    private static String check_if_phone_number_is_in_valid_format(String phone_number)
+            throws InvalidPhoneNumberFormatException
+    {
+        return check_if_instance_is_valid(
+                phone_number,
+                PHONE_NUMBER_FORMAT,
+                new InvalidPhoneNumberFormatException(phone_number)
+        );
+    }
 
     // ::::::::::::::::::::::::::::::::::::::::::: METHODS ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -235,11 +303,7 @@ public class Account {
     }
 
     public void setEmail(String email) throws InvalidEmailFormatException {
-        if(EMAIL_FORMAT.test(email)) {
-            throw new InvalidEmailFormatException(email);
-        } // end of if
-
-        this.email = email;
+        this.email = check_if_email_is_in_valid_format(email);
     }
 
     public String getPassword() {
@@ -247,35 +311,31 @@ public class Account {
     }
 
     public void setPassword(String password) throws InvalidPasswordFormatException {
-        if(PASSWORD_POLICY.test(password)) {
-            throw new InvalidPasswordFormatException("Password is not in a valid format");
-        } // end of if
-
-        this.password = password;
+        this.password = check_if_password_is_valid(password);
     }
 
     public LocalDate getBirth_date() {
         return birth_date;
     }
 
-    public void setBirth_date(LocalDate birth_date) {
-        this.birth_date = birth_date;
+    public void setBirth_date(LocalDate birth_date) throws IllegalBirthdateException {
+        this.birth_date = check_if_birthdate_is_legal(birth_date);
     }
 
     public String getLast_name() {
         return last_name;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLast_name(String last_name) throws InvalidNameFormatException {
+        this.last_name = check_if_name_is_in_valid_format(last_name);
     }
 
     public String getFirst_name() {
         return first_name;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirst_name(String first_name) throws InvalidNameFormatException {
+        this.first_name = check_if_name_is_in_valid_format(first_name);
     }
 
     public @Nullable String getPhone_number() {
@@ -283,15 +343,16 @@ public class Account {
     }
 
     public void setPhone_number(@Nullable String phone_number) throws InvalidPhoneNumberFormatException {
-        if(!PHONE_NUMBER_FORMAT.test(phone_number)) {
-            throw new InvalidPhoneNumberFormatException(phone_number);
-        } // end of if
-
-        this.phone_number = phone_number;
+        this.phone_number = check_if_phone_number_is_in_valid_format(phone_number);
     }
 
     public void setDebt_limit(double debt_limit) {
-        this.debt_limit = debt_limit;
+        // The debt limit should always be a negative value.
+        if(debt_limit > 0) {
+            this.debt_limit = -debt_limit;
+        } else {
+            this.debt_limit = debt_limit;
+        } // end of if-else
     }
 
 

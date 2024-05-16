@@ -10,7 +10,7 @@ import java.util.Random;
  * @author Toni Tan Phat Tran
  * @version 10.05.2024
  */
-public class ProjectUtils {
+public final class ProjectUtils {
 
     public static void main(String[] args) {
 
