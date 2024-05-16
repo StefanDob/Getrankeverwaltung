@@ -4,10 +4,10 @@ import de.tu.darmstadt.dataModel.Account;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A {@link DebtLimitExceedingException} is a superclass of those checked exceptions that is thrown if an
- * {@link Account} exceeds its permitted debt limit.
+ * A {@link DebtLimitExceedingException} is a subclass of {@link AccountPolicyException}. It is a subclass of those
+ * checked exceptions that is thrown if an {@link Account} exceeds its permitted debt limit.
  */
-public class DebtLimitExceedingException extends Exception {
+public class DebtLimitExceedingException extends AccountPolicyException {
 
     /**
      * Constructs a new {@link DebtLimitExceedingException} with a specified {@link Account} and a specified amount of
