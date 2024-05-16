@@ -2,7 +2,7 @@ package de.tu.darmstadt.dataModel;
 
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.backend.IceCreamShopProperties;
+import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 
-import static de.tu.darmstadt.backend.IceCreamShopProperties.*;
+import static de.tu.darmstadt.backend.ItemShopProperties.*;
+import static de.tu.darmstadt.ProjectUtils.*;
 
 /**
  * An {@link Account} for the drink shop is a superclass of those classes that grants a user of the drink shop an
@@ -23,6 +24,21 @@ import static de.tu.darmstadt.backend.IceCreamShopProperties.*;
 @Entity
 public class Account {
 
+    public static void main(String[] args) {
+        try {
+            for(int i = 0 ; i < 50 ; i++)
+                System.out.println(generateID());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This immutable attribute is an ID of {@link Account}. An ID is a unique attribute that can clearly identify
+     * an {@link Account} without any need of other attributes.
+     */
+    private final String id_of_account = "";
+
     /**
      * The email, that is the primary key of {@link Account}, is used to register and to login into the account.
      */
@@ -32,7 +48,7 @@ public class Account {
 
     /**
      * The password of the {@link Account}.
-     * It must meet the requirements specified in the {@link IceCreamShopProperties}
+     * It must meet the requirements specified in the {@link ItemShopProperties}
      */
     @Column(name = "password", nullable = false)
     private String password;
@@ -103,7 +119,7 @@ public class Account {
      * @param phone_number the specified phone number (optional). May be {@code null}
      *
      * @throws AccountPolicyException is thrown if any personal data does not meet the {@link Account}
-     * {@link IceCreamShopProperties policies}
+     * {@link ItemShopProperties policies}
      */
     public Account(String email, String password, String first_name, String last_name,
                    LocalDate birth_date, String phone_number)
@@ -146,6 +162,46 @@ public class Account {
         }
 
         this.status = status;
+    }
+
+    // :::::::::::::::::::::::::::::::::::::: AUXILIARY METHODS :::::::::::::::::::::::::::::::::::::::
+
+    /**
+     * TODO: Implement. This method should check if an ID is already existing in the database!!!
+     * This static method generates an {@link #id_of_account ID} as a {@link String} value for the {@link Account}.
+     *
+     * @return the ID generated for the {@link Account}
+     */
+    private static String generateID() throws AccountPolicyException {
+
+        if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
+
+
+        final char[] ch_set0 = new char[]{'a', 'z'}; // Set of chars: {'a', 'b', ... , 'z'}
+        final char[] ch_set1 = new char[]{'A', 'Z'};
+        final char[] ch_set2 = new char[]{'0', '9'};
+
+        final int number_of_id_segments = 5;
+        final int length_of_id_segment = 5;
+
+        // The StringBuilder already contains the first ID segment.
+        StringBuilder stringBuilder = new StringBuilder( randomString(length_of_id_segment, ch_set0, ch_set1, ch_set2) );
+
+        // The for-loop appends further ID segments which are separated by a '-'.
+        for (int i = 1; i < number_of_id_segments; i++) {
+            stringBuilder
+                    .append("-") // '-' separates ID segments
+                    .append( randomString(length_of_id_segment, ch_set0, ch_set1, ch_set2) ); // new ID segment
+        } // end of for
+
+        // The result to be returned. First of all, it is checked if it is in a valid format in the following if-block.
+        final String resulting_ID = stringBuilder.toString();
+
+        if( !VALID_ID_FORMAT.test(resulting_ID) ) {
+            throw new AccountPolicyException("ID is not in a valid format: " + resulting_ID);
+        } // end of if
+
+        return resulting_ID;
     }
 
 

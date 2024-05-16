@@ -8,7 +8,6 @@ import de.tu.darmstadt.dataModel.Item;
  */
 public class NegativePriceException extends ItemPropertiesException {
 
-
     /**
      * Constructs a new {@link NegativePriceException} with a specified invalid price value. It has a detail message
      * in the following format:

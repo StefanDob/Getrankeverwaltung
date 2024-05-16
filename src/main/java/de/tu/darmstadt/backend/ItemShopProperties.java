@@ -10,13 +10,13 @@ import java.util.regex.Pattern;
 /**
  * This class is used to specify the properties of an ice cream shop.
  */
-public abstract class IceCreamShopProperties {
+public abstract class ItemShopProperties {
 
     /**
-     * The constructor of {@link IceCreamShopProperties} is hidden with the qualifier {@code private} in order
+     * The constructor of {@link ItemShopProperties} is hidden with the qualifier {@code private} in order
      * not to be instantiated.
      */
-    private IceCreamShopProperties() {
+    private ItemShopProperties() {
         throw new RuntimeException("Class should not be instantiated");
     }
 
@@ -59,8 +59,8 @@ public abstract class IceCreamShopProperties {
      */
     public static final Predicate<? super String> EMAIL_FORMAT =
             s -> {
-                String pattern = "[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}";
-                return Pattern.matches(pattern, s);
+                // The format (1st argument) that the email should have.
+                return Pattern.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}", s);
             };
 
 
@@ -96,10 +96,25 @@ public abstract class IceCreamShopProperties {
 
 
     /**
+     * Specifies the ID format. An ID must be in the following format:
+     * <p>
+     *     {@code XXXXX-XXXXX-XXXXX-XXXXX-XXXXX}
+     */
+    public static final Predicate<? super String> VALID_ID_FORMAT =
+            id -> {
+                // The format (1st argument) that the tested ID should have.
+                return Pattern
+                        .matches("[0-9A-Za-z]{5}-[0-9A-Za-z]{5}-[0-9A-Za-z]{5}-[0-9A-Za-z]{5}-[0-9A-Za-z]{5}",
+                                id);
+            };
+
+
+    /**
      * The default debt limit of any account. This value specifies that a specified account never exceeds the specified
      * number of debts.
      */
     public static final double DEFAULT_DEBT_LIMIT = -200;
+
 
 
     // ::::::::::::::::::::::::::::::::::::::: METHODS :::::::::::::::::::::::::::::::::::::::::

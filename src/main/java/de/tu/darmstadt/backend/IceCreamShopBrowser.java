@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static de.tu.darmstadt.backend.IceCreamShopProperties.*;
+import static de.tu.darmstadt.backend.ItemShopProperties.*;
 
 /**
  * An {@link IceCreamShopBrowser} grants the user a terminal for accessing to an {@link Account} or
