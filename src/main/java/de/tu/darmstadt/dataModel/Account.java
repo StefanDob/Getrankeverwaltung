@@ -166,7 +166,7 @@ public class Account {
      */
     private static @NotNull String generateID() throws AccountPolicyException {
 
-        if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
+        // if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
 
 
         final char[] ch_set0 = new char[]{'a', 'z'}; // Set of chars: {'a', 'b', ... , 'z'}
@@ -273,7 +273,7 @@ public class Account {
                 phone_number,
                 PHONE_NUMBER_FORMAT,
                 new InvalidPhoneNumberFormatException(phone_number)
-        );
+        ).replaceAll("\\s", ""); // removes all whitespaces used for the number
     }
 
     // ::::::::::::::::::::::::::::::::::::::::::: METHODS ::::::::::::::::::::::::::::::::::::::::::::
@@ -348,7 +348,8 @@ public class Account {
     }
 
     public void setPhone_number(@Nullable String phone_number) throws InvalidPhoneNumberFormatException {
-        this.phone_number = check_if_phone_number_is_in_valid_format(phone_number);
+        this.phone_number = check_if_phone_number_is_in_valid_format(phone_number)
+                .replaceAll("\\s", ""); // removes all whitespaces
     }
 
     public void setDebt_limit(double debt_limit) {
