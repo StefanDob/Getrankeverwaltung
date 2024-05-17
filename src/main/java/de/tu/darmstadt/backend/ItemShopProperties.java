@@ -84,6 +84,10 @@ public final class ItemShopProperties {
      */
     public static final Predicate<? super String> PHONE_NUMBER_FORMAT =
             phone_number -> {
+
+                // In this case, the phone number for an Account is not specified.
+                if(phone_number == null) return true;
+
                 for (int i = 0; i < phone_number.length(); i++) {
                     char c = phone_number.charAt(i);
                     if( !(c >= '0' && c <= '9' || c == ' ') ) {

@@ -114,7 +114,7 @@ public class Account {
     }
 
     /**
-     * Constructs a new {@link Account} with specified personal data.
+     * Constructs a new {@link AccountStatus#STANDARD standard} {@link Account} with specified personal data.
      * @param email the specified email
      * @param password the specified password
      * @param first_name the specified first name
@@ -134,6 +134,19 @@ public class Account {
     }
 
 
+    /**
+     * Constructs a new {@link Account} with specified personal data.
+     * @param email the specified email
+     * @param password the specified password
+     * @param first_name the specified first name
+     * @param last_name the specified last name
+     * @param birth_date the specified birthdate
+     * @param phone_number the specified phone number (optional)
+     * @param status the specified {@link AccountStatus}
+     * @param debt_limit the specified debt limit
+     *
+     * @throws AccountPolicyException is thrown if any data does not meet the requirements specified in the policies.
+     */
     public Account(@NotNull String email, @NotNull String password, String first_name, String last_name,
                    LocalDate birth_date, @Nullable String phone_number, AccountStatus status, double debt_limit
 
@@ -266,7 +279,7 @@ public class Account {
      * @return the specified phone number if successfully checked
      * @throws InvalidPhoneNumberFormatException is thrown if the phone number is not in a valid format
      */
-    private static String check_if_phone_number_is_in_valid_format(String phone_number)
+    private static @NotNull String check_if_phone_number_is_in_valid_format(@NotNull String phone_number)
             throws InvalidPhoneNumberFormatException
     {
         return check_if_instance_is_valid(
