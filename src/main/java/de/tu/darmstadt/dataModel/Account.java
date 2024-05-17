@@ -279,9 +279,12 @@ public class Account {
      * @return the specified phone number if successfully checked
      * @throws InvalidPhoneNumberFormatException is thrown if the phone number is not in a valid format
      */
-    private static @NotNull String check_if_phone_number_is_in_valid_format(@NotNull String phone_number)
+    private static @Nullable String check_if_phone_number_is_in_valid_format(@Nullable String phone_number)
             throws InvalidPhoneNumberFormatException
     {
+        // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
+        if(phone_number == null) return null;
+
         return check_if_instance_is_valid(
                 phone_number,
                 PHONE_NUMBER_FORMAT,
@@ -361,8 +364,14 @@ public class Account {
     }
 
     public void setPhone_number(@Nullable String phone_number) throws InvalidPhoneNumberFormatException {
-        this.phone_number = check_if_phone_number_is_in_valid_format(phone_number)
-                .replaceAll("\\s", ""); // removes all whitespaces
+
+        if(phone_number == null) {
+            // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
+            this.phone_number = null;
+        } else {
+            this.phone_number = check_if_phone_number_is_in_valid_format(phone_number)
+                    .replaceAll("\\s", ""); // removes all whitespaces
+        }
     }
 
     public void setDebt_limit(double debt_limit) {
