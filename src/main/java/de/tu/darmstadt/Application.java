@@ -2,7 +2,7 @@ package de.tu.darmstadt;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.theme.Theme;
-import de.tu.darmstadt.backend.IceCreamShopBrowser;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -20,6 +20,7 @@ public class Application implements AppShellConfigurator {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        System.out.println(AccountOperations.getAccountByEmail("example@foo.de").getFirst_name());
     }
 
 }

@@ -5,8 +5,9 @@ import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,8 +24,12 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
  * Each account is clearly identified by a set of attributes (primary key) that is
  * specified by the user when creating an {@link Account}.
  */
+
 @Entity
+@Table(name = "account")
 public class Account {
+
+
 
     public static void main(String[] args) {
         try {
@@ -47,7 +52,7 @@ public class Account {
      * The email, that is the primary key of {@link Account}, is used to register and to login into the account.
      */
     @Id
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     /**
@@ -74,8 +79,8 @@ public class Account {
     /**
      * The birthdate of the {@link Account} owner in the format yyyy-mm-dd.
      */
-    @Column(name = "birth_date", nullable = false)
-    private LocalDate birth_date;
+    //@Column(name = "birth_date", nullable = false)
+    //private LocalDate birth_date;
 
     /**
      * The phone number of the {@link Account} owner (optional) which may be {@code null}.
@@ -105,6 +110,7 @@ public class Account {
 
 
     // ::::::::::::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::::::::::::::::
+
 
     /**
      * A default constructor is used for the entity class.
@@ -150,13 +156,13 @@ public class Account {
     public Account(@NotNull String email, @NotNull String password, String first_name, String last_name,
                    LocalDate birth_date, @Nullable String phone_number, AccountStatus status, double debt_limit
 
-                   ) throws AccountPolicyException
+    ) throws AccountPolicyException
     {
         this.first_name = check_if_name_is_in_valid_format(first_name);
         this.last_name = check_if_name_is_in_valid_format(last_name);
         this.email = check_if_email_is_in_valid_format(email);
         this.password = check_if_password_is_valid(password);
-        this.birth_date = check_if_birthdate_is_legal(birth_date);
+       // this.birth_date = check_if_birthdate_is_legal(birth_date);
         this.phone_number = check_if_phone_number_is_in_valid_format(phone_number);
 
         // The debt limit should always be a negative value.
@@ -334,7 +340,7 @@ public class Account {
     public void setPassword(String password) throws InvalidPasswordFormatException {
         this.password = check_if_password_is_valid(password);
     }
-
+/*
     public LocalDate getBirth_date() {
         return birth_date;
     }
@@ -342,6 +348,8 @@ public class Account {
     public void setBirth_date(LocalDate birth_date) throws IllegalBirthdateException {
         this.birth_date = check_if_birthdate_is_legal(birth_date);
     }
+
+ */
 
     public String getLast_name() {
         return last_name;
@@ -408,4 +416,7 @@ public class Account {
     public String toString() {
         return '[' + email + ": " + last_name + ", " + first_name + "]";
     }
+
+
+
 }
