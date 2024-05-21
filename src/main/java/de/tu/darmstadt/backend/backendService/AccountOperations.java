@@ -1,6 +1,6 @@
 package de.tu.darmstadt.backend.backendService;
 
-import de.tu.darmstadt.backend.database.DatabaseAccess;
+import de.tu.darmstadt.backend.database.AccountService;
 import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.dataModel.Account;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,8 @@ public class AccountOperations {
     public static void createAccount(Account account){
         // TODO: make some logic that writes the parameter to the database
 
-        throw new RuntimeException(" method createAccount not yet implemented");
+        AccountService accountService = SpringContext.getBean(AccountService.class);
+        accountService.saveAccount(account);
     }
 
     public static Account getAccountByUserName(String userName, char[] password){
@@ -36,8 +37,8 @@ public class AccountOperations {
 
 
     public static Account getAccountByEmail(String mail) {
-        DatabaseAccess databaseAccess = SpringContext.getBean(DatabaseAccess.class);
-        Optional<Account> accountOptional = databaseAccess.findByEmail(mail);
+        AccountService accountService = SpringContext.getBean(AccountService.class);
+        Optional<Account> accountOptional = accountService.getAccountByEmail(mail);
         return accountOptional.orElse(null);
     }
 }

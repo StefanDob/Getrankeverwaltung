@@ -26,5 +26,6 @@ public class AccountService {
         return accountRepository.findByEmail(email);
     }
 
+
     // Other methods for CRUD operations or business logic can be defined here
 }

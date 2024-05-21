@@ -10,7 +10,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
 
 public class RegistrationDialog extends Dialog {
@@ -54,16 +54,43 @@ public class RegistrationDialog extends Dialog {
         add(new H3("Create Account"), formLayout, buttonLayout);
     }
 
+    /*
+    different problems until now:
+        name throws exception even tough it is written right
+        I do not think that we can hold the concept with the exceptions at this stage, they can stay but I need public access to the methods that validate those inputs
+            What happens if multiple fields are wrong at the same time? Programm cannot throw multiple exceptions at once
+     */
     private void createAccount() {
-
+        firstNameField.setInvalid(false);
+        lastNameField.setInvalid(false);
+        emailField.setInvalid(false);
+        passwordField.setInvalid(false);
+        birthDateField.setInvalid(false);
+        phoneNumberField.setInvalid(false);
         // Implement your logic to create the account here
         Account account = null;
         try {
             account = new Account(emailField.getValue(), passwordField.getValue(), firstNameField.getValue(), lastNameField.getValue(),
                     birthDateField.getValue(), phoneNumberField.getValue());
                     AccountOperations.createAccount(account);
-        } catch (AccountPolicyException e) {
-            Notification.show("Problem occured " + e.getMessage(), 3000, Notification.Position.MIDDLE);
+        } catch (AccountPolicyException ex) {
+            if (ex instanceof InvalidNameFormatException) {
+                firstNameField.setInvalid(true);
+                firstNameField.setErrorMessage(ex.getMessage());
+            } else if (ex instanceof InvalidEmailFormatException) {
+                emailField.setInvalid(true);
+                emailField.setErrorMessage(ex.getMessage());
+            } else if (ex instanceof InvalidPasswordFormatException) {
+                passwordField.setInvalid(true);
+                passwordField.setErrorMessage(ex.getMessage());
+            } else if (ex instanceof IllegalBirthdateException) {
+                birthDateField.setInvalid(true);
+                birthDateField.setErrorMessage(ex.getMessage());
+            } else if (ex instanceof InvalidPhoneNumberFormatException) {
+                phoneNumberField.setInvalid(true);
+                phoneNumberField.setErrorMessage(ex.getMessage());
+            }
+
             return;
         }
 
