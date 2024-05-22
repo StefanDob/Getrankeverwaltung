@@ -39,7 +39,7 @@ public final class ExceptionChecker {
     public static <E extends Exception, R>
     R check_if_instance_is_valid(R object, @NotNull Predicate<? super R> predicate, E exception) throws E
     {
-        if( predicate.test(object) ) {
+        if( !predicate.test(object) ) {
             throw exception;
         } // end of if
 
