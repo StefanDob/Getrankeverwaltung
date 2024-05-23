@@ -84,7 +84,7 @@ public class Item {
      * @throws InvalidItemIDFormatException is thrown if the ID is not in a valid {@link Item#ITEM_ID_FORMAT}.
      */
     private static String generate_item_ID() throws InvalidItemIDFormatException {
-        String result = ID_PREFIX + String.valueOf();
+        String result = ID_PREFIX; // + String.valueOf();
 
         return result;
     }

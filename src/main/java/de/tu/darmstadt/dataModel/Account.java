@@ -224,11 +224,45 @@ public class Account {
      * @return the specified name if successfully checked
      * @throws InvalidNameFormatException is thrown if the name is not in a valid format
      */
-    private static String check_if_name_is_in_valid_format(String name) throws InvalidNameFormatException {
+    public static String check_if_name_is_in_valid_format(String name) throws InvalidNameFormatException {
         return check_if_instance_is_valid(
                 name,
                 VALID_NAME,
                 new InvalidNameFormatException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified first name is in a valid format.
+     *
+     * @see ItemShopProperties#VALID_NAME
+     *
+     * @param name the specified first name to be checked
+     * @return the specified first name if successfully checked
+     * @throws BadFirstNameException is thrown if the first name is not in a valid format
+     */
+    public static String check_if_first_name_is_in_valid_format(String name) throws BadFirstNameException {
+        return check_if_instance_is_valid(
+                name,
+                VALID_NAME,
+                new BadFirstNameException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified last name is in a valid format.
+     *
+     * @see ItemShopProperties#VALID_NAME
+     *
+     * @param name the specified last name to be checked
+     * @return the specified last name if successfully checked
+     * @throws BadLastNameException is thrown if the first name is not in a valid format
+     */
+    public static String check_if_last_name_is_in_valid_format(String name) throws BadLastNameException {
+        return check_if_instance_is_valid(
+                name,
+                VALID_NAME,
+                new BadLastNameException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
         );
     }
 
@@ -241,7 +275,7 @@ public class Account {
      * @return the specified email if successfully checked
      * @throws InvalidEmailFormatException is thrown if the email is not in a valid format
      */
-    private static String check_if_email_is_in_valid_format(String email) throws InvalidEmailFormatException {
+    public static String check_if_email_is_in_valid_format(String email) throws InvalidEmailFormatException {
         return check_if_instance_is_valid(
                 email,
                 EMAIL_FORMAT,
@@ -255,7 +289,7 @@ public class Account {
      * @return the specified password if successfully checked
      * @throws InvalidPasswordFormatException is thrown if the password is not valid
      */
-    private static String check_if_password_is_valid(String password) throws InvalidPasswordFormatException {
+    public static String check_if_password_is_valid(String password) throws InvalidPasswordFormatException {
         return check_if_instance_is_valid(
                 password,
                 PASSWORD_POLICY,
@@ -270,7 +304,7 @@ public class Account {
      * @return the specified birthdate if successfully checked
      * @throws IllegalBirthdateException is thrown if the birthdate is not legal
      */
-    private static LocalDate check_if_birthdate_is_legal(LocalDate birth_date) throws IllegalBirthdateException {
+    public static LocalDate check_if_birthdate_is_legal(LocalDate birth_date) throws IllegalBirthdateException {
         return check_if_instance_is_valid(
                 birth_date,
                 AGE_REQUIREMENTS,
@@ -285,7 +319,7 @@ public class Account {
      * @return the specified phone number if successfully checked
      * @throws InvalidPhoneNumberFormatException is thrown if the phone number is not in a valid format
      */
-    private static @Nullable String check_if_phone_number_is_in_valid_format(@Nullable String phone_number)
+    public static @Nullable String check_if_phone_number_is_in_valid_format(@Nullable String phone_number)
             throws InvalidPhoneNumberFormatException
     {
         // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
