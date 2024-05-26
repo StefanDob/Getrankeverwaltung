@@ -65,7 +65,7 @@ public class RegistrationDialog extends Dialog {
             What happens if multiple fields are wrong at the same time? Programm cannot throw multiple exceptions at once
      */
     private void createAccount() {
-        createAccountV2();
+        createAccountV1();
     }
 
 
@@ -191,21 +191,46 @@ public class RegistrationDialog extends Dialog {
             AccountOperations.createAccount(account);
 
         } catch (AccountPolicyException ex) {
-            if (ex instanceof InvalidNameFormatException) {
-                firstNameField.setInvalid(true);
-                firstNameField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof InvalidEmailFormatException) {
+            try {
+                Account.check_if_email_is_in_valid_format(emailField.getValue());
+            } catch (AccountPolicyException e) {
                 emailField.setInvalid(true);
-                emailField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof InvalidPasswordFormatException) {
+                emailField.setErrorMessage(e.getMessage());
+            }
+
+            try {
+                Account.check_if_password_is_valid(passwordField.getValue());
+            } catch (InvalidPasswordFormatException e) {
                 passwordField.setInvalid(true);
-                passwordField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof IllegalBirthdateException) {
+                passwordField.setErrorMessage(e.getMessage());
+            }
+
+            try {
+                Account.check_if_first_name_is_in_valid_format(firstNameField.getValue());
+            } catch (BadFirstNameException e) {
+                firstNameField.setInvalid(true);
+                firstNameField.setErrorMessage(e.getMessage());
+            }
+
+            try {
+                Account.check_if_last_name_is_in_valid_format(lastNameField.getValue());
+            } catch (BadLastNameException e) {
+                lastNameField.setInvalid(true);
+                lastNameField.setErrorMessage(e.getMessage());
+            }
+
+            try {
+                Account.check_if_birthdate_is_legal(birthDateField.getValue());
+            } catch (IllegalBirthdateException e) {
                 birthDateField.setInvalid(true);
-                birthDateField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof InvalidPhoneNumberFormatException) {
+                birthDateField.setErrorMessage(e.getMessage());
+            }
+
+            try {
+                Account.check_if_phone_number_is_in_valid_format(phoneNumberField.getValue());
+            } catch (InvalidPhoneNumberFormatException e) {
                 phoneNumberField.setInvalid(true);
-                phoneNumberField.setErrorMessage(ex.getMessage());
+                phoneNumberField.setErrorMessage(e.getMessage());
             }
 
             return;

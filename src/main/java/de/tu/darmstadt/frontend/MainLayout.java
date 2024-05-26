@@ -46,15 +46,20 @@ public class MainLayout extends AppLayout {
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
         // Create a layout for the login button
-        Button loginButton = new Button("Login");
-        loginButton.addClickListener(e -> {
-            if(SessionManagement.getAccount() == null){
+        if(SessionManagement.getAccount() == null){
+            loginButton = new Button("Login");
+            loginButton.addClickListener(e -> {
                 loginToAccount();
-            }else{
+            });
+        }else{
+            loginButton = new Button(SessionManagement.getAccount().getFirst_name());
+            loginButton.addClickListener(e -> {
                 UI.getCurrent().navigate(AccountView.class);
-            }
+            });
 
-        });
+        }
+
+
         loginButton.getStyle().set("margin-right", "16px"); // Adjust margin as needed
 
         HorizontalLayout headerRightContent = new HorizontalLayout();
@@ -70,7 +75,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        H1 appName = new H1("My App");
+        H1 appName = new H1("Shopping");
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
         Header header = new Header(appName);
 
@@ -82,10 +87,10 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Store", StoreView.class, LineAwesomeIcon.FILE.create()));
+        nav.addItem(new SideNavItem("Store", StoreView.class, LineAwesomeIcon.STORE_SOLID.create()));
         nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
-        nav.addItem(new SideNavItem("Account", AccountView.class, LineAwesomeIcon.FILE.create()));
-        nav.addItem(new SideNavItem("Warenkorb", WarenkorbView.class, LineAwesomeIcon.FILE.create()));
+        nav.addItem(new SideNavItem("Account", AccountView.class, LineAwesomeIcon.USER_CIRCLE.create()));
+        nav.addItem(new SideNavItem("Warenkorb", WarenkorbView.class, LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
 
         return nav;
     }
