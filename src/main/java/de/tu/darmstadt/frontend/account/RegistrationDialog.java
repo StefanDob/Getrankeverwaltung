@@ -1,4 +1,4 @@
-package de.tu.darmstadt.frontend.store;
+package de.tu.darmstadt.frontend.account;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;

@@ -1,5 +1,6 @@
 package de.tu.darmstadt.frontend;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
@@ -15,8 +16,9 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.frontend.account.AccountView;
+import de.tu.darmstadt.frontend.account.SessionManagement;
 import de.tu.darmstadt.frontend.dashboard.DashboardView;
-import de.tu.darmstadt.frontend.store.LoginDialog;
+import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.frontend.store.StoreView;
 import de.tu.darmstadt.frontend.warenkorb.WarenkorbView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
@@ -46,7 +48,12 @@ public class MainLayout extends AppLayout {
         // Create a layout for the login button
         Button loginButton = new Button("Login");
         loginButton.addClickListener(e -> {
-            loginToAccount();
+            if(SessionManagement.getAccount() == null){
+                loginToAccount();
+            }else{
+                UI.getCurrent().navigate(AccountView.class);
+            }
+
         });
         loginButton.getStyle().set("margin-right", "16px"); // Adjust margin as needed
 

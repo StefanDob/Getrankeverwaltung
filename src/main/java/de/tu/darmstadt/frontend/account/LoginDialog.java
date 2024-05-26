@@ -1,5 +1,6 @@
-package de.tu.darmstadt.frontend.store;
+package de.tu.darmstadt.frontend.account;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -13,6 +14,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.frontend.MainLayout;
 
 public class LoginDialog extends Dialog {
 
@@ -56,8 +59,11 @@ public class LoginDialog extends Dialog {
         loginButton.addClickListener(e -> {
             // Handle login logic here
 
-            if (AccountOperations.getAccountByUserName(usernameField.getValue(), passwordField.getValue().toCharArray())!= null) {
-                Notification.show("Login successful", 3000, Notification.Position.MIDDLE);
+        Account currentAccount = AccountOperations.getAccountByUserName(usernameField.getValue(), passwordField.getValue().toCharArray());
+            if (currentAccount != null) {
+                SessionManagement.setAccount(currentAccount);
+                UI.getCurrent().getPage().reload();
+                //UI.getCurrent().navigate(AccountView.class);
                 close(); // Close the dialog after successful login
             } else {
                 Notification.show("Invalid username or password", 3000, Notification.Position.MIDDLE);
