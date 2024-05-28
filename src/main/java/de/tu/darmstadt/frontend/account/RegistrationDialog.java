@@ -69,7 +69,7 @@ public class RegistrationDialog extends Dialog {
     }
 
 
-    private @NotNull ArrayList<AccountPolicyException> account_data_checker(String email, String password,
+    private @NotNull ArrayList<? extends AccountPolicyException> account_data_checker(String email, String password,
                                                                             String first_name, String last_name,
                                                                             LocalDate birth_date, String phone_number)
     {
@@ -132,7 +132,7 @@ public class RegistrationDialog extends Dialog {
         LocalDate birthDate = birthDateField.getValue();
         String phoneNumber = phoneNumberField.getValue();
 
-        ArrayList<AccountPolicyException> accountPolicyExceptions =
+        ArrayList<? extends AccountPolicyException> accountPolicyExceptions =
                 account_data_checker(email, password, firstName, lastName, birthDate, phoneNumber);
 
         Account account;
