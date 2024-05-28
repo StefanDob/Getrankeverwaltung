@@ -59,7 +59,7 @@ public class LoginDialog extends Dialog {
         loginButton.addClickListener(e -> {
             // Handle login logic here
 
-        Account currentAccount = AccountOperations.getAccountByUserName(usernameField.getValue(), passwordField.getValue().toCharArray());
+        Account currentAccount = AccountOperations.getAccountByEmailAndPassword(usernameField.getValue(), passwordField.getValue().toCharArray());
             if (currentAccount != null) {
                 SessionManagement.setAccount(currentAccount);
                 UI.getCurrent().getPage().reload();

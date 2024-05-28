@@ -1,7 +1,9 @@
 package de.tu.darmstadt.frontend.account;
 
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -10,7 +12,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.MainLayout;
 
 import java.time.LocalDate;
@@ -28,6 +32,8 @@ public class AccountView extends VerticalLayout {
     private DatePicker birthDateField = new DatePicker("Birth Date");
     private TextField phoneNumberField = new TextField("Phone Number");
 
+    private TextField accountBalanceField = new TextField("Account Balance");
+
     public AccountView() {
         currentAccount = SessionManagement.getAccount();
         
@@ -41,6 +47,16 @@ public class AccountView extends VerticalLayout {
     }
 
     private void showAccount() {
+        showGeneralAccountInformation();
+        showLastTransactions();
+
+        setSizeFull();
+        setJustifyContentMode(JustifyContentMode.START);
+        setDefaultHorizontalComponentAlignment(Alignment.START);
+        getStyle().set("text-align", "center");
+    }
+
+    private void showGeneralAccountInformation() {
         FormLayout formLayout = new FormLayout();
         formLayout.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0", 1));
@@ -49,20 +65,41 @@ public class AccountView extends VerticalLayout {
         initializeFields();
 
         formLayout.add(firstNameField, lastNameField);
-        formLayout.add(emailField);
+        formLayout.add(emailField, accountBalanceField);
         formLayout.add(passwordField);
         formLayout.add(birthDateField, phoneNumberField);
 
-        VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(new H2("General Information"), formLayout);
+
 
         // Add the formWrapper to the layout
-        add(verticalLayout);
+        Details accountDetails = new Details(new H2("General Information"));
+        accountDetails.setWidth("100%");
+        accountDetails.getStyle().set("border", "1px solid #ccc");
+        accountDetails.getStyle().set("border-radius", "6px");
+        accountDetails.setOpened(true);
+        accountDetails.add(formLayout);
+        add(accountDetails);
+    }
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
+    private void showLastTransactions() {
+        Details lastTransactions = new Details(new H2("Last Transactions"));
+        lastTransactions.setOpened(true);
+        lastTransactions.getStyle().set("border", "1px solid #ccc");
+        lastTransactions.getStyle().set("border-radius", "6px");
+        lastTransactions.setWidth("100%");
+
+        Grid<Transaction> grid = new Grid<>(Transaction.class);
+
+        // Configure the grid
+        grid.setItems(AccountOperations.getTransactionsByAccount(currentAccount));
+        grid.setColumns("sender", "receiver", "amount", "transactionDate");
+        grid.setWidth("100%");
+        grid.setAllRowsVisible(true);
+
+
+        // Add the grid to the layout
+        lastTransactions.add(grid);
+        add(lastTransactions);
     }
 
     private void initializeFields() {
@@ -71,7 +108,8 @@ public class AccountView extends VerticalLayout {
         emailField.setValue(currentAccount.getEmail());
         passwordField.setValue(currentAccount.getPassword());
         birthDateField.setValue(LocalDate.of(0,2,1));
-        phoneNumberField.setValue("not jet implemented");
+        phoneNumberField.setValue(currentAccount.getPhone_number());
+        accountBalanceField.setValue("" + currentAccount.getBalance());
     }
 
     private void setReadOnlyForFields(boolean readOnly) {
@@ -81,7 +119,7 @@ public class AccountView extends VerticalLayout {
         passwordField.setReadOnly(readOnly);
         birthDateField.setReadOnly(readOnly);
         phoneNumberField.setReadOnly(readOnly);
-
+        accountBalanceField.setReadOnly(readOnly);
 
 
     }
