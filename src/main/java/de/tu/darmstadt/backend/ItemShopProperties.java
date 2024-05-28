@@ -59,6 +59,10 @@ public final class ItemShopProperties {
      */
     public static final Predicate<? super String> EMAIL_FORMAT =
             s -> {
+                if(s.isEmpty() || s.isBlank()) {
+                    return false;
+                }
+
                 // The format (1st argument) that the email should have.
                 return Pattern.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}", s);
             };
@@ -69,6 +73,15 @@ public final class ItemShopProperties {
      */
     public static final Predicate<? super String> VALID_NAME =
             s -> {
+
+                if(s == null) {
+                    return false;
+                }
+
+                if(s.isEmpty() || s.isBlank()) {
+                    return false;
+                }
+
                 for(int i = 0 ; i < s.length() ; i++) {
                     char c = s.charAt(i);
                     if( !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || isUmlaut(c)) ) {
@@ -87,10 +100,11 @@ public final class ItemShopProperties {
 
                 // In this case, the phone number for an Account is not specified.
                 if(phone_number == null) return true;
+                if(phone_number.isBlank()) return true; // If the number is blank, it is treated like an empty number
 
                 for (int i = 0; i < phone_number.length(); i++) {
                     char c = phone_number.charAt(i);
-                    if( !(c >= '0' && c <= '9' || c == ' ') ) {
+                    if( !( Character.isDigit(c) || Character.isSpaceChar(c) ) ) {
                         return false;
                     }
 
