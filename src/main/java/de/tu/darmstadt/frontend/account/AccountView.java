@@ -39,7 +39,7 @@ public class AccountView extends VerticalLayout {
         
         if(currentAccount == null){
             showNotLoggedInJetMessage();
-        }else{
+        } else {
             showAccount();
         }
 

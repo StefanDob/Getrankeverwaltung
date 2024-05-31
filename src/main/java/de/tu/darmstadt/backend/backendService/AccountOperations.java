@@ -24,6 +24,10 @@ import java.util.Optional;
 @Component
 public class AccountOperations {
 
+    private AccountOperations() {
+        throw new RuntimeException("Utility class 'AccountOperations' cannot be instantiated.");
+    }
+
     /**
      * This static method is used to create a new {@link Account} from the frontend.
      * The data inserted in the frontend is passed to the backend via this method.
@@ -39,27 +43,27 @@ public class AccountOperations {
     }
 
     /**
-     * This static method is used to log into an existing {@link Account} by username and password.
+     * This static method is used to log into an existing {@link Account} by email and password.
      *
-     * @param userName the username to log in with
+     * @param email the email to log in with
      * @param password the password to log in with
      * @return if both username and password are correct, the {@link Account} with these data is returned.
      */
     @Contract("null, _ -> fail")
-    public static @NotNull Account getAccountByUserName(@Nullable String userName, String password)
+    public static @NotNull Account getAccountByUserName(@Nullable String email, String password)
         throws AccountOperationException
     {
         // TODO: make some logic that retrieves the account information, also first check whether the password is right
 
-        if( userName == null || userName.isEmpty() ) {
+        if( email == null || email.isEmpty() ) {
             // If the username field is empty, this exception is thrown.
             throw new IncorrectUsernameException("Username field must not be empty. Please enter a correct username.");
         }
 
-        Account acc = getAccountByEmail( userName );
+        Account acc = getAccountByEmail( email );
         if( acc == null ) {
-            // If acc is null, it means that there is no Account with the username existing.
-            throw new NoSuchAccountException("User with the name " + userName + " does not exist.");
+            // If acc is null, it means that there is no Account with the email existing.
+            throw new NoSuchAccountException("User with the email " + email + " does not exist.");
         }
 
         if( password == null || password.isEmpty() ) {
@@ -68,7 +72,7 @@ public class AccountOperations {
         }
 
         if( !password.equals(acc.getPassword()) ){
-            // In this case, the password to the corresponding account is wrong.
+            // In this case, the password to the corresponding account is incorrect.
             System.out.println("Password mismatch. I give up!");
             throw new IncorrectPasswordException("Incorrect password. Please try again.");
         }

@@ -44,14 +44,25 @@ public final class ItemShopProperties {
      * This attribute specifies the password policies for creating a new {@link Account} or changing the password of an
      * existing {@link Account}.
      */
-    public static final Predicate<? super String> PASSWORD_POLICY = s -> s.length() >= 6;
+    public static final Predicate<? super String> PASSWORD_POLICY = s -> {
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+        return s.length() >= 6;
+    };
+
 
 
     /**
      * This attribute specified the age requirements for creating a new {@link Account}.
      */
-    public static final Predicate<? super LocalDate> AGE_REQUIREMENTS
-            = date -> Period.between(date, LocalDate.now()).getYears() >= 16;
+    public static final Predicate<? super LocalDate> AGE_REQUIREMENTS = date -> {
+        if(date == null) {
+            return false;
+        }
+        return Period.between(date, LocalDate.now()).getYears() >= 16;
+    };
+
 
 
     /**
@@ -59,9 +70,10 @@ public final class ItemShopProperties {
      */
     public static final Predicate<? super String> EMAIL_FORMAT =
             s -> {
-                if(s.isEmpty() || s.isBlank()) {
+
+                if( s == null || s.isEmpty() || s.isBlank()) {
                     return false;
-                }
+                } // end of if
 
                 // The format (1st argument) that the email should have.
                 return Pattern.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}", s);
@@ -74,20 +86,16 @@ public final class ItemShopProperties {
     public static final Predicate<? super String> VALID_NAME =
             s -> {
 
-                if(s == null) {
+                if(s == null || s.isEmpty() || s.isBlank()) {
                     return false;
-                }
-
-                if(s.isEmpty() || s.isBlank()) {
-                    return false;
-                }
+                } // end of if
 
                 for(int i = 0 ; i < s.length() ; i++) {
                     char c = s.charAt(i);
                     if( !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || isUmlaut(c)) ) {
                         return false;
-                    }
-                }
+                    } // end of if
+                } // end of for
 
                 return true;
             };
@@ -98,9 +106,8 @@ public final class ItemShopProperties {
     public static final Predicate<? super String> PHONE_NUMBER_FORMAT =
             phone_number -> {
 
-                // In this case, the phone number for an Account is not specified.
-                if(phone_number == null) return true;
-                if(phone_number.isBlank()) return true; // If the number is blank, it is treated like an empty number
+                // If the number is null, blank or empty, it is treated like an empty number
+                if(phone_number == null || phone_number.isEmpty() || phone_number.isBlank()) return true;
 
                 for (int i = 0; i < phone_number.length(); i++) {
                     char c = phone_number.charAt(i);
