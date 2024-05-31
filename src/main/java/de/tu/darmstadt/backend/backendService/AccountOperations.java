@@ -46,7 +46,7 @@ public class AccountOperations {
      * @return if both username and password are correct, the {@link Account} with these data is returned.
      */
     @Contract("null, _ -> fail")
-    public static @NotNull Account getAccountByUserName(@Nullable String userName, @Nullable String password)
+    public static @NotNull Account getAccountByUserName(@Nullable String userName, String password)
         throws AccountOperationException
     {
         // TODO: make some logic that retrieves the account information, also first check whether the password is right
