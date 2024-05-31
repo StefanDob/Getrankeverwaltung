@@ -3,10 +3,14 @@ package de.tu.darmstadt.backend.backendService;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.database.AccountService;
 import de.tu.darmstadt.backend.database.SpringContext;
+import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
+import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectUsernameException;
+import de.tu.darmstadt.backend.exceptions.accountOperation.NoSuchAccountException;
+import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectPasswordException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,8 +22,6 @@ import java.util.Optional;
  */
 @Component
 public class AccountOperations {
-
-
 
     /**
      * This static method is used to create a new {@link Account} from the frontend.
@@ -35,10 +37,43 @@ public class AccountOperations {
         accountService.saveAccount(account);
     }
 
-    public static Account getAccountByUserName(String userName, char[] password){
-        // TODO: make some logic that retrieves the account information, also first check wether the password is right
-        return checkForTestUser(userName);
+    /**
+     * This static method is used to log into an existing {@link Account} by username and password.
+     *
+     * @param userName the username to log in with
+     * @param password the password to log in with
+     * @return if both username and password are correct, the {@link Account} with these data is returned.
+     */
+    @Contract("null, _ -> fail")
+    public static @NotNull Account getAccountByUserName(String userName, String password)
+        throws AccountOperationException
+    {
+        // TODO: make some logic that retrieves the account information, also first check whether the password is right
 
+        if( userName == null || userName.isEmpty() ) {
+            // If the username field is empty, this exception is thrown.
+            throw new IncorrectUsernameException("Username field must not be empty. Please enter a correct username.");
+        }
+
+        Account acc = getAccountByEmail( userName );
+        if( acc == null ) {
+            // If acc is null, it means that there is no Account with the username existing.
+            throw new NoSuchAccountException("User with the name " + userName + " does not exist.");
+        }
+
+        if( password == null || password.isEmpty() ) {
+            // If the password field is empty, the frontend announces the user to enter a valid password.
+            throw new IncorrectPasswordException("Password field must not be empty. Please enter a password.");
+        }
+
+        if( !password.equals(acc.getPassword()) ){
+            // In this case, the password to the corresponding account is wrong.
+            System.out.println("Password mismatch. I give up!");
+            throw new IncorrectPasswordException("Incorrect password. Please try again.");
+        }
+
+        return acc;
+        // return checkForTestUser(userName);
     }
 
     /**
@@ -57,9 +92,15 @@ public class AccountOperations {
     }
 
 
+    /**
+     * Retrieves an {@link Account} from the data source by entering a specified email.
+     * @param mail the specified email
+     * @return The {@link Account} with the email. If the email does not exist, this method returns {@code null}.
+     */
     public static Account getAccountByEmail(String mail) {
         AccountService accountService = SpringContext.getBean(AccountService.class);
         Optional<Account> accountOptional = accountService.getAccountByEmail(mail);
+
         return accountOptional.orElse(null);
     }
 }

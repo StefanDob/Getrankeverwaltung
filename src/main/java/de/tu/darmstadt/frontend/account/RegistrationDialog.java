@@ -19,12 +19,12 @@ import java.util.ArrayList;
 
 public class RegistrationDialog extends Dialog {
 
-    private TextField firstNameField = new TextField("First Name");
-    private TextField lastNameField = new TextField("Last Name");
-    private EmailField emailField = new EmailField("Email");;
-    private PasswordField passwordField = new PasswordField("Password");
-    private DatePicker birthDateField = new DatePicker("Birth Date");
-    private TextField phoneNumberField = new TextField("Phone Number");
+    private final TextField firstNameField = new TextField("First Name");
+    private final TextField lastNameField = new TextField("Last Name");
+    private final EmailField emailField = new EmailField("Email");;
+    private final PasswordField passwordField = new PasswordField("Password");
+    private final DatePicker birthDateField = new DatePicker("Birth Date");
+    private final TextField phoneNumberField = new TextField("Phone Number");
 
     public RegistrationDialog() {
         setCloseOnEsc(true);
@@ -240,8 +240,6 @@ public class RegistrationDialog extends Dialog {
         Notification.show("Account created successfully!", 3000, Notification.Position.MIDDLE);
         close();
     }
-
-
 
 
 }
