@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Transaction {
+
     private String sender;
 
     private String receiver;

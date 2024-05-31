@@ -9,6 +9,7 @@ import de.tu.darmstadt.backend.exceptions.accountOperation.NoSuchAccountExceptio
 import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectPasswordException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.dataModel.Transaction;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,9 +25,6 @@ import java.util.Optional;
 @Component
 public class AccountOperations {
 
-    private AccountOperations() {
-        throw new RuntimeException("Utility class 'AccountOperations' cannot be instantiated.");
-    }
 
     /**
      * This static method is used to create a new {@link Account} from the frontend.
@@ -107,5 +105,9 @@ public class AccountOperations {
         Optional<Account> accountOptional = accountService.getAccountByEmail(mail);
 
         return accountOptional.orElse(null);
+    }
+
+    public static Transaction getTransactionsByAccount(Account currentAccount) {
+        return null;
     }
 }

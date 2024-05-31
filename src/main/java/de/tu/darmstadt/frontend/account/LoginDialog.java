@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.frontend.MainLayout;
 
@@ -59,7 +60,12 @@ public class LoginDialog extends Dialog {
         loginButton.addClickListener(e -> {
             // Handle login logic here
 
-        Account currentAccount = AccountOperations.getAccountByEmailAndPassword(usernameField.getValue(), passwordField.getValue().toCharArray());
+            Account currentAccount = null;
+            try {
+                currentAccount = AccountOperations.getAccountByUserName(usernameField.getValue(), passwordField.getValue());
+            } catch (AccountOperationException ex) {
+                throw new RuntimeException(ex);
+            }
             if (currentAccount != null) {
                 SessionManagement.setAccount(currentAccount);
                 UI.getCurrent().getPage().reload();
