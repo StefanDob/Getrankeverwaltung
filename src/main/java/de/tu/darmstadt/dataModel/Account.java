@@ -3,6 +3,9 @@ package de.tu.darmstadt.dataModel;
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
+import de.tu.darmstadt.backend.database.AccountService;
+import de.tu.darmstadt.backend.database.SpringContext;
+import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -12,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
 import static de.tu.darmstadt.ProjectUtils.*;
@@ -28,8 +32,6 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
 @Entity
 @Table(name = "account")
 public class Account {
-
-
 
     public static void main(String[] args) {
         try {
@@ -115,8 +117,9 @@ public class Account {
     /**
      * A default constructor is used for the entity class.
      */
-    public Account() {
+    public Account() throws AccountPolicyException {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT ADD ANYTHING TO IT !!!
+
     }
 
     /**
@@ -158,8 +161,8 @@ public class Account {
 
     ) throws AccountPolicyException
     {
-        this.first_name = check_if_name_is_in_valid_format(first_name);
-        this.last_name = check_if_name_is_in_valid_format(last_name);
+        this.first_name = check_if_first_name_is_in_valid_format(first_name);
+        this.last_name = check_if_last_name_is_in_valid_format(last_name);
         this.email = check_if_email_is_in_valid_format(email);
         this.password = check_if_password_is_valid(password);
        // this.birth_date = check_if_birthdate_is_legal(birth_date);
@@ -173,12 +176,19 @@ public class Account {
         }
 
         this.status = status;
+
     }
 
     // :::::::::::::::::::::::::::::::::::::: AUXILIARY METHODS :::::::::::::::::::::::::::::::::::::::
 
+
+    private static boolean is_ID_already_existing(final String ID) {
+        // TODO: IMPLEMENT ONLY IF THE
+
+        return false;
+    }
+
     /**
-     * TODO: Implement. This method should check if an ID is already existing in the database!!!
      * This static method generates an {@link #id_of_account ID} as a {@link String} value for the {@link Account}.
      *
      * @return the ID generated for the {@link Account}
@@ -186,7 +196,6 @@ public class Account {
     private static @NotNull String generateID() throws AccountPolicyException {
 
         // if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
-
 
         final char[] ch_set0 = new char[]{'a', 'z'}; // Set of chars: {'a', 'b', ... , 'z'}
         final char[] ch_set1 = new char[]{'A', 'Z'};

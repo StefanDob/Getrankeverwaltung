@@ -25,14 +25,14 @@ public class AccountView extends VerticalLayout {
 
     Account currentAccount;
 
-    private TextField firstNameField = new TextField("First Name");
-    private TextField lastNameField = new TextField("Last Name");
-    private EmailField emailField = new EmailField("Email");;
-    private PasswordField passwordField = new PasswordField("Password");
-    private DatePicker birthDateField = new DatePicker("Birth Date");
-    private TextField phoneNumberField = new TextField("Phone Number");
+    private final TextField firstNameField = new TextField("First Name");
+    private final TextField lastNameField = new TextField("Last Name");
+    private final EmailField emailField = new EmailField("Email");;
+    private final PasswordField passwordField = new PasswordField("Password");
+    private final DatePicker birthDateField = new DatePicker("Birth Date");
+    private final TextField phoneNumberField = new TextField("Phone Number");
 
-    private TextField accountBalanceField = new TextField("Account Balance");
+    private final TextField accountBalanceField = new TextField("Account Balance");
 
     public AccountView() {
         currentAccount = SessionManagement.getAccount();
