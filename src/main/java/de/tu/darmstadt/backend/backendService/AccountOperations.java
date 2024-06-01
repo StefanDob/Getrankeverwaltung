@@ -4,7 +4,7 @@ import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.database.AccountService;
 import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
-import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectUsernameException;
+import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectEmailException;
 import de.tu.darmstadt.backend.exceptions.accountOperation.NoSuchAccountException;
 import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectPasswordException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static de.tu.darmstadt.backend.ItemShopProperties.*;
+
 /**
  * The class {@link AccountOperations} is used for any interaction between the frontend and the backend of this
  * project.
@@ -25,6 +27,10 @@ import java.util.Optional;
 @Component
 public class AccountOperations {
 
+    public static void main(String[] args) {
+        System.out.println(checkForTestUser("test"));
+        System.out.println(getAccountByEmail("foo@bar.net"));
+    }
 
     /**
      * This static method is used to create a new {@link Account} from the frontend.
@@ -55,7 +61,7 @@ public class AccountOperations {
 
         if( email == null || email.isEmpty() ) {
             // If the username field is empty, this exception is thrown.
-            throw new IncorrectUsernameException("Username field must not be empty. Please enter a correct username.");
+            throw new IncorrectEmailException("Username field must not be empty. Please enter a correct username.");
         }
 
         Account acc = getAccountByEmail( email );
@@ -103,6 +109,24 @@ public class AccountOperations {
     public static Account getAccountByEmail(String mail) {
         AccountService accountService = SpringContext.getBean(AccountService.class);
         Optional<Account> accountOptional = accountService.getAccountByEmail(mail);
+
+        return accountOptional.orElse(null);
+    }
+
+    /**
+     * Retrieves an {@link Account} from a data source by entering a specified ID.
+     *
+     * @param ID the specified ID
+     * @return the {@link Account} if such an {@link Account} with the specified ID exists, otherwise {@code null}.
+     * @throws AccountPolicyException is thrown if the entered ID is not in a valid format.
+     */
+    public static Account getAccountByID(final String ID) throws AccountPolicyException {
+        if( !VALID_ID_FORMAT.test(ID) ) {
+            throw new AccountPolicyException("Invalid account ID");
+        }
+
+        AccountService accountService = SpringContext.getBean(AccountService.class);
+        Optional<Account> accountOptional = accountService.getAccountById(ID);
 
         return accountOptional.orElse(null);
     }

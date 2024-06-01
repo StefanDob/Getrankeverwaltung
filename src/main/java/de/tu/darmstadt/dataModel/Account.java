@@ -3,6 +3,7 @@ package de.tu.darmstadt.dataModel;
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.database.AccountService;
 import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
@@ -48,12 +49,13 @@ public class Account {
      * <p>
      *     TODO: TO BE IMPLEMENTED !!!
      */
-    private final String id_of_account = "";
+    @Id
+    @Column(name = "id_of_account", nullable = false, unique = true)
+    private final String id_of_account = setID();
 
     /**
      * The email, that is the primary key of {@link Account}, is used to register and to login into the account.
      */
-    @Id
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
@@ -181,11 +183,23 @@ public class Account {
 
     // :::::::::::::::::::::::::::::::::::::: AUXILIARY METHODS :::::::::::::::::::::::::::::::::::::::
 
+    private static String setID() {
+        String id;
+        try {
+            do {
+                id = generateID();
+            } while ( is_ID_already_existing(id) ); // end of do-while
 
-    private static boolean is_ID_already_existing(final String ID) {
-        // TODO: IMPLEMENT ONLY IF THE
+            return id;
+        } catch (AccountPolicyException e) {
+            throw new RuntimeException("Account ID is not in a valid format.");
+        }
 
-        return false;
+    }
+
+    private static boolean is_ID_already_existing(final String ID) throws AccountPolicyException {
+        // TODO: IMPLEMENT
+        return AccountOperations.getAccountByID(ID) != null;
     }
 
     /**
@@ -198,8 +212,8 @@ public class Account {
         // if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
 
         final char[] ch_set0 = new char[]{'a', 'z'}; // Set of chars: {'a', 'b', ... , 'z'}
-        final char[] ch_set1 = new char[]{'A', 'Z'};
-        final char[] ch_set2 = new char[]{'0', '9'};
+        final char[] ch_set1 = new char[]{'A', 'Z'}; // Set of chars: {'A', 'B', ... , 'Z'}
+        final char[] ch_set2 = new char[]{'0', '9'}; // Set of chars: {'0', '1', ... , '9'}
 
         final int number_of_id_segments = 5;
         final int length_of_id_segment = 5;
@@ -422,7 +436,8 @@ public class Account {
         } else {
             this.phone_number = check_if_phone_number_is_in_valid_format(phone_number)
                     .replaceAll("\\s", ""); // removes all whitespaces
-        }
+        } // end of if
+
     }
 
     public void setDebt_limit(double debt_limit) {
@@ -459,7 +474,5 @@ public class Account {
     public String toString() {
         return '[' + email + ": " + last_name + ", " + first_name + "]";
     }
-
-
 
 }
