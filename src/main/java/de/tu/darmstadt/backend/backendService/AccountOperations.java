@@ -57,9 +57,7 @@ public class AccountOperations {
     public static @NotNull Account getAccountByUserName(@Nullable String email, String password)
         throws AccountOperationException
     {
-        if(email.equals("test")){
-            return checkForTestUser(email);
-        }
+
         // TODO: make some logic that retrieves the account information, also first check whether the password is right
 
         if( email == null || email.isEmpty() ) {
@@ -67,7 +65,9 @@ public class AccountOperations {
             throw new IncorrectEmailException("Username field must not be empty. Please enter a correct username.");
         }
 
+        // The account that is accessed via email.
         Account acc = getAccountByEmail( email );
+
         if( acc == null ) {
             // If acc is null, it means that there is no Account with the email existing.
             throw new NoSuchAccountException("User with the email " + email + " does not exist.");
