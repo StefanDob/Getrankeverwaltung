@@ -48,7 +48,7 @@ public class AccountView extends VerticalLayout {
 
     private void showAccount() {
         showGeneralAccountInformation();
-        showLastTransactions();
+        //showLastTransactions();
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.START);

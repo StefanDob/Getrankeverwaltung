@@ -57,6 +57,9 @@ public class AccountOperations {
     public static @NotNull Account getAccountByUserName(@Nullable String email, String password)
         throws AccountOperationException
     {
+        if(email.equals("test")){
+            return checkForTestUser(email);
+        }
         // TODO: make some logic that retrieves the account information, also first check whether the password is right
 
         if( email == null || email.isEmpty() ) {
@@ -92,7 +95,7 @@ public class AccountOperations {
         if(userName.equals("test")){
             try {
                 return new Account("dobreastefan68@gmail.com", "hello123", "Stefan", "Dobrea",
-                        LocalDate.of(2002,12,9), null, AccountStatus.STANDARD, 50);
+                        LocalDate.of(2002,12,9), "00000", AccountStatus.STANDARD, 50);
             } catch (AccountPolicyException e) {
                 throw new RuntimeException(e);
             }
