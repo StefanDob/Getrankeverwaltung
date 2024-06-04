@@ -54,6 +54,7 @@ public class Item {
     /**
      * This attribute stores the description of the {@link Item}.
      */
+    @Column(name = "item_description")
     private String description;
 
     // ::::::::::::::::::::::::::::::: PROPERTIES ::::::::::::::::::::::::::::::::
