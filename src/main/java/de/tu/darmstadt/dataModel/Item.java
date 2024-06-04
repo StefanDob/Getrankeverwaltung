@@ -5,6 +5,7 @@ import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import static de.tu.darmstadt.ProjectUtils.*;
 import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
@@ -14,6 +15,8 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
  */
 public class Item {
 
+    private final String ITEM_ID;
+
     private double price;
 
     private @NotNull String name;
@@ -22,6 +25,9 @@ public class Item {
 
     private String description;
 
+    /**
+     * The prefix of an item ID.
+     */
     private static final String ID_PREFIX = "IT-";
 
     /**
@@ -72,6 +78,13 @@ public class Item {
         this.name = name;
         this.image = image;
         this.description = description;
+
+        ITEM_ID = generate_item_ID();
+
+        // Checks if the ID is in the format "IT-XXXXXX"
+        if( !ITEM_ID_FORMAT.test(ITEM_ID) ) {
+            throw new InvalidItemIDFormatException(ITEM_ID);
+        }
     }
 
     // ::::::::::::::::::::::::::::::: AUXILIARY METHODS ::::::::::::::::::::::::::::::::::
@@ -84,9 +97,16 @@ public class Item {
      * @throws InvalidItemIDFormatException is thrown if the ID is not in a valid {@link Item#ITEM_ID_FORMAT}.
      */
     private static String generate_item_ID() throws InvalidItemIDFormatException {
-        String result = ID_PREFIX; // + String.valueOf();
+        String result;
+        do {
+            result = ID_PREFIX + ThreadLocalRandom.current().nextInt(0, 1_000_000);
+        } while (is_item_ID_already_existing(result));
 
         return result;
+    }
+
+    private static boolean is_item_ID_already_existing(String ID) {
+        return false;
     }
 
 
@@ -102,6 +122,10 @@ public class Item {
         } // end of if
 
         this.price = price;
+    }
+
+    public String get_ITEM_ID() {
+        return ITEM_ID;
     }
 
     public @NotNull String getName() {
