@@ -3,6 +3,10 @@ package de.tu.darmstadt.dataModel;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,6 +19,7 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
  */
 public class Item {
 
+
     public static void main(String[] args) throws InvalidItemIDFormatException {
         for(int i = 0 ; i < 50 ; i++)
             System.out.println(generate_item_ID());
@@ -24,7 +29,8 @@ public class Item {
      * An ITEM_ID is a unique attribute that clearly identifies the corresponding {@link Item}. It is as a primary
      * key for the {@link Item}.
      */
-    private final String ITEM_ID;
+
+    private final String ITEM_ID = generate_item_ID();
 
     /**
      * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
@@ -63,7 +69,7 @@ public class Item {
      *     Each 'X' is a placeholder for any digit.
      */
     public final static Predicate<? super String> ITEM_ID_FORMAT = s -> {
-        if( !s.subSequence(0, 3).equals(ID_PREFIX) || s.length() != 8 ) {
+        if( !s.subSequence(0, 3).equals(ID_PREFIX) || s.length() != 9 ) {
             return false;
         }
 
@@ -102,12 +108,14 @@ public class Item {
         this.image = image;
         this.description = description;
 
-        ITEM_ID = generate_item_ID();
-
         // Checks if the ID is in the format "IT-XXXXXX"
         if( !ITEM_ID_FORMAT.test(ITEM_ID) ) {
             throw new InvalidItemIDFormatException(ITEM_ID);
         }
+    }
+
+    public Item() {
+        // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
     }
 
     // ::::::::::::::::::::::::::::::: AUXILIARY METHODS ::::::::::::::::::::::::::::::::::
@@ -117,10 +125,10 @@ public class Item {
      * TODO: Implement how to check if the ID is already contained.
      *
      * @return the randomly generated ID for an {@link Item}
-     * @throws InvalidItemIDFormatException is thrown if the ID is not in a valid {@link Item#ITEM_ID_FORMAT}.
      */
-    private static String generate_item_ID() throws InvalidItemIDFormatException {
+    private static String generate_item_ID() {
         String result;
+
         do {
             result = ID_PREFIX + ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
         } while (is_item_ID_already_existing(result));
