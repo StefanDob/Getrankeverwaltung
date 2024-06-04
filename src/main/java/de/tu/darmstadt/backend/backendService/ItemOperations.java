@@ -4,8 +4,10 @@ import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.store.ItemView;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ItemOperations {
     /**
@@ -13,11 +15,22 @@ public class ItemOperations {
      * @return all shopitems from the database
      */
     public static ArrayList<ItemView> getAllShopItems(){
-        //TODO implement a logic to get all shopitems from the database @Toni
+        // TODO implement a logic to get all shopitems from the database @Toni
         return initializeTestItemsList();
     }
 
+    /**
+     * This method returns an {@link Item} wrapped in an {@link ItemView} by getting a specified ID.
+     * If the ID with the corresponding {@link Item} does not exist, this method simply returns {@code null}.
+     * @param ID the specified ID
+     * @return the {@link ItemView} with the {@link Item} within. If the ID does not exist, return {@code null}.
+     */
+    private static ItemView getItemById(String ID) {
+        Optional<Item> optionalItem;
 
+
+        return new ItemView(null);
+    }
 
     /**
      * helping method for creating 100 cola and Fanta elements for the Webshop

@@ -4,7 +4,6 @@ import static de.tu.darmstadt.backend.AccountStatus.*;
 
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidPasswordFormatException;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ public class AdminAccount extends Account {
 
     public AdminAccount(String email, String password, String first_name, String last_name, LocalDate birth_date,
                         String phone_number, double debt_limit)
-            throws AccountPolicyException, InvalidPasswordFormatException
+            throws AccountPolicyException
 
     {
         super(email, password, first_name, last_name, birth_date, phone_number, PRIVILEGED, debt_limit);

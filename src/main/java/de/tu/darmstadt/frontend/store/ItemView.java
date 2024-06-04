@@ -11,12 +11,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.dataModel.Item;
+import org.jetbrains.annotations.NotNull;
 
 public class ItemView extends VerticalLayout {
 
     private final Item item;
 
-    public ItemView(Item item) {
+    public ItemView(@NotNull Item item) {
         this.item = item;
 
         setSpacing(false);

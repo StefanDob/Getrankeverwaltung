@@ -15,25 +15,48 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
  */
 public class Item {
 
-    private final String ITEM_ID;
-
-    private double price;
-
-    private @NotNull String name;
-
-    private ItemImage image;
-
-    private String description;
+    public static void main(String[] args) throws InvalidItemIDFormatException {
+        for(int i = 0 ; i < 50 ; i++)
+            System.out.println(generate_item_ID());
+    }
 
     /**
-     * The prefix of an item ID.
+     * An ITEM_ID is a unique attribute that clearly identifies the corresponding {@link Item}. It is as a primary
+     * key for the {@link Item}.
+     */
+    private final String ITEM_ID;
+
+    /**
+     * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
+     */
+    private @NotNull String name;
+
+    /**
+     * Stores the price of an {@link Item} as a decimal number.
+     */
+    private double price;
+
+    /**
+     * The {@link ItemImage image} is an attribute to display an image of the {@link Item}.
+     */
+    private ItemImage image;
+
+    /**
+     * This attribute stores the description of the {@link Item}.
+     */
+    private String description;
+
+    // ::::::::::::::::::::::::::::::: PROPERTIES ::::::::::::::::::::::::::::::::
+
+    /**
+     * The prefix of an item ID. It should never be altered again.
      */
     private static final String ID_PREFIX = "IT-";
 
     /**
      * This {@link Predicate} checks if the ID of {@link Item} is in the following format:
      * <p>
-     *     {@code "IT-XXXXX"}
+     *     {@code "IT-XXXXXX"}
      *
      * <p>
      *     The ID always starts with "IT", followed by a '-' that separates the "IT" and "XXXXXX".
@@ -99,7 +122,7 @@ public class Item {
     private static String generate_item_ID() throws InvalidItemIDFormatException {
         String result;
         do {
-            result = ID_PREFIX + ThreadLocalRandom.current().nextInt(0, 1_000_000);
+            result = ID_PREFIX + ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
         } while (is_item_ID_already_existing(result));
 
         return result;
