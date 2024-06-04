@@ -17,6 +17,8 @@ public class ItemOperations {
         return initializeTestItemsList();
     }
 
+
+
     /**
      * helping method for creating 100 cola and Fanta elements for the Webshop
      * @return list of shopelements that can be used for testing porpuses

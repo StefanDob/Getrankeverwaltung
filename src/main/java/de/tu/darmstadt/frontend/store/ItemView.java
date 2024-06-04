@@ -13,7 +13,8 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.dataModel.Item;
 
 public class ItemView extends VerticalLayout {
-    private Item item;
+
+    private final Item item;
 
     public ItemView(Item item) {
         this.item = item;
