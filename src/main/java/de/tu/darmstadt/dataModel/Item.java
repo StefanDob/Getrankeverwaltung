@@ -118,6 +118,9 @@ public class Item {
         }
     }
 
+    /**
+     * A default constructor is used to add an {@link Item} to the data source.
+     */
     public Item() {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
     }
