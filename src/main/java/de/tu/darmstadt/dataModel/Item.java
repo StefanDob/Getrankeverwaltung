@@ -31,7 +31,7 @@ public class Item {
 
     @Id
     @Column(name = "item_id", unique = true, nullable = false)
-    private final String ITEM_ID = generate_item_ID();
+    private final String ITEM_ID;
 
     /**
      * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
@@ -104,6 +104,8 @@ public class Item {
     public Item(double price, @NotNull String name, ItemImage image, String description)
         throws ItemPropertiesException
     {
+        this();
+
         if(price < 0) {
             throw new NegativePriceException(price);
         } // end of if
@@ -113,17 +115,14 @@ public class Item {
         this.image = image;
         this.description = description;
 
-        // Checks if the ID is in the format "IT-XXXXXX"
-        if( !ITEM_ID_FORMAT.test(ITEM_ID) ) {
-            throw new InvalidItemIDFormatException(ITEM_ID);
-        }
     }
 
     /**
      * A default constructor is used to add an {@link Item} to the data source.
      */
-    public Item() {
+    public Item() throws InvalidItemIDFormatException {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
+        ITEM_ID = generate_item_ID();
     }
 
     // ::::::::::::::::::::::::::::::: AUXILIARY METHODS ::::::::::::::::::::::::::::::::::
@@ -134,12 +133,16 @@ public class Item {
      *
      * @return the randomly generated ID for an {@link Item}
      */
-    private static String generate_item_ID() {
+    private static String generate_item_ID() throws InvalidItemIDFormatException {
         String result;
 
         do {
             result = ID_PREFIX + ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
         } while (is_item_ID_already_existing(result));
+
+        if( !ITEM_ID_FORMAT.test(result) ) {
+            throw new InvalidItemIDFormatException(result);
+        }
 
         return result;
     }
