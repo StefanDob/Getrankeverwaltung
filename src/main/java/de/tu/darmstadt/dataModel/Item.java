@@ -3,10 +3,7 @@ package de.tu.darmstadt.dataModel;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -17,6 +14,8 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
 /**
  * An {@link Item} is a class of instances sold in the drink shop.
  */
+@Entity
+@Table(name = "item")
 public class Item {
 
 
@@ -30,21 +29,26 @@ public class Item {
      * key for the {@link Item}.
      */
 
+    @Id
+    @Column(name = "item_id", unique = true, nullable = false)
     private final String ITEM_ID = generate_item_ID();
 
     /**
      * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
      */
+    @Column(name = "item_name", unique = true, nullable = false)
     private @NotNull String name;
 
     /**
      * Stores the price of an {@link Item} as a decimal number.
      */
+    @Column(name = "item_price", nullable = false)
     private double price;
 
     /**
      * The {@link ItemImage image} is an attribute to display an image of the {@link Item}.
      */
+    @Embedded // @Embedded is important to make JPA running. So don't remove it, please.
     private ItemImage image;
 
     /**
