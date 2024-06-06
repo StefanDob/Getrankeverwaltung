@@ -19,9 +19,24 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
 public class Item {
 
 
-    public static void main(String[] args) throws InvalidItemIDFormatException {
-        for(int i = 0 ; i < 50 ; i++)
-            System.out.println(generate_item_ID());
+    public static void main(String[] args) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("");
+
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            Item item = new Item(1.55, "White Chocolate", null, "This is white chocolate.");
+
+            em.getTransaction().begin();
+
+            em.persist(item);
+
+            em.getTransaction().commit();
+            em.close();
+
+        } catch (ItemPropertiesException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -81,7 +96,7 @@ public class Item {
         for (int i = 3 ; i < s.length() ; i++) {
             if( !Character.isDigit(s.charAt(i)) ) {
                 return false;
-            }
+            } // end of if
         } // end of for
 
         return true;
@@ -124,6 +139,7 @@ public class Item {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
         ITEM_ID = generate_item_ID();
     }
+
 
     // ::::::::::::::::::::::::::::::: AUXILIARY METHODS ::::::::::::::::::::::::::::::::::
 
