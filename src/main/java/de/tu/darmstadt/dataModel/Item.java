@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
-import static de.tu.darmstadt.ProjectUtils.*;
-import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
 
 /**
  * An {@link Item} is a class of instances sold in the drink shop.
@@ -46,7 +44,7 @@ public class Item {
 
     @Id
     @Column(name = "item_id", unique = true, nullable = false)
-    private final String ITEM_ID;
+    private final String ID;
 
     /**
      * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
@@ -137,7 +135,7 @@ public class Item {
      */
     public Item() throws InvalidItemIDFormatException {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
-        ITEM_ID = generate_item_ID();
+        ID = generate_item_ID();
     }
 
 
@@ -183,7 +181,7 @@ public class Item {
     }
 
     public String get_ITEM_ID() {
-        return ITEM_ID;
+        return ID;
     }
 
     public @NotNull String getName() {

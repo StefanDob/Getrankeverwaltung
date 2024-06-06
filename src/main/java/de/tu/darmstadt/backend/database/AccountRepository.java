@@ -8,6 +8,13 @@ import java.util.Optional;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String> {
+
+    /**
+     * This method returns an {@link Optional<Account>} by a specified email.
+     * @param email the specified email
+     * @return the {@link Optional<Account>}
+     */
     Optional<Account> findByEmail(String email);
     // You can define custom query methods here if needed
+
 }
