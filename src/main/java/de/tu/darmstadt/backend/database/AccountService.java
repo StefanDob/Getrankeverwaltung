@@ -1,7 +1,6 @@
 package de.tu.darmstadt.backend.database;
 
 import de.tu.darmstadt.dataModel.Account;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ public class AccountService {
         return accountRepository.findByEmail(email);
     }
 
-    public Optional<Account> getAccountById(final String ID) {
+    public Optional<Account> getAccountByID(final String ID) {
         return accountRepository.findById(ID);
     }
 

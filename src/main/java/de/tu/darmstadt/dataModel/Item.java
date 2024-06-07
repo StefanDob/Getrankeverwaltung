@@ -16,7 +16,6 @@ import java.util.function.Predicate;
 @Table(name = "item")
 public class Item {
 
-
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("");
 
@@ -78,16 +77,21 @@ public class Item {
     private static final String ID_PREFIX = "IT-";
 
     /**
+     * This constant determines the length of the X...X part in {@link Item#ID}.
+     */
+    private static final int ID_OFFSET_LENGTH = 6;
+
+    /**
      * This {@link Predicate} checks if the ID of {@link Item} is in the following format:
      * <p>
-     *     {@code "IT-XXXXXX"}
+     *     {@code "IT-X...X"}
      *
      * <p>
-     *     The ID always starts with "IT", followed by a '-' that separates the "IT" and "XXXXXX".
+     *     The ID always starts with "IT", followed by a '-' that separates the "IT" and "X...X".
      *     Each 'X' is a placeholder for any digit.
      */
     public final static Predicate<? super String> ITEM_ID_FORMAT = s -> {
-        if( !s.subSequence(0, 3).equals(ID_PREFIX) || s.length() != 9 ) {
+        if( !s.subSequence(0, 3).equals(ID_PREFIX) || s.length() != ID_PREFIX.length() + ID_OFFSET_LENGTH ) {
             return false;
         }
 
@@ -151,7 +155,7 @@ public class Item {
         String result;
 
         do {
-            result = ID_PREFIX + ThreadLocalRandom.current().nextInt(100_000, 1_000_000);
+            result = ID_PREFIX + build_ID_offset(0, 10);
         } while (is_item_ID_already_existing(result));
 
         if( !ITEM_ID_FORMAT.test(result) ) {
@@ -159,6 +163,28 @@ public class Item {
         }
 
         return result;
+    }
+
+    /**
+     * This method is used to construct the "X...X" part of the {@link Item#ID}.
+     *
+     * @param min_number the minimum occurring digit (inclusive)
+     * @param max_number the maximum occurring digit (exclusive)
+     * @return the offset
+     */
+    private static @NotNull String build_ID_offset(int min_number, int max_number) {
+        if(min_number < 0 || max_number < 1 || max_number < min_number) {
+            throw new IllegalArgumentException
+                    ("Invalid arguments. Expected: min_number, max_number > 1 and min_number < max_number");
+        }
+
+        StringBuilder sb = new StringBuilder(ID_OFFSET_LENGTH);
+
+        for(int i = 0 ; i < ID_OFFSET_LENGTH ; i++) {
+            sb.append(ThreadLocalRandom.current().nextInt(min_number, max_number));
+        } // end of for
+
+        return sb.toString();
     }
 
     private static boolean is_item_ID_already_existing(String ID) {

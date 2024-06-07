@@ -1,10 +1,14 @@
 package de.tu.darmstadt.backend.backendService;
 
+import de.tu.darmstadt.backend.database.ItemService;
+import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.store.ItemView;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -14,7 +18,8 @@ public class ItemOperations {
      * this method gets all the Items of the shop from the database
      * @return all shopitems from the database
      */
-    public static ArrayList<ItemView> getAllShopItems(){
+    @Contract(" -> new")
+    public static @NotNull ArrayList<ItemView> getAllShopItems(){
         // TODO implement a logic to get all shopitems from the database @Toni
         return initializeTestItemsList();
     }
@@ -25,18 +30,19 @@ public class ItemOperations {
      * @param ID the specified ID
      * @return the {@link ItemView} with the {@link Item} within. If the ID does not exist, return {@code null}.
      */
-    private static ItemView getItemById(String ID) {
-        Optional<Item> optionalItem;
+    private static @Nullable ItemView getItemById(String ID) {
+        ItemService itemService = SpringContext.getBean(ItemService.class);
+        Item itemOptional =  itemService.getItemByID(ID).orElse(null);
 
-
-        return new ItemView(null);
+        return itemOptional != null ? new ItemView(itemOptional) : null;
     }
 
     /**
      * helping method for creating 100 cola and Fanta elements for the Webshop
      * @return list of shopelements that can be used for testing porpuses
      */
-    public static ArrayList<ItemView> initializeTestItemsList() {
+    @Contract(" -> new")
+    public static @NotNull ArrayList<ItemView> initializeTestItemsList() {
         ArrayList<ItemView> shopItemsList = new ArrayList<>();
         for(int i = 0; i <= 50; i++){
 

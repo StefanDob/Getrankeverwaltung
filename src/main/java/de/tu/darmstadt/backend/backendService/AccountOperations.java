@@ -129,7 +129,7 @@ public class AccountOperations {
         }
 
         AccountService accountService = SpringContext.getBean(AccountService.class);
-        Optional<Account> accountOptional = accountService.getAccountById(ID);
+        Optional<Account> accountOptional = accountService.getAccountByID(ID);
 
         return accountOptional.orElse(null);
     }
