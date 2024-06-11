@@ -6,6 +6,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.MainLayout;
 
 import java.util.ArrayList;
@@ -22,7 +23,13 @@ public class StoreView extends VerticalLayout {
     public StoreView() {
         setSpacing(false); // Adjust spacing as needed
 
-        ArrayList<ItemView> shopItemsList = ItemOperations.getAllShopItems();
+        ArrayList<Item> itemsList = ItemOperations.getAllShopItems();
+
+        ArrayList<ItemView> shopItemsList = new ArrayList<>();
+        for(Item item : itemsList){
+            ItemView view  = new ItemView(item);
+            shopItemsList.add(view);
+        }
 
         displayShopItems(4, shopItemsList);
 

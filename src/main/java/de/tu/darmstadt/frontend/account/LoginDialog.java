@@ -15,12 +15,13 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
+import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectEmailException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.frontend.MainLayout;
 
 public class LoginDialog extends Dialog {
 
-    private TextField usernameField;
+    private TextField emailField;
     private PasswordField passwordField;
 
     public LoginDialog() {
@@ -48,8 +49,8 @@ public class LoginDialog extends Dialog {
         );
 
         // Username field
-        usernameField = new TextField("Username");
-        formLayout.add(usernameField);
+        emailField = new TextField("E-mail");
+        formLayout.add(emailField);
 
         // Password field
         passwordField = new PasswordField("Password");
@@ -62,19 +63,18 @@ public class LoginDialog extends Dialog {
 
             Account currentAccount = null;
             try {
-                currentAccount = AccountOperations.getAccountByUserName(usernameField.getValue(), passwordField.getValue());
+                currentAccount = AccountOperations.getAccountByEmail(emailField.getValue(), passwordField.getValue());
             } catch (AccountOperationException ex) {
-                throw new RuntimeException(ex);
+                    emailField.setInvalid(true);
+                    passwordField.setInvalid(true);
+                Notification.show("Invalid username or password", 3000, Notification.Position.MIDDLE);
             }
             if (currentAccount != null) {
                 SessionManagement.setAccount(currentAccount);
                 UI.getCurrent().getPage().reload();
                 //UI.getCurrent().navigate(AccountView.class);
                 close(); // Close the dialog after successful login
-            } else {
-                Notification.show("Invalid username or password", 3000, Notification.Position.MIDDLE);
             }
-
 
         });
 
@@ -92,7 +92,7 @@ public class LoginDialog extends Dialog {
 
 
 
-        formLayout.add(usernameField, passwordField, loginButton, registerButton);
+        formLayout.add(emailField, passwordField, loginButton, registerButton);
         add(headerLayout, formLayout);
     }
 

@@ -19,7 +19,7 @@ public class ItemOperations {
      * @return all shopitems from the database
      */
     @Contract(" -> new")
-    public static @NotNull ArrayList<ItemView> getAllShopItems(){
+    public static @NotNull ArrayList<Item> getAllShopItems(){
         // TODO implement a logic to get all shopitems from the database @Toni
         return initializeTestItemsList();
     }
@@ -42,19 +42,19 @@ public class ItemOperations {
      * @return list of shopelements that can be used for testing porpuses
      */
     @Contract(" -> new")
-    public static @NotNull ArrayList<ItemView> initializeTestItemsList() {
-        ArrayList<ItemView> shopItemsList = new ArrayList<>();
+    public static @NotNull ArrayList<Item> initializeTestItemsList() {
+        ArrayList<Item> shopItemsList = new ArrayList<>();
         for(int i = 0; i <= 50; i++){
 
             String description = "Zutaten: Wasser, Zucker, Kohlensäure, Farbstoff E 150d, Säuerungsmittel Phosphorsäure, Aroma, Aroma Koffein.";
 
             try {
-                ItemView colaItemView = new ItemView(new Item(10, "Coca Cola", new ItemImage("images/cola.jpg"), description));
-                shopItemsList.add(colaItemView);
+                Item colaItem = new Item(10, "Coca Cola", new ItemImage("images/cola.jpg"), description);
+                shopItemsList.add(colaItem);
 
-                ItemView fantaItemView = new ItemView(new Item(15, "Fanta", new ItemImage("images/fanta.jpg"), description));
+                Item fantaItem = new Item(15, "Fanta", new ItemImage("images/fanta.jpg"), description);
 
-                shopItemsList.add(fantaItemView);
+                shopItemsList.add(fantaItem);
             } catch (ItemPropertiesException e) {
                 e.printStackTrace();
             } // end of try-catch

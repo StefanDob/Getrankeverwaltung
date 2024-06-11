@@ -25,14 +25,7 @@ public class AccountView extends VerticalLayout {
 
     Account currentAccount;
 
-    private final TextField firstNameField = new TextField("First Name");
-    private final TextField lastNameField = new TextField("Last Name");
-    private final EmailField emailField = new EmailField("Email");;
-    private final PasswordField passwordField = new PasswordField("Password");
-    private final DatePicker birthDateField = new DatePicker("Birth Date");
-    private final TextField phoneNumberField = new TextField("Phone Number");
 
-    private final TextField accountBalanceField = new TextField("Account Balance");
 
     public AccountView() {
         currentAccount = SessionManagement.getAccount();
@@ -47,7 +40,8 @@ public class AccountView extends VerticalLayout {
     }
 
     private void showAccount() {
-        showGeneralAccountInformation();
+        add(new GeneralAccountInformation(currentAccount));
+        add(new AdminOptions());
         //showLastTransactions();
 
         setSizeFull();
@@ -56,30 +50,7 @@ public class AccountView extends VerticalLayout {
         getStyle().set("text-align", "center");
     }
 
-    private void showGeneralAccountInformation() {
-        FormLayout formLayout = new FormLayout();
-        formLayout.setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1));
 
-        setReadOnlyForFields(true);
-        initializeFields();
-
-        formLayout.add(firstNameField, lastNameField);
-        formLayout.add(emailField, accountBalanceField);
-        formLayout.add(passwordField);
-        formLayout.add(birthDateField, phoneNumberField);
-
-
-
-        // Add the formWrapper to the layout
-        Details accountDetails = new Details(new H2("General Information"));
-        accountDetails.setWidth("100%");
-        accountDetails.getStyle().set("border", "1px solid #ccc");
-        accountDetails.getStyle().set("border-radius", "6px");
-        accountDetails.setOpened(true);
-        accountDetails.add(formLayout);
-        add(accountDetails);
-    }
 
     private void showLastTransactions() {
         Details lastTransactions = new Details(new H2("Last Transactions"));
@@ -102,27 +73,7 @@ public class AccountView extends VerticalLayout {
         add(lastTransactions);
     }
 
-    private void initializeFields() {
-        firstNameField.setValue(currentAccount.getFirst_name());
-        lastNameField.setValue(currentAccount.getLast_name());
-        emailField.setValue(currentAccount.getEmail());
-        passwordField.setValue(currentAccount.getPassword());
-        birthDateField.setValue(LocalDate.of(0,2,1));
-        phoneNumberField.setValue(currentAccount.getPhone_number());
-        accountBalanceField.setValue("" + currentAccount.getBalance());
-    }
 
-    private void setReadOnlyForFields(boolean readOnly) {
-        firstNameField.setReadOnly(readOnly);
-        lastNameField.setReadOnly(readOnly);
-        emailField.setReadOnly(readOnly);
-        passwordField.setReadOnly(readOnly);
-        birthDateField.setReadOnly(readOnly);
-        phoneNumberField.setReadOnly(readOnly);
-        accountBalanceField.setReadOnly(readOnly);
-
-
-    }
 
     private void showNotLoggedInJetMessage() {
         setSpacing(false);

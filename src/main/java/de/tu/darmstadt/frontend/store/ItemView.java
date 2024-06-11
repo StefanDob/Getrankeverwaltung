@@ -57,45 +57,8 @@ public class ItemView extends VerticalLayout {
      */
     private void showItemDetails() {
         // Creating a dialog to display item details
-        Dialog itemDialog = new Dialog();
-        itemDialog.setCloseOnOutsideClick(true);
-        itemDialog.setWidth("90vw"); // Set dialog width to 90% of viewport width
-        itemDialog.setHeight("90vh"); // Set dialog height to 90% of viewport height
+        ItemDialog itemDialog = new ItemDialog(item);
 
-        // Close button in the dialog header
-        Button closeButton = new Button("Close");
-        closeButton.addClickListener(event -> itemDialog.close());
-        closeButton.getStyle().set("margin-left", "auto"); // Move the button to the right
-
-        // Creating a header layout
-        HorizontalLayout headerLayout = new HorizontalLayout();
-        headerLayout.setWidthFull();
-        headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
-        headerLayout.add(closeButton);
-
-        // Sample item details
-        Div itemDetails = new Div();
-        itemDetails.setText(item.getDescription());
-
-        // Sample item image
-        Image itemImage = new Image(item.getImage().getPath(), item.getName());
-        itemImage.setWidth("40vw"); // Set image width
-        itemImage.setHeight("40vw"); // Set image height
-
-        // Create a layout for the dialog content
-        HorizontalLayout contentLayout = new HorizontalLayout();
-
-        // Add the image to the left side
-        contentLayout.add(itemImage);
-
-        // Add a spacer to create some space between the image and text
-        contentLayout.add(new Div());
-
-        // Add the item details to the right side
-        contentLayout.add(itemDetails);
-
-        // Adding components to the dialog
-        itemDialog.add(headerLayout, contentLayout);
 
         // Opening the dialog
         itemDialog.open();
