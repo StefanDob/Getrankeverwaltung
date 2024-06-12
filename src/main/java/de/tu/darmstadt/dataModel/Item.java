@@ -16,26 +16,6 @@ import java.util.function.Predicate;
 @Table(name = "item")
 public class Item {
 
-    public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("");
-
-        EntityManager em = emf.createEntityManager();
-
-        try {
-            Item item = new Item(1.55, "White Chocolate", null, "This is white chocolate.");
-
-            em.getTransaction().begin();
-
-            em.persist(item);
-
-            em.getTransaction().commit();
-            em.close();
-
-        } catch (ItemPropertiesException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     /**
      * An ITEM_ID is a unique attribute that clearly identifies the corresponding {@link Item}. It is as a primary
      * key for the {@link Item}.

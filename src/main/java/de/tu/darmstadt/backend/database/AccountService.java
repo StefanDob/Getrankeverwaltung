@@ -16,7 +16,6 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-
     // Example method to save an account
     public void saveAccount(Account account) {
         accountRepository.save(account);
@@ -29,7 +28,6 @@ public class AccountService {
     public Optional<Account> getAccountByID(final String ID) {
         return accountRepository.findById(ID);
     }
-
 
     // Other methods for CRUD operations or business logic can be defined here
 }
