@@ -28,6 +28,7 @@ public class ItemService {
         } catch (ItemPropertiesException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     /**
@@ -57,7 +58,6 @@ public class ItemService {
     }
 
     public Optional<Item> getItemByID(final String ID) {
-
         return itemRepository.findItemByID(ID);
     }
 
