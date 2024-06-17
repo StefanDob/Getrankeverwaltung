@@ -49,10 +49,10 @@ public class ItemOperations {
             String description = "Zutaten: Wasser, Zucker, Kohlensäure, Farbstoff E 150d, Säuerungsmittel Phosphorsäure, Aroma, Aroma Koffein.";
 
             try {
-                Item colaItem = new Item(10, "Coca Cola", new ItemImage("images/cola.jpg"), description);
+                Item colaItem = new Item(10, "Coca Cola", "images/cola.jpg", description);
                 shopItemsList.add(colaItem);
 
-                Item fantaItem = new Item(15, "Fanta", new ItemImage("images/fanta.jpg"), description);
+                Item fantaItem = new Item(15, "Fanta", "images/fanta.jpg", description);
 
                 shopItemsList.add(fantaItem);
             } catch (ItemPropertiesException e) {
@@ -61,5 +61,10 @@ public class ItemOperations {
 
         }
         return shopItemsList;
+    }
+
+    public static void createItem(Item item) {
+        ItemService itemService = SpringContext.getBean(ItemService.class);
+        itemService.saveItem(item);
     }
 }

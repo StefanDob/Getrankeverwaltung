@@ -40,8 +40,8 @@ public class Item {
     /**
      * The {@link ItemImage image} is an attribute to display an image of the {@link Item}.
      */
-    @Embedded // @Embedded is important to make JPA running. So don't remove it, please.
-    private ItemImage image;
+    @Column(name = "path")
+    private String image;
 
     /**
      * This attribute stores the description of the {@link Item}.
@@ -71,7 +71,9 @@ public class Item {
      *     Each 'X' is a placeholder for any digit.
      */
     public final static Predicate<? super String> ITEM_ID_FORMAT = s -> {
-        if( !s.subSequence(0, 3).equals(ID_PREFIX) || s.length() != ID_PREFIX.length() + ID_OFFSET_LENGTH ) {
+        if( !s.subSequence(0, ID_PREFIX.length()).equals(ID_PREFIX)
+                || s.length() != ID_PREFIX.length() + ID_OFFSET_LENGTH )
+        {
             return false;
         }
 
@@ -98,7 +100,7 @@ public class Item {
      *
      * @throws ItemPropertiesException is thrown if the specified product data do not meet the specified requirements.
      */
-    public Item(double price, @NotNull String name, ItemImage image, String description)
+    public Item(double price, @NotNull String name, String image, String description)
         throws ItemPropertiesException
     {
         this();
@@ -198,11 +200,11 @@ public class Item {
         this.name = name;
     }
 
-    public ItemImage getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(ItemImage image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
