@@ -16,6 +16,7 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.frontend.account.AccountView;
+import de.tu.darmstadt.frontend.account.AdminView;
 import de.tu.darmstadt.frontend.account.SessionManagement;
 import de.tu.darmstadt.frontend.dashboard.DashboardView;
 import de.tu.darmstadt.frontend.account.LoginDialog;
@@ -91,6 +92,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
         nav.addItem(new SideNavItem("Account", AccountView.class, LineAwesomeIcon.USER_CIRCLE.create()));
         nav.addItem(new SideNavItem("Warenkorb", WarenkorbView.class, LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
+        nav.addItem(new SideNavItem("Admin", AdminView.class, LineAwesomeIcon.TOOLBOX_SOLID.create()));
 
         return nav;
     }

@@ -69,8 +69,6 @@ public class GeneralAccountInformation extends Details {
         birthDateField.setReadOnly(readOnly);
         phoneNumberField.setReadOnly(readOnly);
         accountBalanceField.setReadOnly(readOnly);
-
-
     }
 
 }

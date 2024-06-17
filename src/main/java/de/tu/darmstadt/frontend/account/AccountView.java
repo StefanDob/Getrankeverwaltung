@@ -1,14 +1,9 @@
 package de.tu.darmstadt.frontend.account;
 
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
@@ -16,8 +11,6 @@ import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.MainLayout;
-
-import java.time.LocalDate;
 
 @PageTitle("Account")
 @Route(value = "account", layout = MainLayout.class)
@@ -41,7 +34,7 @@ public class AccountView extends VerticalLayout {
 
     private void showAccount() {
         add(new GeneralAccountInformation(currentAccount));
-        add(new AdminOptions());
+        add(new AdminView());
         //showLastTransactions();
 
         setSizeFull();

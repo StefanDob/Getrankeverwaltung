@@ -2,22 +2,26 @@ package de.tu.darmstadt.frontend.account;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.dataModel.AdminAccount;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.frontend.MainLayout;
+import de.tu.darmstadt.frontend.store.ItemAdminDialog;
 import de.tu.darmstadt.frontend.store.ItemDialog;
 
 import java.util.ArrayList;
+@PageTitle("Admin")
+@Route(value = "admin", layout = MainLayout.class)
+public class AdminView extends Details {
 
-public class AdminOptions extends Details {
-
-    public AdminOptions(){
+    public AdminView(){
         super(new H2("Admin Options"));
         setOpened(true);
         setWidth("100%");
@@ -65,7 +69,7 @@ public class AdminOptions extends Details {
         // Add item click listener
         grid.addItemClickListener(event -> {
             Item clickedItem = event.getItem();
-            ItemDialog itemDialog = new ItemDialog(clickedItem);
+            ItemAdminDialog itemDialog = new ItemAdminDialog(clickedItem);
             itemDialog.open();
         });
 

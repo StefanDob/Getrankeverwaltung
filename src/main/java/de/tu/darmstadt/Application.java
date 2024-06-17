@@ -26,7 +26,7 @@ public class Application implements AppShellConfigurator {
     public static void main(String[] args) {
 
         SpringApplication.run(Application.class, args);
-        System.out.println(AccountOperations.getAccountByEmail("example@foo.de").getFirst_name());
+        //System.out.println(AccountOperations.getAccountByEmail("example@foo.de").getFirst_name());
     }
 
 }
