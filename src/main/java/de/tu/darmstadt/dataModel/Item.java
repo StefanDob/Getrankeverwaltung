@@ -71,7 +71,9 @@ public class Item {
      *     Each 'X' is a placeholder for any digit.
      */
     public final static Predicate<? super String> ITEM_ID_FORMAT = s -> {
-        if( !s.subSequence(0, 3).equals(ID_PREFIX) || s.length() != ID_PREFIX.length() + ID_OFFSET_LENGTH ) {
+        if( !s.subSequence(0, ID_PREFIX.length()).equals(ID_PREFIX)
+                || s.length() != ID_PREFIX.length() + ID_OFFSET_LENGTH )
+        {
             return false;
         }
 
