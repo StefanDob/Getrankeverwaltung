@@ -81,7 +81,7 @@ public final class ItemShopProperties {
 
 
     /**
-     * Specifies the properties for a name. A name must only consist of A-Z, a-z or German umlauts.
+     * Specifies the properties for a name. A name must only consist of A-Z, a-z, German umlauts, white spaces or '-'.
      */
     public static final Predicate<? super String> VALID_NAME =
             s -> {
@@ -92,7 +92,8 @@ public final class ItemShopProperties {
 
                 for(int i = 0 ; i < s.length() ; i++) {
                     char c = s.charAt(i);
-                    if( !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || isUmlaut(c)) ) {
+                    if( !(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z'
+                            || isUmlaut(c) || Character.isWhitespace(c) || c == '-') ) {
                         return false;
                     } // end of if
                 } // end of for

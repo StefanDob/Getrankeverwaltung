@@ -15,19 +15,7 @@ import java.util.Optional;
 public class ItemService {
 
     public static void main(String[] args) {
-        try {
 
-            ItemImage itemImage = new ItemImage("No path");
-
-            Item item = new Item(1.25, "White Chocolate", itemImage, "Best item ever");
-
-            ItemService service = SpringContext.getBean(ItemService.class);
-            service.saveItem(item);
-
-            System.out.println(item);
-        } catch (ItemPropertiesException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
