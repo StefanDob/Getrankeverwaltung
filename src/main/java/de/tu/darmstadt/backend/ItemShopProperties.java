@@ -76,7 +76,7 @@ public final class ItemShopProperties {
                 } // end of if
 
                 // The format (1st argument) that the email should have.
-                return Pattern.matches("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,4}", s);
+                return Pattern.matches("[a-zA-Z0-9-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,4}", s);
             };
 
 
@@ -108,9 +108,27 @@ public final class ItemShopProperties {
             phone_number -> {
 
                 // If the number is null, blank or empty, it is treated like an empty number
-                if(phone_number == null || phone_number.isEmpty() || phone_number.isBlank()) return true;
+                if(phone_number == null || phone_number.isEmpty() || phone_number.isBlank()) {
+                    return true;
+                }
+
+                // Replaces all white spaces first
+                phone_number = phone_number.replaceAll("\\s", "");
 
                 for (int i = 0; i < phone_number.length(); i++) {
+
+                    // A phone number may begin with a '+'.
+                    if(i == 0 && phone_number.charAt(i) == '+') {
+
+                        // Checks if the phone number only consists of a '+'.
+                        // In this case, the phone number format is not valid.
+                        if( phone_number.length() == 1 ) {
+                            return false;
+                        }
+
+                        continue;
+                    }
+
                     char c = phone_number.charAt(i);
                     if( !( Character.isDigit(c) || Character.isSpaceChar(c) ) ) {
                         return false;

@@ -345,7 +345,7 @@ public class Account {
             throws InvalidPhoneNumberFormatException
     {
         // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
-        if(phone_number == null) return null;
+        if(phone_number == null || phone_number.isBlank() || phone_number.isEmpty() ) return null;
 
         return check_if_instance_is_valid(
                 phone_number,
