@@ -396,16 +396,14 @@ public class Account {
     public void setPassword(String password) throws InvalidPasswordFormatException {
         this.password = check_if_password_is_valid(password);
     }
-/*
+
     public LocalDate getBirth_date() {
-        return birth_date;
+        return LocalDate.parse(birth_date);
     }
 
     public void setBirth_date(LocalDate birth_date) throws IllegalBirthdateException {
-        this.birth_date = check_if_birthdate_is_legal(birth_date);
+        this.birth_date = check_if_birthdate_is_legal(birth_date).toString();
     }
-
- */
 
     public String getLast_name() {
         return last_name;
