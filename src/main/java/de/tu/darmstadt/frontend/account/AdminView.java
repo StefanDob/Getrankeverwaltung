@@ -1,20 +1,29 @@
 package de.tu.darmstadt.frontend.account;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.AdminAccount;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.MainLayout;
 import de.tu.darmstadt.frontend.store.ItemAdminDialog;
 import de.tu.darmstadt.frontend.store.ItemDialog;
+import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 @PageTitle("Admin")
@@ -52,7 +61,7 @@ public class AdminView extends Details {
 
         // Add columns
         grid.addComponentColumn(item -> {
-            Image image = new Image(item.getImage().getPath(), "Item image");
+            Image image = new Image(item.getImage(), "Item image");
             image.setWidth("100px");
             image.setHeight("100px");
             return image;
@@ -73,9 +82,60 @@ public class AdminView extends Details {
             itemDialog.open();
         });
 
+        // Create and add the "Create Item" button
+        Button createItemButton = new Button("Create Item");
+        verticalLayout.add(createItemButton);
+
+        // Add click listener for "Create Item" button (**implement your logic here**)
+        createItemButton.addClickListener(clickEvent -> {
+            Dialog dialog = new Dialog();
+            dialog.open();
+            NumberField priceField = new NumberField("Price");
+            TextField nameField = new TextField("Name");
+            TextField imageField = new TextField("Image Path");
+            TextField descriptionField = new TextField("description");
+
+
+            VerticalLayout verticalLayout1 = new VerticalLayout();
+            verticalLayout1.add(priceField);
+            verticalLayout1.add(nameField);
+            verticalLayout1.add(imageField);
+            verticalLayout1.add(descriptionField);
+
+
+
+
+
+            Button saveButton = new Button();
+            saveButton.setText("Save");
+            saveButton.addClickListener(ev -> {
+                if(nameField.getValue() .equals("")){
+                    try {
+                        ItemOperations.createItem(new Item(15, "Fanta", "images/fanta.jpg", "description"));
+                    } catch (ItemPropertiesException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }else{
+                    try {
+                        ItemOperations.createItem(new Item(priceField.getValue(), nameField.getValue(), imageField.getValue(), descriptionField.getValue()));
+                    } catch (ItemPropertiesException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+
+            verticalLayout1.add(saveButton);
+
+
+
+            dialog.add(verticalLayout1);
+
+        });
+
         // Add the grid to the VerticalLayout
         verticalLayout.add(grid);
-        verticalLayout.setHeight("400px");
+        verticalLayout.setHeight("900px");
         return verticalLayout;
     }
 
