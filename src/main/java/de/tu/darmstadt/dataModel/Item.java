@@ -1,5 +1,6 @@
 package de.tu.darmstadt.dataModel;
 
+import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
@@ -110,7 +111,7 @@ public class Item {
         } // end of if
 
         this.price = price;
-        this.name = name;
+        this.name = name.trim();
         this.image = image;
         this.description = description;
 
@@ -169,8 +170,24 @@ public class Item {
         return sb.toString();
     }
 
+    /**
+     * Checks if a specified ID already exists.
+     * @param ID the specified ID
+     * @return true if the ID already exists.
+     */
     private static boolean is_item_ID_already_existing(String ID) {
-        return false;
+        return ItemOperations.getItemById(ID) != null;
+    }
+
+    /**
+     * Checks if a specified item name already exists.
+     * @param item_name the specified item name
+     * @return true if the item name already exists.
+     */
+    private static boolean is_item_name_already_in_use(String item_name) {
+        item_name = item_name.trim();
+
+        return false; // TODO: IMPLEMENT
     }
 
 

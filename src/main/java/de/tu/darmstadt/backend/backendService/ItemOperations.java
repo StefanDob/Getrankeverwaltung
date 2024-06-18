@@ -30,11 +30,15 @@ public class ItemOperations {
      * @param ID the specified ID
      * @return the {@link ItemView} with the {@link Item} within. If the ID does not exist, return {@code null}.
      */
-    private static @Nullable ItemView getItemById(String ID) {
+    public static @Nullable Item getItemById(String ID) {
+        /*
         ItemService itemService = SpringContext.getBean(ItemService.class);
-        Item itemOptional =  itemService.getItemByID(ID).orElse(null);
+        Item itemOptional = itemService.getItemByID(ID).orElse(null);
 
         return itemOptional != null ? new ItemView(itemOptional) : null;
+        */
+        ItemService itemService = SpringContext.getBean(ItemService.class);
+        return itemService.getItemByID(ID).orElse(null);
     }
 
     /**
