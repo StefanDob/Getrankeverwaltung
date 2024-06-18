@@ -1,2 +1,28 @@
 @import url('./main-layout.css');
 @import url('./views/dashboard-view.css');
+
+.bordered-title {
+    border: 1px solid grey;  /* Border size and color */
+    padding: 10px;            /* Padding for inner spacing */
+    width: 100%;              /* Full width */
+    box-sizing: border-box;   /* Include padding and border in the element's total width and height */
+    border-radius: 15px;      /* Rounded edges */
+}
+
+.bordered-field {
+    border: 1px solid grey; /* Change the border size and color as needed */
+    padding: 10px;          /* Optional: Add some padding */
+    box-sizing: border-box;   /* Include padding and border in the element's total width and height */
+    border-radius: 15px;
+}
+
+.shopping-cart-button {
+    padding: 10px 20px;       /* Padding for inner spacing */
+    border-radius: 15px;      /* Rounded edges */
+    background-color: #007bff; /* Blue background color */
+    color: white;             /* White text */
+    font-size: 1.2em;         /* Font size */
+    border: none;             /* Remove border */
+    cursor: pointer;          /* Cursor pointer */
+    height: 50px;
+}
