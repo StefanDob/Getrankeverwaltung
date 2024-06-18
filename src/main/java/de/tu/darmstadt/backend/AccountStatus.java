@@ -25,11 +25,11 @@ public enum AccountStatus {
      */
     CLOSED("Closed");
 
+
     /**
      * This attribute stores the name of an enum.
      */
     private final String name;
-
 
     /**
      * Constructs a new {@link AccountStatus} with a specified name.

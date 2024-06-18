@@ -5,8 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Predicate;
 
 /**
- * An {@link ExceptionChecker} is an abstract class that is used to handle any type of {@link Exception}s or
- * {@link Error}s.
+ * An {@link ExceptionChecker} is a class that is used to handle any type of {@link Exception}s or {@link Error}s.
  *
  * @author Toni Tan Phat Tran
  * @version 16.05.2024
@@ -17,7 +16,7 @@ public final class ExceptionChecker {
      * Class {@link ExceptionChecker} cannot be instantiated.
      */
     private ExceptionChecker() {
-        throw new RuntimeException("ExceptionChecker cannot be instantiated");
+        throw new RuntimeException("ExceptionChecker should not be instantiated");
     }
 
     // ::::::::::::::::::::::::::::::::::::: METHODS ::::::::::::::::::::::::::::::::::::
