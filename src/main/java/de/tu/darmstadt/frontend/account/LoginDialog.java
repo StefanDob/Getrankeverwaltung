@@ -61,9 +61,13 @@ public class LoginDialog extends Dialog {
         loginButton.addClickListener(e -> {
             // Handle login logic here
 
+            // Storing in local variables for easier access
+            final String entered_email = emailField.getValue().trim(); //
+            final String entered_password = passwordField.getValue(); // DO NOT TRIM PASSWORD !!!
+
             Account currentAccount = null;
             try {
-                currentAccount = AccountOperations.getAccountByEmail(emailField.getValue(), passwordField.getValue());
+                currentAccount = AccountOperations.getAccountByEmail(entered_email, entered_password);
             } catch (AccountOperationException ex) {
                     emailField.setInvalid(true);
                     passwordField.setInvalid(true);
