@@ -49,7 +49,7 @@ public class LoginDialog extends Dialog {
         );
 
         // Username field
-        emailField = new TextField("E-mail");
+        emailField = new TextField("Email");
         formLayout.add(emailField);
 
         // Password field
