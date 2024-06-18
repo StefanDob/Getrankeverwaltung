@@ -4,9 +4,6 @@ package de.tu.darmstadt.dataModel;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.database.AccountService;
-import de.tu.darmstadt.backend.database.SpringContext;
-import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -16,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.Objects;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
 import static de.tu.darmstadt.ProjectUtils.*;
@@ -139,6 +136,7 @@ public class Account {
                    LocalDate birth_date, String phone_number)
             throws AccountPolicyException
     {
+        // Instantiates an account with AccountStatus = STANDARD and the DEFAULT_DEBT_LIMIT.
         this(email, password, first_name, last_name, birth_date, phone_number,
                 AccountStatus.STANDARD, DEFAULT_DEBT_LIMIT);
     }
@@ -162,8 +160,18 @@ public class Account {
 
     ) throws AccountPolicyException
     {
+
+        // The method String#trim() removes all leading and trailing white spaces.
+        email = email.trim();
+        first_name = first_name.trim();
+        last_name = last_name.trim();
+
         this.first_name = check_if_first_name_is_in_valid_format(first_name);
         this.last_name = check_if_last_name_is_in_valid_format(last_name);
+
+        // Checks if the specified email is already in use
+        is_email_already_in_use(email); // throws EmailIsAlreadyInUseException
+
         this.email = check_if_email_is_in_valid_format(email);
         this.password = check_if_password_is_valid(password);
         this.birth_date = check_if_birthdate_is_legal(birth_date).toString(); // The birthdate is stored in String format
@@ -196,8 +204,14 @@ public class Account {
 
     }
 
+    /**
+     * Checks if a specified ID is already existing.
+     * @param   ID the specified ID
+     * @return  true if the ID is already existing
+     * @throws  AccountPolicyException is thrown if the specified ID is not in a valid
+     *          {@link ItemShopProperties#VALID_ACCOUNT_ID_FORMAT}.
+     */
     private static boolean is_ID_already_existing(final String ID) throws AccountPolicyException {
-        // TODO: IMPLEMENT
         return AccountOperations.getAccountByID(ID) != null;
     }
 
@@ -230,7 +244,7 @@ public class Account {
         // The result to be returned. First of all, it is checked if it is in a valid format in the following if-block.
         final String resulting_ID = stringBuilder.toString();
 
-        if( !VALID_ID_FORMAT.test(resulting_ID) ) {
+        if( !VALID_ACCOUNT_ID_FORMAT.test(resulting_ID) ) {
             throw new AccountPolicyException("ID is not in a valid format: " + resulting_ID);
         } // end of if
 
@@ -289,6 +303,19 @@ public class Account {
     }
 
     /**
+     * This method checks if a specified email is already in use.
+     *
+     * @param email the specified email to be checked
+     * @throws EmailAlreadyInUseException if the specified email is already in use
+     */
+    public static void is_email_already_in_use(final @NotNull String email) throws EmailAlreadyInUseException {
+        if( AccountOperations.getAccountByEmail(email) != null ) {
+            throw new EmailAlreadyInUseException("This email is already in use: " + email);
+        }
+
+    }
+
+    /**
      * This static method is used to check if a specified email is in a valid format.
      *
      * @see ItemShopProperties#EMAIL_FORMAT
@@ -311,7 +338,13 @@ public class Account {
      * @return the specified password if successfully checked
      * @throws InvalidPasswordFormatException is thrown if the password is not valid
      */
-    public static String check_if_password_is_valid(String password) throws InvalidPasswordFormatException {
+    public static String check_if_password_is_valid(final @NotNull String password) throws InvalidPasswordFormatException {
+
+        if(password.length() < MINIMUM_PASSWORD_LENGTH) {
+            throw new InvalidPasswordFormatException("Password must contain at least "
+                    + MINIMUM_PASSWORD_LENGTH + " characters.");
+        }
+
         return check_if_instance_is_valid(
                 password,
                 PASSWORD_POLICY,
@@ -431,7 +464,7 @@ public class Account {
             // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
             this.phone_number = null;
         } else {
-            this.phone_number = check_if_phone_number_is_in_valid_format(phone_number)
+            this.phone_number = Objects.requireNonNull(check_if_phone_number_is_in_valid_format(phone_number))
                     .replaceAll("\\s", ""); // removes all whitespaces
         } // end of if
 

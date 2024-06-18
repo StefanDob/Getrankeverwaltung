@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
@@ -128,7 +127,7 @@ public class AccountOperations {
      * @throws AccountPolicyException is thrown if the entered ID is not in a valid format.
      */
     public static Account getAccountByID(final String ID) throws AccountPolicyException {
-        if( !VALID_ID_FORMAT.test(ID) ) {
+        if( !VALID_ACCOUNT_ID_FORMAT.test(ID) ) {
             throw new AccountPolicyException("Invalid account ID");
         }
 

@@ -28,6 +28,10 @@ public class DataModelPlayground {
         LocalDate date2 = LocalDate.parse(date_as_string);
         System.out.println(date2);
 
+        String h = "   Hello World     ";
+        System.out.println(h + "!");
+        System.out.println(h.trim() + "!");
+
     }
 
 }

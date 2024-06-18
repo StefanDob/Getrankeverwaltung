@@ -27,17 +27,23 @@ public final class ItemShopProperties {
      */
     private static final String URL_PREFIX = "jdbc:sqlite:";
 
-
     /**
      * The offset of a data source URL used in this project.
      */
     private static final String URL_OFFSET = "src\\main\\resources\\DataBase";
 
-
     /**
      * The URL of the currently used data source.
      */
     public static final String DATA_SOURCE_URL = URL_PREFIX + URL_OFFSET;
+
+    /**
+     * Specifies the minimum length of an {@link Account} password.
+     */
+    public static final int MINIMUM_PASSWORD_LENGTH = 8;
+
+
+    // :::::::::::::::::::::::::::::::::::: PREDICATES ::::::::::::::::::::::::::::::::::::::::
 
 
     /**
@@ -48,7 +54,7 @@ public final class ItemShopProperties {
         if (s == null || s.isEmpty()) {
             return false;
         }
-        return s.length() >= 6;
+        return s.length() >= MINIMUM_PASSWORD_LENGTH;
     };
 
 
@@ -140,11 +146,11 @@ public final class ItemShopProperties {
 
 
     /**
-     * Specifies the ID format. An ID must be in the following format:
+     * Specifies the ID format for an {@link Account}. An ID must be in the following format:
      * <p>
      *     {@code XXXXX-XXXXX-XXXXX-XXXXX-XXXXX}
      */
-    public static final Predicate<? super String> VALID_ID_FORMAT =
+    public static final Predicate<? super String> VALID_ACCOUNT_ID_FORMAT =
             id -> {
                 // The format (1st argument) that the tested ID should have.
                 return Pattern

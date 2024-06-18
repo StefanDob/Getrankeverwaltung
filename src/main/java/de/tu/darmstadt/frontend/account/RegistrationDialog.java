@@ -24,7 +24,7 @@ public class RegistrationDialog extends Dialog {
     private final EmailField emailField = new EmailField("Email");;
     private final PasswordField passwordField = new PasswordField("Password");
     private final DatePicker birthDateField = new DatePicker("Birth Date");
-    private final TextField phoneNumberField = new TextField("Phone Number");
+    private final TextField phoneNumberField = new TextField("Phone Number (optional)");
 
     public RegistrationDialog() {
         setCloseOnEsc(true);
@@ -60,9 +60,9 @@ public class RegistrationDialog extends Dialog {
 
     /*
     different problems until now:
-        name throws exception even tough it is written right
-        I do not think that we can hold the concept with the exceptions at this stage, they can stay but I need public access to the methods that validate those inputs
-            What happens if multiple fields are wrong at the same time? Programm cannot throw multiple exceptions at once
+        name throws exception even though it is written right
+        I do not think that we can hold the concept with the exceptions at this stage, they can stay, but I need public access to the methods that validate those inputs
+            What happens if multiple fields are wrong at the same time? Program cannot throw multiple exceptions at once
      */
     private void createAccount() {
         createAccountV1();
@@ -75,8 +75,10 @@ public class RegistrationDialog extends Dialog {
     {
         final ArrayList<AccountPolicyException> exceptions = new ArrayList<>(6);
 
+
         try {
-            Account.check_if_email_is_in_valid_format(email);
+            Account.check_if_email_is_in_valid_format(email); // Checks if email is in a valid format
+            Account.is_email_already_in_use(email); // Checks if email is already in use
         } catch (AccountPolicyException e) {
             exceptions.add(e);
         }
@@ -115,6 +117,9 @@ public class RegistrationDialog extends Dialog {
     }
 
 
+    /**
+     * @deprecated This method should not be used since it is faulty. Use {@link #createAccountV1()} instead.
+     */
     private void createAccountV2() {
 
         firstNameField.setInvalid(false);
@@ -154,6 +159,9 @@ public class RegistrationDialog extends Dialog {
             if(ex instanceof InvalidEmailFormatException) {
                 emailField.setInvalid(true);
                 emailField.setErrorMessage(ex.getMessage());
+            } else if(ex instanceof EmailAlreadyInUseException) {
+                emailField.setInvalid(true);
+                emailField.setErrorMessage(ex.getMessage());
             } else if (ex instanceof InvalidPasswordFormatException) {
                 passwordField.setInvalid(true);
                 passwordField.setErrorMessage(ex.getMessage());
@@ -176,6 +184,7 @@ public class RegistrationDialog extends Dialog {
 
 
     private void createAccountV1() {
+
         firstNameField.setInvalid(false);
         lastNameField.setInvalid(false);
         emailField.setInvalid(false);
@@ -183,58 +192,70 @@ public class RegistrationDialog extends Dialog {
         birthDateField.setInvalid(false);
         phoneNumberField.setInvalid(false);
         // Implement your logic to create the account here
-        Account account = null;
+
+        // The entered values are stored as local variables for better readability.
+        final String email = emailField.getValue();
+        final String password = passwordField.getValue();
+        final String firstName = firstNameField.getValue();
+        final String lastName = lastNameField.getValue();
+        final LocalDate birthDate = birthDateField.getValue();
+        final String phoneNumber = phoneNumberField.getValue();
+
+        Account account;
         try {
-            account = new Account(emailField.getValue(), passwordField.getValue(), firstNameField.getValue(),
-                    lastNameField.getValue(), birthDateField.getValue(), phoneNumberField.getValue());
+            account = new Account(email, password, firstName,
+                    lastName, birthDate, phoneNumber);
 
             AccountOperations.createAccount(account);
 
         } catch (AccountPolicyException ex) {
+
             try {
-                Account.check_if_email_is_in_valid_format(emailField.getValue());
+                Account.check_if_email_is_in_valid_format(email); // Checks the email format
+                Account.is_email_already_in_use(email); // Checks if an email is already in use
             } catch (AccountPolicyException e) {
                 emailField.setInvalid(true);
                 emailField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_password_is_valid(passwordField.getValue());
+                Account.check_if_password_is_valid(password);
             } catch (InvalidPasswordFormatException e) {
                 passwordField.setInvalid(true);
                 passwordField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_first_name_is_in_valid_format(firstNameField.getValue());
+                Account.check_if_first_name_is_in_valid_format(firstName);
             } catch (BadFirstNameException e) {
                 firstNameField.setInvalid(true);
                 firstNameField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_last_name_is_in_valid_format(lastNameField.getValue());
+                Account.check_if_last_name_is_in_valid_format(lastName);
             } catch (BadLastNameException e) {
                 lastNameField.setInvalid(true);
                 lastNameField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_birthdate_is_legal(birthDateField.getValue());
+                Account.check_if_birthdate_is_legal(birthDate);
             } catch (IllegalBirthdateException e) {
                 birthDateField.setInvalid(true);
                 birthDateField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_phone_number_is_in_valid_format(phoneNumberField.getValue());
+                Account.check_if_phone_number_is_in_valid_format(phoneNumber);
             } catch (InvalidPhoneNumberFormatException e) {
                 phoneNumberField.setInvalid(true);
                 phoneNumberField.setErrorMessage(e.getMessage());
             }
 
-            return;
-        }
+            return; // Terminate the method immediately when any AccountPolicyException occurs.
+
+        } // end of try-catch
 
 
         Notification.show("Account created successfully!", 3000, Notification.Position.MIDDLE);
