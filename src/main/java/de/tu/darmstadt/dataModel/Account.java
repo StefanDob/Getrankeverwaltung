@@ -83,8 +83,8 @@ public class Account {
     /**
      * The birthdate of the {@link Account} owner in the format yyyy-mm-dd.
      */
-    //@Column(name = "birth_date", nullable = false)
-    //private LocalDate birth_date;
+    @Column(name = "birth_date", nullable = false)
+    private String birth_date;
 
     /**
      * The phone number of the {@link Account} owner (optional) which may be {@code null}.
@@ -121,7 +121,6 @@ public class Account {
      */
     public Account() throws AccountPolicyException {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT ADD ANYTHING TO IT !!!
-
     }
 
     /**
@@ -167,7 +166,7 @@ public class Account {
         this.last_name = check_if_last_name_is_in_valid_format(last_name);
         this.email = check_if_email_is_in_valid_format(email);
         this.password = check_if_password_is_valid(password);
-       // this.birth_date = check_if_birthdate_is_legal(birth_date);
+        this.birth_date = check_if_birthdate_is_legal(birth_date).toString(); // The birthdate is stored in String format
         this.phone_number = check_if_phone_number_is_in_valid_format(phone_number);
 
         // The debt limit should always be a negative value.
