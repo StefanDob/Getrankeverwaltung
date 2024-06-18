@@ -21,7 +21,6 @@ public class Item {
      * An ITEM_ID is a unique attribute that clearly identifies the corresponding {@link Item}. It is as a primary
      * key for the {@link Item}.
      */
-
     @Id
     @Column(name = "item_id", unique = true, nullable = false)
     private final String ID;
