@@ -14,14 +14,14 @@ public class InvalidItemIDFormatException extends ItemPropertiesException {
      * @param item_id the ID of {@link Item}
      */
     public InvalidItemIDFormatException(String item_id) {
-        super("Bad item ID: " + item_id + "; The item ID should be in the format \"IT-XXXXXX\".");
+        super("Bad item ID: " + item_id + "; The item ID should be in the format \"IT-X...X\".");
     }
 
     /**
      * Constructs a new {@link InvalidItemIDFormatException} with a default detail message.
      */
     public InvalidItemIDFormatException() {
-        super("Bad item ID. Check if the ID is in the format \"IT-XXXXXX\".");
+        super("Bad item ID. Check if the ID is in the format \"IT-X...X\".");
     }
 
 }

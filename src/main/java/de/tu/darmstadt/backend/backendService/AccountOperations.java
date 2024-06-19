@@ -128,7 +128,7 @@ public class AccountOperations {
      */
     public static Account getAccountByID(final String ID) throws AccountPolicyException {
         if( !VALID_ACCOUNT_ID_FORMAT.test(ID) ) {
-            throw new AccountPolicyException("Invalid account ID");
+            throw new AccountPolicyException("Invalid account ID: " + ID);
         }
 
         AccountService accountService = SpringContext.getBean(AccountService.class);

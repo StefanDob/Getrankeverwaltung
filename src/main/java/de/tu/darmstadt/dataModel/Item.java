@@ -174,7 +174,7 @@ public class Item {
      * @param ID the specified ID
      * @return true if the ID already exists.
      */
-    private static boolean is_item_ID_already_existing(String ID) {
+    private static boolean is_item_ID_already_existing(String ID) throws InvalidItemIDFormatException {
         return ItemOperations.getItemById(ID) != null;
     }
 

@@ -1,7 +1,9 @@
 package de.tu.darmstadt.backend.backendService;
 
+import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.database.ItemService;
 import de.tu.darmstadt.backend.database.SpringContext;
+import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;
@@ -29,8 +31,15 @@ public class ItemOperations {
      * If the ID with the corresponding {@link Item} does not exist, this method simply returns {@code null}.
      * @param ID the specified ID
      * @return the {@link ItemView} with the {@link Item} within. If the ID does not exist, return {@code null}.
+     *
+     * @throws InvalidItemIDFormatException is thrown if the specified {@link Item} ID does not exist
      */
-    public static @Nullable Item getItemById(String ID) {
+    public static @Nullable Item getItemById(String ID) throws InvalidItemIDFormatException {
+
+        if( !Item.ITEM_ID_FORMAT.test(ID) ) {
+            throw new InvalidItemIDFormatException(ID);
+        }
+
         /*
         ItemService itemService = SpringContext.getBean(ItemService.class);
         Item itemOptional = itemService.getItemByID(ID).orElse(null);
