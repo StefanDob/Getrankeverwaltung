@@ -67,7 +67,7 @@ public class ViewItemDialog extends ItemDialog{
 
     @Override
     Component createLeftPart() {
-        Image itemImage = new Image(item.getImage(), item.getName());
+        Image itemImage = new Image(item.getImageAsResource(), item.getName());
         itemImage.setWidth("30vw"); // Set image width
         itemImage.setHeight("30vw"); // Set image height
         return itemImage;

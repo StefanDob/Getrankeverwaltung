@@ -10,6 +10,7 @@ import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.MainLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @PageTitle("Store")
 @Route(value = "store", layout = MainLayout.class)
@@ -23,7 +24,7 @@ public class StoreView extends VerticalLayout {
     public StoreView() {
         setSpacing(false); // Adjust spacing as needed
 
-        ArrayList<Item> itemsList = ItemOperations.getAllShopItems();
+        List<Item> itemsList = ItemOperations.getAllShopItems();
 
         ArrayList<ItemView> shopItemsList = new ArrayList<>();
         for(Item item : itemsList){

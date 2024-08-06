@@ -28,7 +28,7 @@ public class ItemView extends VerticalLayout {
         contentWrapper.getStyle().set("text-align", "center");
         add(contentWrapper);
 
-        Image img = new Image(  item.getImage(), item.getName());
+        Image img = new Image(  item.getImageAsResource(), item.getName());
         img.setWidth("200px"); // Adjust image size as needed
         contentWrapper.add(img);
 

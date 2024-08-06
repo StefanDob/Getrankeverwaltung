@@ -45,8 +45,8 @@ public class ItemService {
         return itemRepository.findItemByName(name);
     }
 
-    public Optional<Item> getItemByID(final String ID) {
-        return itemRepository.findItemByID(ID);
+    public Optional<Item> getItemById(final String id) {
+        return itemRepository.findItemById(id);
     }
 
     /**
@@ -54,8 +54,7 @@ public class ItemService {
      * @return all {@link Item}s from the data source.
      */
     public List<Item> getAllItems() {
-        // Returns a list of items
-        return new ArrayList<>( itemRepository.findAll() );
+        return itemRepository.findAll();
     }
 
 }

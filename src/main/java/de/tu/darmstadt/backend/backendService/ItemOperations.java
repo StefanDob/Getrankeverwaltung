@@ -1,10 +1,12 @@
 package de.tu.darmstadt.backend.backendService;
 
 import de.tu.darmstadt.backend.ItemShopProperties;
+import de.tu.darmstadt.backend.database.AccountService;
 import de.tu.darmstadt.backend.database.ItemService;
 import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
+import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.store.ItemView;
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ItemOperations {
@@ -20,24 +23,24 @@ public class ItemOperations {
      * this method gets all the Items of the shop from the database
      * @return all shopitems from the database
      */
-    @Contract(" -> new")
-    public static @NotNull ArrayList<Item> getAllShopItems(){
-        // TODO implement a logic to get all shopitems from the database @Toni
-        return initializeTestItemsList();
+    public static List<Item> getAllShopItems(){
+        ItemService itemService = SpringContext.getBean(ItemService.class);
+        return itemService.getAllItems();
     }
+
 
     /**
      * This method returns an {@link Item} wrapped in an {@link ItemView} by getting a specified ID.
      * If the ID with the corresponding {@link Item} does not exist, this method simply returns {@code null}.
-     * @param ID the specified ID
+     * @param id the specified ID
      * @return the {@link ItemView} with the {@link Item} within. If the ID does not exist, return {@code null}.
      *
      * @throws InvalidItemIDFormatException is thrown if the specified {@link Item} ID does not exist
      */
-    public static @Nullable Item getItemById(String ID) throws InvalidItemIDFormatException {
+    public static @Nullable Item getItemById(String id) throws InvalidItemIDFormatException {
 
-        if( !Item.ITEM_ID_FORMAT.test(ID) ) {
-            throw new InvalidItemIDFormatException(ID);
+        if( !Item.ITEM_ID_FORMAT.test(id) ) {
+            throw new InvalidItemIDFormatException(id);
         }
 
         /*
@@ -47,13 +50,15 @@ public class ItemOperations {
         return itemOptional != null ? new ItemView(itemOptional) : null;
         */
         ItemService itemService = SpringContext.getBean(ItemService.class);
-        return itemService.getItemByID(ID).orElse(null);
+        return itemService.getItemById(id).orElse(null);
     }
 
     /**
      * helping method for creating 100 cola and Fanta elements for the Webshop
      * @return list of shopelements that can be used for testing porpuses
+     * Old version, still uses string parameters for path, now outdated
      */
+    /*
     @Contract(" -> new")
     public static @NotNull ArrayList<Item> initializeTestItemsList() {
         ArrayList<Item> shopItemsList = new ArrayList<>();
@@ -75,8 +80,9 @@ public class ItemOperations {
         }
         return shopItemsList;
     }
+     */
 
-    public static void createItem(Item item) {
+    public static void saveItem(Item item) {
         ItemService itemService = SpringContext.getBean(ItemService.class);
         itemService.saveItem(item);
     }

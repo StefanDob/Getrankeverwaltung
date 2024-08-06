@@ -19,6 +19,7 @@ import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.dataModel.ItemUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayInputStream;
@@ -66,6 +67,11 @@ public class CreateItemDialog extends ItemDialog {
         confirmButton.addClickListener(event -> {
             String imageUrl = imageLinkField.getValue();
             imageDisplay.setSrc(imageUrl);
+            try {
+                cachedImage = ItemUtils.downloadImageAsByteArray(imageUrl);
+            } catch (IOException e) {
+                Notification.show("Failed to load image from URL: " + e.getMessage());
+            }
         });
 
         // Create a MemoryBuffer to hold the uploaded file
@@ -78,8 +84,15 @@ public class CreateItemDialog extends ItemDialog {
             String fileName = event.getFileName();
             InputStream inputStream = buffer.getInputStream();
 
+            try {
+                cachedImage = inputStream.readAllBytes();
+                inputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
             // Display the uploaded image
-            StreamResource resource = new StreamResource(fileName, () -> inputStream);
+            StreamResource resource = new StreamResource(fileName, () -> new ByteArrayInputStream(cachedImage));
             imageDisplay.setSrc(resource);
         });
 
@@ -136,7 +149,13 @@ public class CreateItemDialog extends ItemDialog {
     }
 
     private void save() {
-        //TODO save item
+        try {
+            ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(), cachedImage, descriptionField.getValue()));
+        } catch (InvalidItemIDFormatException e) {
+            throw new RuntimeException(e);
+        } catch (ItemPropertiesException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

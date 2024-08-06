@@ -27,6 +27,8 @@ import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @PageTitle("Admin")
 @Route(value = "admin", layout = MainLayout.class)
 public class AdminView extends Details {
@@ -62,7 +64,7 @@ public class AdminView extends Details {
 
         // Add columns
         grid.addComponentColumn(item -> {
-            Image image = new Image(item.getImage(), "Item image");
+            Image image = new Image(item.getImageAsResource(), "Item image");
             image.setWidth("100px");
             image.setHeight("100px");
             return image;
@@ -73,7 +75,7 @@ public class AdminView extends Details {
         grid.addColumn(Item::getPrice).setHeader("Price");
 
         // Set items to the grid
-        ArrayList<Item> items = ItemOperations.getAllShopItems();
+        List<Item> items = ItemOperations.getAllShopItems();
         grid.setItems(items);
 
         // Add item click listener

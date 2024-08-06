@@ -1,11 +1,13 @@
 package de.tu.darmstadt.dataModel;
 
+import com.vaadin.flow.server.StreamResource;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
+import java.io.ByteArrayInputStream;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
@@ -22,31 +24,32 @@ public class Item {
      * key for the {@link Item}.
      */
     @Id
-    @Column(name = "item_id", unique = true, nullable = false)
-    private final String ID;
+    @Column(name = "id", unique = true, nullable = false)
+    private String id;
 
     /**
      * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
      */
-    @Column(name = "item_name", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private @NotNull String name;
 
     /**
      * Stores the price of an {@link Item} as a decimal number.
      */
-    @Column(name = "item_price", nullable = false)
+    @Column(name = "price", nullable = false)
     private double price;
 
     /**
      * The {@link ItemImage image} is an attribute to display an image of the {@link Item}.
      */
-    @Column(name = "path")
-    private String image;
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
 
     /**
      * This attribute stores the description of the {@link Item}.
      */
-    @Column(name = "item_description")
+    @Column(name = "description")
     private String description;
 
     // ::::::::::::::::::::::::::::::: PROPERTIES ::::::::::::::::::::::::::::::::
@@ -57,7 +60,7 @@ public class Item {
     private static final String ID_PREFIX = "IT-";
 
     /**
-     * This constant determines the length of the X...X part in {@link Item#ID}.
+     * This constant determines the length of the X...X part in {@link Item#id}.
      */
     private static final int ID_OFFSET_LENGTH = 6;
 
@@ -100,7 +103,7 @@ public class Item {
      *
      * @throws ItemPropertiesException is thrown if the specified product data do not meet the specified requirements.
      */
-    public Item(double price, @NotNull String name, String image, String description)
+    public Item( @NotNull String name, double price, byte[] image, String description)
         throws ItemPropertiesException
     {
         this();
@@ -121,7 +124,7 @@ public class Item {
      */
     public Item() throws InvalidItemIDFormatException {
         // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
-        ID = generate_item_ID();
+        id = generate_item_ID();
     }
 
 
@@ -148,7 +151,7 @@ public class Item {
     }
 
     /**
-     * This method is used to construct the "X...X" part of the {@link Item#ID}.
+     * This method is used to construct the "X...X" part of the {@link Item#id}.
      *
      * @param min_number the minimum occurring digit (inclusive)
      * @param max_number the maximum occurring digit (exclusive)
@@ -204,8 +207,8 @@ public class Item {
         this.price = price;
     }
 
-    public String get_ITEM_ID() {
-        return ID;
+    public String get_ITEM_id() {
+        return id;
     }
 
     public @NotNull String getName() {
@@ -216,11 +219,11 @@ public class Item {
         this.name = name;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
@@ -254,4 +257,7 @@ public class Item {
     }
 
 
+    public StreamResource getImageAsResource() {
+        return new StreamResource("image.jpg", () -> new ByteArrayInputStream(image));
+    }
 }
