@@ -15,97 +15,42 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import de.tu.darmstadt.dataModel.Item;
 
-public class ItemDialog extends Dialog {
+public abstract class ItemDialog extends Dialog {
     Item item;
 
-    HorizontalLayout headerLayout;
-
-    Component description;
-
-    H1 title;
-
-    H3 price;
+    VerticalLayout overallLayout;
 
     HorizontalLayout contentLayout;
 
-    VerticalLayout rightPart;
+    public ItemDialog(){
+        createLayout();
+    }
 
-    public ItemDialog(Item item){
+    public ItemDialog(Item item) {
         this.item = item;
+        createLayout();
+    }
 
+    private void createLayout() {
         setCloseOnOutsideClick(true);
         setWidth("90vw"); // Set dialog width to 90% of viewport width
         setHeight("90vh"); // Set dialog height to 90% of viewport height
-        rightPart = createRightPart();
-        contentLayout = new HorizontalLayout(createImageAndTitle(),rightPart);
 
+        overallLayout = new VerticalLayout();
+
+        contentLayout = new HorizontalLayout(createLeftPart(),createRightPart());
 
         // Adding components to the dialog
-        add(createHeader(), contentLayout);
+        overallLayout.add(createHeader(), contentLayout);
+
+        add(overallLayout);
     }
 
-    private VerticalLayout createRightPart() {
-        rightPart = new VerticalLayout();
+    abstract Component createLeftPart();
 
-        title = new H1(item.getName());
-        title.addClassName("bordered-title");
-        price = new H3("" + item.getPrice() + "€");
-        price.addClassName("bordered-field");
-        description = showDescription();
+    abstract Component createRightPart();
 
-        Button addToBusketButton = new Button("Add to Shopping Cart");
-        addToBusketButton.setClassName("shopping-cart-button");
-
-        Button buyNowButton = new Button("Buy now");
-        buyNowButton.setClassName("shopping-cart-button");
-
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(price, buyNowButton ,addToBusketButton);
-        horizontalLayout.setWidthFull();
-        horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+    abstract Component createHeader();
 
 
-        rightPart.add(title, description, horizontalLayout);
-
-        return rightPart;
-    }
-
-    protected Component showDescription() {
-        Html html = new Html("<div>" + item.getDescription() + "</div>");
-        Div div = new Div();
-        div.add(html);
-        div.setWidthFull();
-        div.setHeightFull();
-        description = div;
-        description.setClassName("bordered-field");
-
-        return description;
-    }
-
-    private Component createImageAndTitle() {
-        Image itemImage = new Image(item.getImage(), item.getName());
-        itemImage.setWidth("30vw"); // Set image width
-        itemImage.setHeight("30vw"); // Set image height
-        return itemImage;
-    }
-
-    protected HorizontalLayout createHeader() {
-        // Close button in the dialog header
-        Button closeButton = new Button("Close");
-        closeButton.addClickListener(event -> close());
-        closeButton.getStyle().set("margin-left", "auto"); // Move the button to the right
-
-        // Creating a header layout
-        headerLayout = new HorizontalLayout();
-        headerLayout.setWidthFull();
-        headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
-        headerLayout.add(closeButton);
-        return headerLayout;
-    }
-
-    public void setDescription(Component description){
-        rightPart.remove(this.description);
-        this.description = description;
-        rightPart.add(this.description);
-    }
 }

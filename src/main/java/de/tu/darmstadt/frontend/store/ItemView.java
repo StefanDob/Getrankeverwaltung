@@ -57,11 +57,11 @@ public class ItemView extends VerticalLayout {
      */
     private void showItemDetails() {
         // Creating a dialog to display item details
-        ItemDialog itemDialog = new ItemDialog(item);
+        ViewItemDialog viewItemDialog = new ViewItemDialog(item);
 
 
         // Opening the dialog
-        itemDialog.open();
+        viewItemDialog.open();
     }
 }
 

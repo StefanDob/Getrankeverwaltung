@@ -20,6 +20,7 @@ import de.tu.darmstadt.dataModel.AdminAccount;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.MainLayout;
+import de.tu.darmstadt.frontend.store.CreateItemDialog;
 import de.tu.darmstadt.frontend.store.ItemAdminDialog;
 import de.tu.darmstadt.frontend.store.ItemDialog;
 import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
@@ -88,48 +89,8 @@ public class AdminView extends Details {
 
         // Add click listener for "Create Item" button (**implement your logic here**)
         createItemButton.addClickListener(clickEvent -> {
-            Dialog dialog = new Dialog();
-            dialog.open();
-            NumberField priceField = new NumberField("Price");
-            TextField nameField = new TextField("Name");
-            TextField imageField = new TextField("Image Path");
-            TextField descriptionField = new TextField("description");
-
-
-            VerticalLayout verticalLayout1 = new VerticalLayout();
-            verticalLayout1.add(priceField);
-            verticalLayout1.add(nameField);
-            verticalLayout1.add(imageField);
-            verticalLayout1.add(descriptionField);
-
-
-
-
-
-            Button saveButton = new Button();
-            saveButton.setText("Save");
-            saveButton.addClickListener(ev -> {
-                if(nameField.getValue() .equals("")){
-                    try {
-                        ItemOperations.createItem(new Item(15, "Fanta", "images/fanta.jpg", "description"));
-                    } catch (ItemPropertiesException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }else{
-                    try {
-                        ItemOperations.createItem(new Item(priceField.getValue(), nameField.getValue(), imageField.getValue(), descriptionField.getValue()));
-                    } catch (ItemPropertiesException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            });
-
-            verticalLayout1.add(saveButton);
-
-
-
-            dialog.add(verticalLayout1);
+            CreateItemDialog createItemDialog = new CreateItemDialog();
+            createItemDialog.open();
 
         });
 
