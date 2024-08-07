@@ -45,7 +45,7 @@ public class ItemService {
         return itemRepository.findItemByName(name);
     }
 
-    public Optional<Item> getItemById(final String id) {
+    public Optional<Item> getItemById(final Long id) {
         return itemRepository.findItemById(id);
     }
 

@@ -37,12 +37,7 @@ public class ItemOperations {
      *
      * @throws InvalidItemIDFormatException is thrown if the specified {@link Item} ID does not exist
      */
-    public static @Nullable Item getItemById(String id) throws InvalidItemIDFormatException {
-
-        if( !Item.ITEM_ID_FORMAT.test(id) ) {
-            throw new InvalidItemIDFormatException(id);
-        }
-
+    public static @Nullable Item getItemById(Long id) throws InvalidItemIDFormatException {
         /*
         ItemService itemService = SpringContext.getBean(ItemService.class);
         Item itemOptional = itemService.getItemByID(ID).orElse(null);

@@ -11,7 +11,7 @@ import java.util.Optional;
  * The interface {@code ItemRepository} is used to access to {@link Item} objects on the data source.
  */
 @Repository
-public interface ItemRepository extends JpaRepository<Item, String> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
     /**
      * This method returns an {@link Optional<Item>} of {@link Item} by a specified {@link Item#getName()}.
@@ -25,6 +25,6 @@ public interface ItemRepository extends JpaRepository<Item, String> {
      * @param id the specified {@link Item#get_ITEM_id()}
      * @return {@link Optional<Item>} of {@link Item}
      */
-    Optional<Item> findItemById(final String id);
+    Optional<Item> findItemById(final Long id);
 
 }

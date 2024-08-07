@@ -24,8 +24,8 @@ public class Item {
      * key for the {@link Item}.
      */
     @Id
-    @Column(name = "id", unique = true, nullable = false)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     /**
      * A name is a unique attribute used to clearly identify the corresponding {@link Item}.
@@ -42,8 +42,7 @@ public class Item {
     /**
      * The {@link ItemImage image} is an attribute to display an image of the {@link Item}.
      */
-    @Lob
-    @Column(name = "image")
+    @Column(columnDefinition = "BLOB")
     private byte[] image;
 
     /**
@@ -103,29 +102,14 @@ public class Item {
      *
      * @throws ItemPropertiesException is thrown if the specified product data do not meet the specified requirements.
      */
-    public Item( @NotNull String name, double price, byte[] image, String description)
-        throws ItemPropertiesException
-    {
-        this();
-
-        if(price < 0) {
-            throw new NegativePriceException(price);
-        } // end of if
-
+    public Item( @NotNull String name, double price, byte[] image, String description) {
         this.price = price;
         this.name = name.trim();
         this.image = image;
         this.description = description;
-
     }
 
-    /**
-     * A default constructor is used to add an {@link Item} to the data source.
-     */
-    public Item() throws InvalidItemIDFormatException {
-        // DO NOT REMOVE THIS CONSTRUCTOR AND DO NOT CHANGE ANYTHING !!!
-        id = generate_item_ID();
-    }
+    public Item() {}
 
 
     // ::::::::::::::::::::::::::::::: AUXILIARY METHODS ::::::::::::::::::::::::::::::::::
@@ -136,6 +120,8 @@ public class Item {
      *
      * @return the randomly generated ID for an {@link Item}
      */
+    /*
+
     private static String generate_item_ID() throws InvalidItemIDFormatException {
         String result;
 
@@ -150,6 +136,8 @@ public class Item {
         return result;
     }
 
+     */
+
     /**
      * This method is used to construct the "X...X" part of the {@link Item#id}.
      *
@@ -157,6 +145,7 @@ public class Item {
      * @param max_number the maximum occurring digit (exclusive)
      * @return the offset
      */
+    /*
     private static @NotNull String build_ID_offset(int min_number, int max_number) {
         if(min_number < 0 || max_number < 1 || max_number < min_number) {
             throw new IllegalArgumentException
@@ -172,12 +161,14 @@ public class Item {
         return sb.toString();
     }
 
+     */
+
     /**
      * Checks if a specified ID already exists.
      * @param ID the specified ID
      * @return true if the ID already exists.
      */
-    private static boolean is_item_ID_already_existing(String ID) throws InvalidItemIDFormatException {
+    private static boolean is_item_ID_already_existing(Long ID) throws InvalidItemIDFormatException {
         return ItemOperations.getItemById(ID) != null;
     }
 
@@ -207,7 +198,7 @@ public class Item {
         this.price = price;
     }
 
-    public String get_ITEM_id() {
+    public Long get_ITEM_id() {
         return id;
     }
 

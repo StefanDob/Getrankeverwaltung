@@ -149,13 +149,9 @@ public class CreateItemDialog extends ItemDialog {
     }
 
     private void save() {
-        try {
-            ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(), cachedImage, descriptionField.getValue()));
-        } catch (InvalidItemIDFormatException e) {
-            throw new RuntimeException(e);
-        } catch (ItemPropertiesException e) {
-            throw new RuntimeException(e);
-        }
+
+        ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(), cachedImage, descriptionField.getValue()));
+
     }
 
 

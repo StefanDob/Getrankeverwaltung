@@ -58,7 +58,7 @@ public class ShoppingCart {
     {
 
         check_if_account_exists(account_id); // Checks if an account exists: throws NoSuchAccountException
-        check_if_item_exists(item_id); // Checks if an item exists: throws ItemPropertiesException
+        //check_if_item_exists(item_id); // Checks if an item exists: throws ItemPropertiesException
 
         accountID = account_id;
         itemID = item_id;
@@ -104,6 +104,7 @@ public class ShoppingCart {
      * @throws InvalidItemIDFormatException is thrown if the specified ID is not in a valid format
      * @throws NoSuchItemException is thrown if an {@link Item} with the specified ID does not exist
      */
+    /*
     private static void check_if_item_exists(final String item_id)
             throws InvalidItemIDFormatException, NoSuchItemException
     {
@@ -111,6 +112,8 @@ public class ShoppingCart {
             throw new NoSuchItemException("Item with the ID '" + item_id + "' does not exist");
         }
     }
+
+     */
 
 
     // ::::::::::::::::::::::::::::::: METHODS :::::::::::::::::::::::::::::::
