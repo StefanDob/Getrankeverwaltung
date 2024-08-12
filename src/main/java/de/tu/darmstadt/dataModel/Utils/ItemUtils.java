@@ -1,4 +1,4 @@
-package de.tu.darmstadt.dataModel;
+package de.tu.darmstadt.dataModel.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

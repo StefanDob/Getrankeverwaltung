@@ -53,7 +53,7 @@ public class MainLayout extends AppLayout {
                 loginToAccount();
             });
         }else{
-            loginButton = new Button(SessionManagement.getAccount().getFirst_name());
+            loginButton = new Button(SessionManagement.getAccount().getFirstName());
             loginButton.addClickListener(e -> {
                 UI.getCurrent().navigate(AccountView.class);
             });

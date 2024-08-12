@@ -2,7 +2,6 @@ package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -16,16 +15,12 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.server.StreamResource;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
-import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
-import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.ItemUtils;
-import org.apache.commons.io.IOUtils;
+import de.tu.darmstadt.dataModel.Utils.ItemUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 public class CreateItemDialog extends ItemDialog {
 
@@ -33,6 +28,7 @@ public class CreateItemDialog extends ItemDialog {
     TextField nameField;
     TextArea imageLinkField;
     TextArea descriptionField;
+    Image imageDisplay;
 
     byte[] cachedImage;
 
@@ -51,7 +47,7 @@ public class CreateItemDialog extends ItemDialog {
         leftLayout.setWidth("30vw");
 
         // Create an Image component to display the image
-        Image imageDisplay = new Image();
+        imageDisplay = new Image();
         imageDisplay.getStyle().set("width", "30vw")
                 .set("height", "50vh")
                 .set("object-fit", "contain");
@@ -148,10 +144,9 @@ public class CreateItemDialog extends ItemDialog {
         return headerLayout;
     }
 
-    private void save() {
-
+    protected void save() {
         ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(), cachedImage, descriptionField.getValue()));
-
+        close();
     }
 
 

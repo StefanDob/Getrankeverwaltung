@@ -50,13 +50,13 @@ public class GeneralAccountInformation extends Details {
     }
 
     private void initializeFields() {
-        firstNameField.setValue(currentAccount.getFirst_name());
-        lastNameField.setValue(currentAccount.getLast_name());
+        firstNameField.setValue(currentAccount.getFirstName());
+        lastNameField.setValue(currentAccount.getLastName());
         emailField.setValue(currentAccount.getEmail());
         passwordField.setValue(currentAccount.getPassword());
         birthDateField.setValue(LocalDate.of(0,2,1));
-        phoneNumberField.setValue(currentAccount.getPhone_number());
-        accountBalanceField.setValue("" + currentAccount.getBalance());
+        phoneNumberField.setValue(currentAccount.getPhoneNumber());
+        accountBalanceField.setValue("" + currentAccount.getSaldo());
     }
 
     private void setReadOnlyForFields(boolean readOnly) {

@@ -5,19 +5,17 @@ import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
 import static de.tu.darmstadt.ProjectUtils.*;
-import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
+import static de.tu.darmstadt.dataModel.Utils.ExceptionChecker.*;
 
 /**
  * An {@link Account} for the drink shop is a superclass of those classes that grants a user of the drink shop an
@@ -31,30 +29,31 @@ import static de.tu.darmstadt.dataModel.ExceptionChecker.*;
 @Table(name = "account")
 public class Account {
 
-    public static void main(String[] args) {
-        try {
-            for(int i = 0 ; i < 50 ; i++)
-                System.out.println(generateID());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     /**
      * This immutable attribute is an ID of {@link Account}. An ID is a unique attribute that can clearly identify
      * an {@link Account} without any need of other attributes.
      * <p>
-     *     TODO: TO BE IMPLEMENTED !!!
+     *
      */
     @Id
-    @Column(name = "id_of_account", nullable = false, unique = true)
-    private final String id_of_account = setID();
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
-     * The email, that is the primary key of {@link Account}, is used to register and to login into the account.
+     * The first name of the {@link Account} owner.
+     * It must only contain letters, blank spaces and no numbers or other special characters.
      */
-    @Column(name = "email", nullable = false, unique = true)
-    private String email;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    /**
+     * The last name of the {@link Account} owner.
+     * It must only contain letters and no numbers or other special characters.
+     */
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     /**
      * The password of the {@link Account}.
@@ -63,52 +62,48 @@ public class Account {
     @Column(name = "password", nullable = false)
     private String password;
 
-    /**
-     * The first name of the {@link Account} owner.
-     * It must only contain letters, blank spaces and no numbers or other special characters.
-     */
-    @Column(name = "first_name", nullable = false)
-    private String first_name;
 
     /**
-     * The last name of the {@link Account} owner.
-     * It must only contain letters and no numbers or other special characters.
+     * The email, that is the primary key of {@link Account}, is used to register and to login into the account.
      */
-    @Column(name = "last_name", nullable = false)
-    private String last_name;
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+
 
     /**
      * The birthdate of the {@link Account} owner in the format yyyy-mm-dd.
      */
-    @Column(name = "birth_date", nullable = false)
-    private String birth_date;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "birth_date")
+    private Date birthDate;
 
     /**
      * The phone number of the {@link Account} owner (optional) which may be {@code null}.
      * It must only contain numbers.
      */
     @Column(name = "phone_number")
-    private @Nullable String phone_number;
+    private String phoneNumber;
 
     /**
      * Specifies the {@link AccountStatus} of the {@link Account}.
      */
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private AccountStatus status;
+    private AccountStatus status = AccountStatus.STANDARD;
 
     /**
      * The debt limit of the {@link Account}.
      * It is the amount of money that the user can overdraw (überziehen).
      */
     @Column(name = "debt_limit", nullable = false)
-    private double debt_limit;
+    private Double debtLimit = 0.0;
 
     /**
      * The current amount of money the user of the {@link Account} is currently having.
      */
     @Column(name = "saldo", nullable = false)
-    private double balance = 0;
-
+    private Double saldo = 0.0;
 
     // ::::::::::::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::::::::::::::::
 
@@ -124,21 +119,21 @@ public class Account {
      * Constructs a new {@link AccountStatus#STANDARD standard} {@link Account} with specified personal data.
      * @param email the specified email
      * @param password the specified password
-     * @param first_name the specified first name
-     * @param last_name the specified last name
-     * @param birth_date the specified birthdate
-     * @param phone_number the specified phone number (optional). May be {@code null}
+     * @param firstName the specified first name
+     * @param lastName the specified last name
+     * @param birthDate the specified birthdate
+     * @param phoneNumber the specified phone number (optional). May be {@code null}
      *
      * @throws AccountPolicyException is thrown if any personal data does not meet the {@link Account}
      * {@link ItemShopProperties policies}
      */
-    public Account(String email, String password, String first_name, String last_name,
-                   LocalDate birth_date, String phone_number)
+    public Account(String email, String password, String firstName, String lastName,
+                   Date birthDate, String phoneNumber)
             throws AccountPolicyException
     {
         // Instantiates an account with AccountStatus = STANDARD and the DEFAULT_DEBT_LIMIT.
-        this(email, password, first_name, last_name, birth_date, phone_number,
-                AccountStatus.STANDARD, DEFAULT_DEBT_LIMIT);
+        this(email, password, firstName, lastName, birthDate, phoneNumber,
+                AccountStatus.STANDARD, 0.0);
     }
 
 
@@ -146,42 +141,43 @@ public class Account {
      * Constructs a new {@link Account} with specified personal data.
      * @param email the specified email
      * @param password the specified password
-     * @param first_name the specified first name
-     * @param last_name the specified last name
-     * @param birth_date the specified birthdate
-     * @param phone_number the specified phone number (optional)
+     * @param firstName the specified first name
+     * @param lastName the specified last name
+     * @param birthDate the specified birthdate
+     * @param phoneNumber the specified phone number (optional)
      * @param status the specified {@link AccountStatus}
-     * @param debt_limit the specified debt limit
+     * @param debtLimit the specified debt limit
      *
      * @throws AccountPolicyException is thrown if any data does not meet the requirements specified in the policies.
      */
-    public Account(@NotNull String email, @NotNull String password, String first_name, String last_name,
-                   LocalDate birth_date, @Nullable String phone_number, AccountStatus status, double debt_limit
+    public Account(@NotNull String email, @NotNull String password, String firstName, String lastName,
+                   Date birthDate, @Nullable String phoneNumber, AccountStatus status, double debtLimit
 
     ) throws AccountPolicyException
     {
 
         // The method String#trim() removes all leading and trailing white spaces.
         email = email.trim();
-        first_name = first_name.trim();
-        last_name = last_name.trim();
+        firstName = firstName.trim();
+        lastName = lastName.trim();
 
-        this.first_name = check_if_first_name_is_in_valid_format(first_name);
-        this.last_name = check_if_last_name_is_in_valid_format(last_name);
+        this.firstName = check_if_first_name_is_in_valid_format(firstName);
+        this.lastName = check_if_last_name_is_in_valid_format(lastName);
 
         // Checks if the specified email is already in use
         is_email_already_in_use(email); // throws EmailIsAlreadyInUseException
 
         this.email = check_if_email_is_in_valid_format(email);
         this.password = check_if_password_is_valid(password);
-        this.birth_date = check_if_birthdate_is_legal(birth_date).toString(); // The birthdate is stored in String format
-        this.phone_number = check_if_phone_number_is_in_valid_format(phone_number);
+        //TODO add the logic for checking birth date again
+        this.birthDate = birthDate; // The birthdate is stored in String format
+        this.phoneNumber = check_if_phone_number_is_in_valid_format(phoneNumber);
 
         // The debt limit should always be a negative value.
-        if(debt_limit > 0) {
-            this.debt_limit = -debt_limit;
+        if(debtLimit > 0) {
+            this.debtLimit = -debtLimit;
         } else {
-            this.debt_limit = debt_limit;
+            this.debtLimit = debtLimit;
         }
 
         this.status = status;
@@ -189,8 +185,10 @@ public class Account {
     }
 
     // :::::::::::::::::::::::::::::::::::::: AUXILIARY METHODS :::::::::::::::::::::::::::::::::::::::
-
+    //TODO check what this method does and delete if necessary
+    /*
     private static String setID() {
+
         String id;
         try {
             do {
@@ -202,7 +200,12 @@ public class Account {
             throw new RuntimeException("Account ID is not in a valid format.");
         }
 
+
+
+
     }
+
+ */
 
     /**
      * Checks if a specified ID is already existing.
@@ -211,12 +214,12 @@ public class Account {
      * @throws  AccountPolicyException is thrown if the specified ID is not in a valid
      *          {@link ItemShopProperties#VALID_ACCOUNT_ID_FORMAT}.
      */
-    private static boolean is_ID_already_existing(final String ID) throws AccountPolicyException {
+    private static boolean is_ID_already_existing(final Long ID) throws AccountPolicyException {
         return AccountOperations.getAccountByID(ID) != null;
     }
 
     /**
-     * This static method generates an {@link #id_of_account ID} as a {@link String} value for the {@link Account}.
+     * This static method generates an {@link #id ID} as a {@link String} value for the {@link Account}.
      *
      * @return the ID generated for the {@link Account}
      */
@@ -353,22 +356,27 @@ public class Account {
     }
 
     /**
-     * This static method is used to check if a specified {@link #birth_date} is legal.
+     * This static method is used to check if a specified {@link #birthDate} is legal.
      *
-     * @param birth_date the specified birthdate to be checked
+     * @param birthDate the specified birthdate to be checked
      * @return the specified birthdate if successfully checked
      * @throws IllegalBirthdateException is thrown if the birthdate is not legal
      */
-    public static LocalDate check_if_birthdate_is_legal(LocalDate birth_date) throws IllegalBirthdateException {
+    public static Date check_if_birthdate_is_legal(Date birthDate) throws IllegalBirthdateException {
+        return null;
+        //TODO redo this
+        /*
         return check_if_instance_is_valid(
                 birth_date,
                 AGE_REQUIREMENTS,
                 new IllegalBirthdateException("Age requirements not met")
         );
+
+         */
     }
 
     /**
-     * This static method is used to check if a specified {@link #phone_number} is in a valid format.
+     * This static method is used to check if a specified {@link #phoneNumber} is in a valid format.
      *
      * @param phone_number the specified phone number to be checked
      * @return the specified phone number if successfully checked
@@ -397,21 +405,21 @@ public class Account {
         return status;
     }
 
-    public double getBalance() {
-        return balance;
+    public double getSaldo() {
+        return saldo;
     }
 
-    public void setBalance(double balance) throws DebtLimitExceedingException {
-        if(balance < debt_limit) {
+    public void setSaldo(double saldo) throws DebtLimitExceedingException {
+        if(saldo < debtLimit) {
             throw new DebtLimitExceedingException("Balance should not exceed the debt limit. " +
-                    "Current debt limit: " + debt_limit + " ; Balance after setting to new value: " + balance );
+                    "Current debt limit: " + debtLimit + " ; Balance after setting to new value: " + saldo );
         } // end of if
 
-        this.balance = balance;
+        this.saldo = saldo;
     }
 
-    public double getDebt_limit() {
-        return debt_limit;
+    public double getDebtLimit() {
+        return debtLimit;
     }
 
     public String getEmail() {
@@ -430,41 +438,34 @@ public class Account {
         this.password = check_if_password_is_valid(password);
     }
 
-    public LocalDate getBirth_date() {
-        return LocalDate.parse(birth_date);
+
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setBirth_date(LocalDate birth_date) throws IllegalBirthdateException {
-        this.birth_date = check_if_birthdate_is_legal(birth_date).toString();
+    public void setLastName(String lastName) throws InvalidNameFormatException {
+        this.lastName = check_if_name_is_in_valid_format(lastName);
     }
 
-    public String getLast_name() {
-        return last_name;
-    }
-
-    public void setLast_name(String last_name) throws InvalidNameFormatException {
-        this.last_name = check_if_name_is_in_valid_format(last_name);
-    }
-
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirst_name(String first_name) throws InvalidNameFormatException {
-        this.first_name = check_if_name_is_in_valid_format(first_name);
+        this.firstName = check_if_name_is_in_valid_format(firstName);
     }
 
-    public @Nullable String getPhone_number() {
-        return phone_number;
+    public @Nullable String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhone_number(@Nullable String phone_number) throws InvalidPhoneNumberFormatException {
 
         if(phone_number == null) {
             // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
-            this.phone_number = null;
+            this.phoneNumber = null;
         } else {
-            this.phone_number = Objects.requireNonNull(check_if_phone_number_is_in_valid_format(phone_number))
+            this.phoneNumber = Objects.requireNonNull(check_if_phone_number_is_in_valid_format(phone_number))
                     .replaceAll("\\s", ""); // removes all whitespaces
         } // end of if
 
@@ -473,9 +474,9 @@ public class Account {
     public void setDebt_limit(double debt_limit) {
         // The debt limit should always be a negative value.
         if(debt_limit > 0) {
-            this.debt_limit = -debt_limit;
+            this.debtLimit = -debt_limit;
         } else {
-            this.debt_limit = debt_limit;
+            this.debtLimit = debt_limit;
         } // end of if-else
     }
 
@@ -502,7 +503,7 @@ public class Account {
      */
     @Override
     public String toString() {
-        return '[' + email + ": " + last_name + ", " + first_name + "]";
+        return '[' + email + ": " + lastName + ", " + firstName + "]";
     }
 
 }

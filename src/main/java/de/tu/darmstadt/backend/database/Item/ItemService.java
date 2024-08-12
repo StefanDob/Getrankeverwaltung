@@ -1,13 +1,10 @@
-package de.tu.darmstadt.backend.database;
+package de.tu.darmstadt.backend.database.Item;
 
-import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
-import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
+import de.tu.darmstadt.backend.database.Item.ItemRepository;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.ItemImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

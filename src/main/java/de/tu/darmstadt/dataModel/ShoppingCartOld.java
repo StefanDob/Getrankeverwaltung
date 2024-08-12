@@ -1,15 +1,12 @@
-package de.tu.darmstadt.dataModel.shoppingCart;
+package de.tu.darmstadt.dataModel;
 
 import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.accountOperation.NoSuchAccountException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.NoSuchItemException;
 import de.tu.darmstadt.backend.exceptions.shoppingCart.NegativeQuantityException;
 import de.tu.darmstadt.backend.exceptions.shoppingCart.ShoppingCartException;
-import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.dataModel.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,8 +18,8 @@ import org.jetbrains.annotations.NotNull;
  * {@link Item items}
  */
 @Entity
-@Table(name = "shoppingCart")
-public class ShoppingCart {
+//@Table(name = "shoppingCart")
+public class ShoppingCartOld {
 
     // TODO: CHECK HOW TO IMPLEMENT ATTRIBUTE PAIR !!!
 
@@ -35,7 +32,7 @@ public class ShoppingCart {
     private String itemID;
 
     /**
-     * Stores the amount of a single {@link Item} in a {@link ShoppingCart} entry.
+     * Stores the amount of a single {@link Item} in a {@link ShoppingCartOld} entry.
      */
     @Column(name = "amount", nullable = false)
     private int quantity;
@@ -43,21 +40,21 @@ public class ShoppingCart {
     // :::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::
 
     /**
-     * Constructs a new {@link ShoppingCart} with a specified {@link Account} ID, a specified {@link Item} and a
-     * specified {@link #quantity} of the corresponding {@link Item} in the {@link ShoppingCart}
+     * Constructs a new {@link ShoppingCartOld} with a specified {@link Account} ID, a specified {@link Item} and a
+     * specified {@link #quantity} of the corresponding {@link Item} in the {@link ShoppingCartOld}
      *
      * @param account_id the specified {@link Account} ID
      * @param item_id the specified {@link Item} ID
      * @param quantity the specified {@link #quantity} of the corresponding {@link Item}
      *
-     * @throws ShoppingCartException is thrown if any fault occurs during instantiation of {@link ShoppingCart}
+     * @throws ShoppingCartException is thrown if any fault occurs during instantiation of {@link ShoppingCartOld}
      */
-    public ShoppingCart(final @NotNull String account_id, final @NotNull String item_id, int quantity)
+    public ShoppingCartOld(final @NotNull String account_id, final @NotNull String item_id, int quantity)
             throws ShoppingCartException, AccountPolicyException, NoSuchAccountException, NoSuchItemException,
                     InvalidItemIDFormatException
     {
 
-        check_if_account_exists(account_id); // Checks if an account exists: throws NoSuchAccountException
+        //check_if_account_exists(account_id); // Checks if an account exists: throws NoSuchAccountException
         //check_if_item_exists(item_id); // Checks if an item exists: throws ItemPropertiesException
 
         accountID = account_id;
@@ -71,7 +68,7 @@ public class ShoppingCart {
         this.quantity = quantity;
     }
 
-    public ShoppingCart() {
+    public ShoppingCartOld() {
         // DO NOT REMOVE THIS CONSTRUCTOR
     }
 
@@ -83,15 +80,15 @@ public class ShoppingCart {
      * {@link NoSuchAccountException}. If the ID is not in a valid format, an {@link AccountPolicyException}
      * is thrown.
      *
-     * @param account_id the specified account ID
+     * @param id the specified account ID
      * @throws NoSuchAccountException is thrown if an {@link Account} with this ID does not exist
      * @throws AccountPolicyException is thrown if the specified account ID is in an invalid format
      */
-    private static void check_if_account_exists(final String account_id)
+    private static void check_if_account_exists(final Long id)
             throws NoSuchAccountException, AccountPolicyException
     {
-        if( AccountOperations.getAccountByID(account_id) == null ) {
-            throw new NoSuchAccountException("Account with the ID '" + account_id + "' does not exist");
+        if( AccountOperations.getAccountByID(id) == null ) {
+            throw new NoSuchAccountException("Account with the ID '" + id + "' does not exist");
         }
     }
 
@@ -132,21 +129,21 @@ public class ShoppingCart {
     }
 
     /**
-     * @return the {@link #quantity} of an {@link Item} in the {@link ShoppingCart} entry
+     * @return the {@link #quantity} of an {@link Item} in the {@link ShoppingCartOld} entry
      */
     public int getQuantity() {
         return quantity;
     }
 
     /**
-     * @return the {@link Account} ID in the {@link ShoppingCart} entry
+     * @return the {@link Account} ID in the {@link ShoppingCartOld} entry
      */
     public String getAccountID() {
         return accountID;
     }
 
     /**
-     * @return the {@link Item} ID in the {@link ShoppingCart} entry.
+     * @return the {@link Item} ID in the {@link ShoppingCartOld} entry.
      */
     public String getItemID() {
         return itemID;

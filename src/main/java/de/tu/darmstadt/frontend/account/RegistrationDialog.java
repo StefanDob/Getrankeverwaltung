@@ -12,10 +12,12 @@ import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.dataModel.Utils.AccountUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RegistrationDialog extends Dialog {
 
@@ -70,8 +72,8 @@ public class RegistrationDialog extends Dialog {
 
 
     private @NotNull ArrayList<? extends AccountPolicyException> account_data_checker(String email, String password,
-                                                                            String first_name, String last_name,
-                                                                            LocalDate birth_date, String phone_number)
+                                                                            String firstName, String last_name,
+                                                                            Date birthDate, String phone_number)
     {
         final ArrayList<AccountPolicyException> exceptions = new ArrayList<>(6);
 
@@ -90,7 +92,7 @@ public class RegistrationDialog extends Dialog {
         }
 
         try {
-            Account.check_if_first_name_is_in_valid_format(first_name);
+            Account.check_if_first_name_is_in_valid_format(firstName);
         } catch (BadFirstNameException e) {
             exceptions.add(e);
         }
@@ -102,7 +104,7 @@ public class RegistrationDialog extends Dialog {
         }
 
         try {
-            Account.check_if_birthdate_is_legal(birth_date);
+            Account.check_if_birthdate_is_legal(birthDate);
         } catch (IllegalBirthdateException e) {
             exceptions.add(e);
         }
@@ -134,7 +136,7 @@ public class RegistrationDialog extends Dialog {
         String password = passwordField.getValue();
         String firstName = firstNameField.getValue();
         String lastName = lastNameField.getValue();
-        LocalDate birthDate = birthDateField.getValue();
+        Date birthDate = AccountUtils.convertToDate(birthDateField.getValue());
         String phoneNumber = phoneNumberField.getValue();
 
         ArrayList<? extends AccountPolicyException> accountPolicyExceptions =
@@ -198,7 +200,7 @@ public class RegistrationDialog extends Dialog {
         final String password = passwordField.getValue();
         final String firstName = firstNameField.getValue();
         final String lastName = lastNameField.getValue();
-        final LocalDate birthDate = birthDateField.getValue();
+        final Date birthDate = AccountUtils.convertToDate(birthDateField.getValue());
         final String phoneNumber = phoneNumberField.getValue();
 
         Account account;

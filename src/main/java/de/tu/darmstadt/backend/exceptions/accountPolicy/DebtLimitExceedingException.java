@@ -22,9 +22,9 @@ public class DebtLimitExceedingException extends AccountPolicyException {
      */
     public DebtLimitExceedingException(@NotNull Account account, double paymentAmount) {
         super("This payment is exceeding the debt limit. Current balance is "
-                + account.getBalance() + ", but amount of money tried to spend with is " + paymentAmount
-                + ". Balance after purchase: " + (account.getBalance() - paymentAmount) + ". "
-                + "Your debt limit: " + account.getDebt_limit()
+                + account.getSaldo() + ", but amount of money tried to spend with is " + paymentAmount
+                + ". Balance after purchase: " + (account.getSaldo() - paymentAmount) + ". "
+                + "Your debt limit: " + account.getDebtLimit()
         );
     }
 

@@ -1,4 +1,4 @@
-package de.tu.darmstadt.backend.database;
+package de.tu.darmstadt.backend.database.Item;
 
 import de.tu.darmstadt.dataModel.Item;
 import org.springframework.data.jpa.repository.JpaRepository;

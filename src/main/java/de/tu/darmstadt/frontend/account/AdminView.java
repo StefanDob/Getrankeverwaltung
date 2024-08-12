@@ -3,28 +3,19 @@ package de.tu.darmstadt.frontend.account;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
-import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.dataModel.AdminAccount;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.MainLayout;
 import de.tu.darmstadt.frontend.store.CreateItemDialog;
 import de.tu.darmstadt.frontend.store.ItemAdminDialog;
-import de.tu.darmstadt.frontend.store.ItemDialog;
-import org.atmosphere.interceptor.AtmosphereResourceStateRecovery;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,15 +109,16 @@ public class AdminView extends Details {
         grid.addClassName("account-grid");
 
         // Add columns
-        grid.addColumn(Account::getFirst_name).setHeader("First Name");
-        grid.addColumn(Account::getLast_name).setHeader("Last Name");
-        grid.addColumn(Account::getBalance).setHeader("Balance");
-        grid.addColumn(Account::getPhone_number).setHeader("Phone Number");
-        grid.addColumn(Account::getDebt_limit).setHeader("Debt Limit");
+        grid.addColumn(Account::getFirstName).setHeader("First Name");
+        grid.addColumn(Account::getLastName).setHeader("Last Name");
+        grid.addColumn(Account::getSaldo).setHeader("Saldo");
+        grid.addColumn(Account::getPhoneNumber).setHeader("Phone Number");
+        grid.addColumn(Account::getDebtLimit).setHeader("Debt Limit");
 
         // Set items to the grid
-        ArrayList<Account> accounts = AccountOperations.getAllAccounts();
-        grid.setItems(accounts);
+        List<Account> accounts = AccountOperations.getAllAccounts();
+        if(accounts != null)
+            grid.setItems(accounts);
 
         // Add the grid to the VerticalLayout
         verticalLayout.add(grid);

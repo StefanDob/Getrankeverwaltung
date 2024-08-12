@@ -1,10 +1,10 @@
 package de.tu.darmstadt.backend.exceptions.shoppingCart;
 
-import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCart;
+import de.tu.darmstadt.dataModel.ShoppingCartOld;
 
 /**
  * A {@code ShoppingCartException} is a superclass of those checked exceptions that is thrown if any implementation or
- * operation of {@link ShoppingCart} is faulty.
+ * operation of {@link ShoppingCartOld} is faulty.
  */
 public class ShoppingCartException extends Exception {
 

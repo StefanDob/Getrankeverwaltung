@@ -1,22 +1,13 @@
 package de.tu.darmstadt.backend.backendService;
 
-import de.tu.darmstadt.backend.ItemShopProperties;
-import de.tu.darmstadt.backend.database.AccountService;
-import de.tu.darmstadt.backend.database.ItemService;
+import de.tu.darmstadt.backend.database.Item.ItemService;
 import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
-import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
-import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.ItemImage;
 import de.tu.darmstadt.frontend.store.ItemView;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ItemOperations {
     /**
