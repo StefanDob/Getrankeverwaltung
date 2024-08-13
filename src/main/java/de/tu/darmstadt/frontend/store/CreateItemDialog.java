@@ -1,6 +1,7 @@
 package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -147,6 +148,7 @@ public class CreateItemDialog extends ItemDialog {
     protected void save() {
         ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(), cachedImage, descriptionField.getValue()));
         close();
+        UI.getCurrent().getPage().reload();
     }
 
 

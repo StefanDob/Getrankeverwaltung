@@ -1,6 +1,7 @@
 package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -49,6 +50,7 @@ public class ItemAdminDialog extends CreateItemDialog{
         item.setDescription(descriptionField.getValue());
         ItemOperations.saveItem(item);
         close();
+        UI.getCurrent().getPage().reload();
     }
 
 }

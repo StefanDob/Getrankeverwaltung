@@ -51,6 +51,9 @@ public class Item {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "stock")
+    private int stock;
+
     // ::::::::::::::::::::::::::::::: PROPERTIES ::::::::::::::::::::::::::::::::
 
     /**
@@ -250,5 +253,9 @@ public class Item {
 
     public StreamResource getImageAsResource() {
         return new StreamResource("image.jpg", () -> new ByteArrayInputStream(image));
+    }
+
+    public int getStock() {
+        return stock;
     }
 }
