@@ -1,5 +1,6 @@
 package de.tu.darmstadt.frontend.account;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -15,7 +16,6 @@ import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Utils.AccountUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -45,7 +45,12 @@ public class RegistrationDialog extends Dialog {
         formLayout.add(passwordField, 2);
         formLayout.add(birthDateField, phoneNumberField);
 
-        Button createAccountButton = new Button("Create Account", event -> createAccount());
+        Button createAccountButton = new Button("Create Account", event -> {
+            Account account = createAccount();
+            SessionManagement.setAccount(account);
+            UI.getCurrent().getPage().reload();
+        }
+               );
         Button cancelButton = new Button("Cancel", event -> close());
         cancelButton.getStyle().set("margin-left", "auto");
 
@@ -66,8 +71,8 @@ public class RegistrationDialog extends Dialog {
         I do not think that we can hold the concept with the exceptions at this stage, they can stay, but I need public access to the methods that validate those inputs
             What happens if multiple fields are wrong at the same time? Program cannot throw multiple exceptions at once
      */
-    private void createAccount() {
-        createAccountV1();
+    private Account createAccount() {
+        return createAccountV1();
     }
 
 
@@ -185,7 +190,7 @@ public class RegistrationDialog extends Dialog {
     }
 
 
-    private void createAccountV1() {
+    private Account createAccountV1() {
 
         firstNameField.setInvalid(false);
         lastNameField.setInvalid(false);
@@ -255,13 +260,14 @@ public class RegistrationDialog extends Dialog {
                 phoneNumberField.setErrorMessage(e.getMessage());
             }
 
-            return; // Terminate the method immediately when any AccountPolicyException occurs.
+            return null;
 
         } // end of try-catch
 
 
         Notification.show("Account created successfully!", 3000, Notification.Position.MIDDLE);
         close();
+        return account;
     }
 
 

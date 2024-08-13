@@ -5,6 +5,7 @@ import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
+import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCart;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -104,6 +105,11 @@ public class Account {
      */
     @Column(name = "saldo", nullable = false)
     private Double saldo = 0.0;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shopping_cart_id", unique = true)
+    private ShoppingCart shoppingCart;
+
 
     // ::::::::::::::::::::::::::::::::::::::::: CONSTRUCTORS :::::::::::::::::::::::::::::::::::::::::::
 
@@ -451,24 +457,9 @@ public class Account {
         return firstName;
     }
 
-    public void setFirst_name(String first_name) throws InvalidNameFormatException {
-        this.firstName = check_if_name_is_in_valid_format(firstName);
-    }
 
-    public @Nullable String getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public void setPhone_number(@Nullable String phone_number) throws InvalidPhoneNumberFormatException {
-
-        if(phone_number == null) {
-            // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
-            this.phoneNumber = null;
-        } else {
-            this.phoneNumber = Objects.requireNonNull(check_if_phone_number_is_in_valid_format(phone_number))
-                    .replaceAll("\\s", ""); // removes all whitespaces
-        } // end of if
-
     }
 
     public void setDebt_limit(double debt_limit) {
@@ -506,4 +497,31 @@ public class Account {
         return '[' + email + ": " + lastName + ", " + firstName + "]";
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
 }

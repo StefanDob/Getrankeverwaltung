@@ -1,8 +1,12 @@
-package de.tu.darmstadt.dataModel;
+package de.tu.darmstadt.dataModel.shoppingCart;
 
+import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.dataModel.Item;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,32 +17,31 @@ public class ShoppingCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @ManyToMany
-    @JoinTable(
-            name = "shopping_cart_items",
-            joinColumns = @JoinColumn(name = "shopping_cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private Set<Item> items = new HashSet<>();
+    @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ShoppingCartItem> items = new ArrayList<>();
 
     // Constructors, getters, and setters
     public ShoppingCart() {
-    }
-
-    public ShoppingCart(Account account) {
-        this.account = account;
     }
 
     public Long getId() {
         return id;
     }
 
+    public List<ShoppingCartItem> getItems() {
+        return items;
+    }
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setItems(List<ShoppingCartItem> items) {
+        this.items = items;
     }
 
     public Account getAccount() {
@@ -47,22 +50,6 @@ public class ShoppingCart {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public Set<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(Set<Item> items) {
-        this.items = items;
-    }
-
-    public void addItem(Item item) {
-        this.items.add(item);
-    }
-
-    public void removeItem(Item item) {
-        this.items.remove(item);
     }
 }
 

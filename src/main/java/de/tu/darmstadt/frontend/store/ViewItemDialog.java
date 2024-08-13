@@ -10,7 +10,9 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.frontend.account.SessionManagement;
 
 public class ViewItemDialog extends ItemDialog{
     HorizontalLayout headerLayout;
@@ -36,14 +38,17 @@ public class ViewItemDialog extends ItemDialog{
         price.addClassName("bordered-field");
         description = showDescription();
 
-        Button addToBusketButton = new Button("Add to Shopping Cart");
-        addToBusketButton.setClassName("shopping-cart-button");
+        Button addToCartButton = new Button("Add to Shopping Cart");
+        addToCartButton.setClassName("shopping-cart-button");
+        addToCartButton.addClickListener(e -> {
+            ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.get_ITEM_id());
+        });
 
         Button buyNowButton = new Button("Buy now");
         buyNowButton.setClassName("shopping-cart-button");
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.add(price, buyNowButton ,addToBusketButton);
+        horizontalLayout.add(price, buyNowButton ,addToCartButton);
         horizontalLayout.setWidthFull();
         horizontalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
 
