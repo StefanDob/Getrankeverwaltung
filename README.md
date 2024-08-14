@@ -1,7 +1,7 @@
 # Getränkeverwaltung
 
-This project can be used as a starting point to create your own Vaadin application with Spring Boot.
-It contains all the necessary configuration and some placeholder files to get you started.
+This project is our submission for the 2024 Softwareprojekt course.
+Authors: Toni , Stefan Dobrea
 
 ## Running the application
 
@@ -13,7 +13,10 @@ You can also import the project to your IDE of choice as you would with any
 Maven project. Read more on [how to import Vaadin projects to different IDEs](https://vaadin.com/docs/latest/guide/step-by-step/importing) (Eclipse, IntelliJ IDEA, NetBeans, and VS Code).
 
 ## Development hints:
-For testing account features login with account "test" - password does not matter
+For testing account features this are a few example accounts that are currently in the database. You can also create some test accounts of your own:
+monamartinez@example.com; Passwort: password010
+paulclark@example.com; Passwort: password343
+tinaroberts@example.com; Passwort: password787
 
 ## Deploying to Production
 
