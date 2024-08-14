@@ -32,13 +32,16 @@ public abstract class ItemDialog extends Dialog {
     }
 
     private void createLayout() {
+        setWidthFull();
         setCloseOnOutsideClick(true);
         setWidth("90vw"); // Set dialog width to 90% of viewport width
         setHeight("90vh"); // Set dialog height to 90% of viewport height
 
         overallLayout = new VerticalLayout();
+        overallLayout.setWidthFull();
 
         contentLayout = new HorizontalLayout(createLeftPart(),createRightPart());
+        contentLayout.setWidthFull();
 
         // Adding components to the dialog
         overallLayout.add(createHeader(), contentLayout);

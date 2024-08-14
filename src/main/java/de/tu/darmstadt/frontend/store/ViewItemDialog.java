@@ -32,6 +32,7 @@ public class ViewItemDialog extends ItemDialog{
     @Override
     VerticalLayout createRightPart() {
         rightPart = new VerticalLayout();
+        rightPart.setWidthFull();
 
         title = new H1(item.getName());
         title.addClassName("bordered-title");
@@ -79,8 +80,17 @@ public class ViewItemDialog extends ItemDialog{
     @Override
     Component createLeftPart() {
         Image itemImage = new Image(item.getImageAsResource(), item.getName());
-        itemImage.setWidth("30vw"); // Set image width
-        itemImage.setHeight("30vw"); // Set image height
+
+        itemImage.setWidth("30vw");
+        itemImage.setHeight("70vh");
+
+        // Ensure the entire image fits within the container without cropping
+        itemImage.getStyle().set("object-fit", "contain"); // 'contain' ensures the whole image is visible
+
+        // Optional: Ensure the image is centered within the container
+        itemImage.getStyle().set("display", "block");
+        itemImage.getStyle().set("margin", "auto");
+
         return itemImage;
     }
 
