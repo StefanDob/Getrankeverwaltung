@@ -48,17 +48,17 @@ public class CreateItemDialog extends ItemDialog {
     Component createLeftPart() {
         // Create the layout for the left part of the view
         VerticalLayout leftLayout = new VerticalLayout();
-        leftLayout.setWidth("30vw");
+        leftLayout.setWidth("40vw");
 
         // Create an Image component to display the image
         imageDisplay = new Image();
-        imageDisplay.getStyle().set("width", "30vw")
+        imageDisplay.getStyle().set("width", "40vw")
                 .set("height", "50vh")
                 .set("object-fit", "contain");
 
         // Create a TextField for inputting the image link
         imageLinkField = new TextArea("Image URL");
-        imageLinkField.setWidth("30vw");
+        imageLinkField.setWidth("40vw");
         imageLinkField.setHeight("8vh");
         imageLinkField.getStyle().set("font-size", "12px");
 
@@ -79,7 +79,7 @@ public class CreateItemDialog extends ItemDialog {
         MemoryBuffer buffer = new MemoryBuffer();
         Upload upload = new Upload(buffer);
         upload.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
-        upload.setWidth("30vw");
+        upload.setWidth("40vw");
 
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
@@ -108,23 +108,23 @@ public class CreateItemDialog extends ItemDialog {
     }
 
     @Override
-    Component createRightPart() {
+    VerticalLayout createRightPart() {
         priceField = new NumberField("Price");
-        priceField.setWidth("40vw");
+        priceField.setWidthFull();
 
         stockField = new TextField("Stock");
-        stockField.setWidth("40vw");
+        stockField.setWidthFull();
 
         nameField = new TextField("Name");
-        nameField.setWidth("40vw");
+        nameField.setWidthFull();
         nameField.getStyle().set("font-size", "30px");
 
         descriptionField = new TextArea("Description");
-        descriptionField.setWidth("40vw");
+        descriptionField.setWidthFull();
         descriptionField.setHeight("30vh");
 
         VerticalLayout verticalLayout1 = new VerticalLayout();
-        verticalLayout1.setWidth("45vw");
+        verticalLayout1.setWidthFull();
 
         verticalLayout1.add(nameField);
         verticalLayout1.add(descriptionField);

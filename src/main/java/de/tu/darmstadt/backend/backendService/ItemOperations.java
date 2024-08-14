@@ -72,4 +72,9 @@ public class ItemOperations {
         ItemService itemService = SpringContext.getBean(ItemService.class);
         itemService.saveItem(item);
     }
+
+    public static void deleteItem(Item item) {
+        ItemService itemService = SpringContext.getBean(ItemService.class);
+        itemService.deleteItem(item);
+    }
 }

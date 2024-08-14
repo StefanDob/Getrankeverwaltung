@@ -5,6 +5,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
@@ -29,13 +30,23 @@ public class ItemAdminDialog extends CreateItemDialog{
     }
 
     @Override
-    Component createRightPart() {
-        Component comp = super.createRightPart();
+    VerticalLayout createRightPart() {
+        VerticalLayout verticalLayout = super.createRightPart();
         nameField.setValue(item.getName());
         descriptionField.setValue(item.getDescription());
         priceField.setValue(item.getPrice());
         stockField.setValue("" + item.getStock());
-        return comp;
+
+        Button deleteButton = new Button("Delete Item");
+        deleteButton.setWidthFull();
+        verticalLayout.add(deleteButton);
+        deleteButton.addClickListener(event -> {
+            ItemOperations.deleteItem(item);
+            close();
+            UI.getCurrent().getPage().reload();
+        });
+
+        return verticalLayout;
     }
     @Override
     protected void save() {

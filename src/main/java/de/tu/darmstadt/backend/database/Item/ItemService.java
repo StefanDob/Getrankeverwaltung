@@ -54,4 +54,15 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
+    public void deleteItem(Item item) {
+        // Ensure the item exists in the database before deleting
+        Optional<Item> existingItem = itemRepository.findById(item.get_ITEM_id());
+        if (existingItem.isPresent()) {
+            itemRepository.delete(item);
+        } else {
+            // Handle case where item doesn't exist, e.g., throw an exception
+            throw new RuntimeException("Item not found for deletion");
+        }
+    }
+
 }
