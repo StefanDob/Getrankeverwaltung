@@ -32,6 +32,18 @@
     border-radius: 4px; /* Optional: Add rounded corners */
 }
 
+.item-view-title h2 {
+    font-size: 1.2em;       /* Set the default font size */
+    max-height: 2.4em;      /* Limit the height to 2 lines */
+    line-height: 1.2em;     /* Match line height to font size */
+    overflow: hidden;       /* Hide any overflowing text */
+    text-overflow: ellipsis;/* Show ellipsis if the text is too long */
+    display: -webkit-box;   /* Make the container a flexbox for webkit */
+    -webkit-line-clamp: 2;  /* Limit to 2 lines */
+    -webkit-box-orient: vertical; /* Vertical orientation for flexbox */
+    white-space: normal;    /* Allow normal whitespace handling */
+}
+
 .styled-button {
     cursor: pointer;
     background-color: #007bff;

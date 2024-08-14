@@ -1,19 +1,22 @@
 package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.frontend.account.LoginDialog;
+import de.tu.darmstadt.frontend.account.SessionManagement;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ItemView extends VerticalLayout {
 
@@ -54,7 +57,8 @@ public class ItemView extends VerticalLayout {
         add(details);
 
         H2 header = new H2(item.getName());
-        header.addClassNames(LumoUtility.Margin.Top.SMALL, LumoUtility.Margin.Bottom.MEDIUM);
+        header.addClassName("item-view-title");
+        //header.addClassNames(LumoUtility.Margin.Top.SMALL, LumoUtility.Margin.Bottom.MEDIUM);
         details.add(header);
 
         Div priceDiv = new Div(new Paragraph("Price: " + item.getPrice() + " € (Stock: " + item.getStock() + ")"));
@@ -86,11 +90,24 @@ public class ItemView extends VerticalLayout {
             // Implement buy now logic
         });
 
+        AtomicBoolean buttonclicked = new AtomicBoolean(false);
         addToCartButton.addClickListener(event -> {
-            // Implement add to cart logic
+            buttonclicked.set(true);
+            if(SessionManagement.getAccount() == null){
+                LoginDialog loginDialog = new LoginDialog();
+                loginDialog.open();
+            }else{
+                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.get_ITEM_id());
+            }
         });
 
-        addClickListener(e -> showItemDetails());
+        addClickListener(e -> {
+            if (buttonclicked.get() == true) {
+                buttonclicked.set(false);
+                return; // Ignore clicks on buttons
+            }
+            showItemDetails();
+        });
     }
 
     /**
@@ -102,6 +119,10 @@ public class ItemView extends VerticalLayout {
 
         // Opening the dialog
         viewItemDialog.open();
+    }
+
+    public Item getItem() {
+        return item;
     }
 }
 

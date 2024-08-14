@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.frontend.account.SessionManagement;
 
 public class ViewItemDialog extends ItemDialog{
@@ -41,7 +42,12 @@ public class ViewItemDialog extends ItemDialog{
         Button addToCartButton = new Button("Add to Shopping Cart");
         addToCartButton.setClassName("shopping-cart-button");
         addToCartButton.addClickListener(e -> {
-            ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.get_ITEM_id());
+            if(SessionManagement.getAccount() == null){
+                LoginDialog loginDialog = new LoginDialog();
+                loginDialog.open();
+            }else{
+                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.get_ITEM_id());
+            }
         });
 
         Button buyNowButton = new Button("Buy now");

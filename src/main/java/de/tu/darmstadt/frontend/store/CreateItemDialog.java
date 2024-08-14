@@ -14,6 +14,7 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.server.StreamResource;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
@@ -29,6 +30,8 @@ public class CreateItemDialog extends ItemDialog {
     TextField nameField;
     TextArea imageLinkField;
     TextArea descriptionField;
+
+    TextField stockField;
     Image imageDisplay;
 
     byte[] cachedImage;
@@ -59,9 +62,10 @@ public class CreateItemDialog extends ItemDialog {
         imageLinkField.setHeight("8vh");
         imageLinkField.getStyle().set("font-size", "12px");
 
-        // Create a button to confirm the image URL
-        Button confirmButton = new Button("Confirm");
-        confirmButton.addClickListener(event -> {
+        imageLinkField.setValueChangeMode(ValueChangeMode.EAGER); // Set to trigger on each keystroke
+
+        // Add a listener for each key press
+        imageLinkField.addValueChangeListener(event -> {
             String imageUrl = imageLinkField.getValue();
             imageDisplay.setSrc(imageUrl);
             try {
@@ -98,7 +102,7 @@ public class CreateItemDialog extends ItemDialog {
         );
 
         // Add the components to the layout
-        leftLayout.add(imageDisplay, imageLinkField, confirmButton, upload);
+        leftLayout.add(imageDisplay, imageLinkField, upload);
 
         return leftLayout;
     }
@@ -107,6 +111,9 @@ public class CreateItemDialog extends ItemDialog {
     Component createRightPart() {
         priceField = new NumberField("Price");
         priceField.setWidth("40vw");
+
+        stockField = new TextField("Stock");
+        stockField.setWidth("40vw");
 
         nameField = new TextField("Name");
         nameField.setWidth("40vw");
@@ -122,6 +129,7 @@ public class CreateItemDialog extends ItemDialog {
         verticalLayout1.add(nameField);
         verticalLayout1.add(descriptionField);
         verticalLayout1.add(priceField);
+        verticalLayout1.add(stockField);
 
         return verticalLayout1;
     }
@@ -146,7 +154,7 @@ public class CreateItemDialog extends ItemDialog {
     }
 
     protected void save() {
-        ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(), cachedImage, descriptionField.getValue()));
+        ItemOperations.saveItem(new Item(nameField.getValue(),priceField.getValue(),Integer.valueOf(stockField.getValue()), cachedImage, descriptionField.getValue()));
         close();
         UI.getCurrent().getPage().reload();
     }

@@ -105,8 +105,9 @@ public class Item {
      *
      * @throws ItemPropertiesException is thrown if the specified product data do not meet the specified requirements.
      */
-    public Item( @NotNull String name, double price, byte[] image, String description) {
+    public Item( @NotNull String name, double price, int stock, byte[] image, String description) {
         this.price = price;
+        this.stock = stock;
         this.name = name.trim();
         this.image = image;
         this.description = description;
@@ -257,5 +258,9 @@ public class Item {
 
     public int getStock() {
         return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 }

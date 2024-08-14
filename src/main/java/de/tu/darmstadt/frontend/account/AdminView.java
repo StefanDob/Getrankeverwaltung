@@ -64,6 +64,7 @@ public class AdminView extends Details {
         grid.addColumn(Item::getName).setHeader("Name");
         grid.addColumn(Item::getDescription).setHeader("Description");
         grid.addColumn(Item::getPrice).setHeader("Price");
+        grid.addColumn(Item::getStock).setHeader("Stock");
 
         // Set items to the grid
         List<Item> items = ItemOperations.getAllShopItems();

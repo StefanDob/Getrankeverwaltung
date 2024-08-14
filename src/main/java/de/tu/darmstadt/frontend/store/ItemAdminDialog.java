@@ -34,6 +34,7 @@ public class ItemAdminDialog extends CreateItemDialog{
         nameField.setValue(item.getName());
         descriptionField.setValue(item.getDescription());
         priceField.setValue(item.getPrice());
+        stockField.setValue("" + item.getStock());
         return comp;
     }
     @Override
@@ -48,6 +49,7 @@ public class ItemAdminDialog extends CreateItemDialog{
             throw new RuntimeException(e);
         }
         item.setDescription(descriptionField.getValue());
+        item.setStock(Integer.valueOf(stockField.getValue()));
         ItemOperations.saveItem(item);
         close();
         UI.getCurrent().getPage().reload();
