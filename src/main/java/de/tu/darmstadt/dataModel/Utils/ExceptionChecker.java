@@ -36,7 +36,7 @@ public final class ExceptionChecker {
      * @throws E is thrown if the specified {@link Predicate} is not met.
      */
     public static <E extends Exception, R>
-    R check_if_instance_is_valid(R object, @NotNull Predicate<? super R> predicate, E exception) throws E
+    R checkIfInstanceIsValid(R object, @NotNull Predicate<? super R> predicate, E exception) throws E
     {
         if( !predicate.test(object) ) {
             throw exception;

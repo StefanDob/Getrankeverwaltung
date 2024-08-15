@@ -1,6 +1,5 @@
 package de.tu.darmstadt.backend.database.Item;
 
-import de.tu.darmstadt.backend.database.Item.ItemRepository;
 import de.tu.darmstadt.dataModel.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +55,7 @@ public class ItemService {
 
     public void deleteItem(Item item) {
         // Ensure the item exists in the database before deleting
-        Optional<Item> existingItem = itemRepository.findById(item.get_ITEM_id());
+        Optional<Item> existingItem = itemRepository.findById(item.getITEMId());
         if (existingItem.isPresent()) {
             itemRepository.delete(item);
         } else {

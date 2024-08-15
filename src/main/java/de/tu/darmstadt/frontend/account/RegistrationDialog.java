@@ -84,32 +84,32 @@ public class RegistrationDialog extends Dialog {
 
 
         try {
-            Account.check_if_email_is_in_valid_format(email); // Checks if email is in a valid format
-            Account.is_email_already_in_use(email); // Checks if email is already in use
+            Account.checkIfEmailIsInValidFormat(email); // Checks if email is in a valid format
+            Account.isEmailAlreadyInUse(email); // Checks if email is already in use
         } catch (AccountPolicyException e) {
             exceptions.add(e);
         }
 
         try {
-            Account.check_if_password_is_valid(password);
+            Account.checkIfPasswordIsValid(password);
         } catch (InvalidPasswordFormatException e) {
             exceptions.add(e);
         }
 
         try {
-            Account.check_if_first_name_is_in_valid_format(firstName);
+            Account.checkIfFirstNameIsInValidFormat(firstName);
         } catch (BadFirstNameException e) {
             exceptions.add(e);
         }
 
         try {
-            Account.check_if_last_name_is_in_valid_format(last_name);
+            Account.checkIfLastNameIsInValidFormat(last_name);
         } catch (BadLastNameException e) {
             exceptions.add(e);
         }
 
         try {
-            Account.check_if_birthdate_is_legal(birthDate);
+            Account.checkIfBirthdateIsLegal(birthDate);
         } catch (IllegalBirthdateException e) {
             exceptions.add(e);
         }
@@ -218,36 +218,36 @@ public class RegistrationDialog extends Dialog {
         } catch (AccountPolicyException ex) {
 
             try {
-                Account.check_if_email_is_in_valid_format(email); // Checks the email format
-                Account.is_email_already_in_use(email); // Checks if an email is already in use
+                Account.checkIfEmailIsInValidFormat(email); // Checks the email format
+                Account.isEmailAlreadyInUse(email); // Checks if an email is already in use
             } catch (AccountPolicyException e) {
                 emailField.setInvalid(true);
                 emailField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_password_is_valid(password);
+                Account.checkIfPasswordIsValid(password);
             } catch (InvalidPasswordFormatException e) {
                 passwordField.setInvalid(true);
                 passwordField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_first_name_is_in_valid_format(firstName);
+                Account.checkIfFirstNameIsInValidFormat(firstName);
             } catch (BadFirstNameException e) {
                 firstNameField.setInvalid(true);
                 firstNameField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_last_name_is_in_valid_format(lastName);
+                Account.checkIfLastNameIsInValidFormat(lastName);
             } catch (BadLastNameException e) {
                 lastNameField.setInvalid(true);
                 lastNameField.setErrorMessage(e.getMessage());
             }
 
             try {
-                Account.check_if_birthdate_is_legal(birthDate);
+                Account.checkIfBirthdateIsLegal(birthDate);
             } catch (IllegalBirthdateException e) {
                 birthDateField.setInvalid(true);
                 birthDateField.setErrorMessage(e.getMessage());
