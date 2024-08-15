@@ -175,7 +175,7 @@ public class Account {
 
         // The debt limit should always be a negative value.
         if(debtLimit > 0) {
-            this.debtLimit = -debtLimit;
+            this.debtLimit = -debtLimit;  // if the debt limit is positive, it is numerically negated.
         } else {
             this.debtLimit = debtLimit;
         }
@@ -199,9 +199,6 @@ public class Account {
         } catch (AccountPolicyException e) {
             throw new RuntimeException("Account ID is not in a valid format.");
         }
-
-
-
 
     }
 

@@ -82,8 +82,10 @@ public class Item {
             return false;
         }
 
-        for (int i = 3 ; i < s.length() ; i++) {
-            if( !Character.isDigit(s.charAt(i)) ) {
+        for (int i = 3 ; i < s.length() ; i++)
+        {
+            if( !Character.isDigit(s.charAt(i)) )
+            {
                 return false;
             } // end of if
         } // end of for
