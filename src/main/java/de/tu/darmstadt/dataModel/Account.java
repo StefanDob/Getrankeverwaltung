@@ -10,9 +10,7 @@ import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Objects;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
 import static de.tu.darmstadt.ProjectUtils.*;
@@ -29,8 +27,6 @@ import static de.tu.darmstadt.dataModel.Utils.ExceptionChecker.*;
 @Entity
 @Table(name = "account")
 public class Account {
-
-
 
     /**
      * This immutable attribute is an ID of {@link Account}. An ID is a unique attribute that can clearly identify
@@ -69,8 +65,6 @@ public class Account {
      */
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
-
 
     /**
      * The birthdate of the {@link Account} owner in the format yyyy-mm-dd.
@@ -167,21 +161,21 @@ public class Account {
         firstName = firstName.trim();
         lastName = lastName.trim();
 
-        this.firstName = check_if_first_name_is_in_valid_format(firstName);
-        this.lastName = check_if_last_name_is_in_valid_format(lastName);
+        this.firstName = checkIfFirstNameIsInValidFormat(firstName);
+        this.lastName = checkIfLastNameIsInValidFormat(lastName);
 
         // Checks if the specified email is already in use
-        is_email_already_in_use(email); // throws EmailIsAlreadyInUseException
+        isEmailAlreadyInUse(email); // throws EmailIsAlreadyInUseException
 
-        this.email = check_if_email_is_in_valid_format(email);
-        this.password = check_if_password_is_valid(password);
+        this.email = checkIfEmailIsInValidFormat(email);
+        this.password = checkIfPasswordIsValid(password);
         //TODO add the logic for checking birth date again
         this.birthDate = birthDate; // The birthdate is stored in String format
         this.phoneNumber = check_if_phone_number_is_in_valid_format(phoneNumber);
 
         // The debt limit should always be a negative value.
         if(debtLimit > 0) {
-            this.debtLimit = -debtLimit;
+            this.debtLimit = -debtLimit;  // if the debt limit is positive, it is numerically negated.
         } else {
             this.debtLimit = debtLimit;
         }
@@ -206,9 +200,6 @@ public class Account {
             throw new RuntimeException("Account ID is not in a valid format.");
         }
 
-
-
-
     }
 
  */
@@ -220,7 +211,7 @@ public class Account {
      * @throws  AccountPolicyException is thrown if the specified ID is not in a valid
      *          {@link ItemShopProperties#VALID_ACCOUNT_ID_FORMAT}.
      */
-    private static boolean is_ID_already_existing(final Long ID) throws AccountPolicyException {
+    private static boolean isIDAlreadyExisting(final Long ID) throws AccountPolicyException {
         return AccountOperations.getAccountByID(ID) != null;
     }
 
@@ -261,6 +252,15 @@ public class Account {
     }
 
     /**
+     * This static method generates an {@link #id ID} as a long value for an {@link Account}.
+     *
+     * @return the ID generated for the {@link Account}
+     */
+    private static long generateLongID() {
+        return RANDOM.nextLong();
+    }
+
+    /**
      * This static method is used to check if a specified name is in a valid format.
      *
      * @see ItemShopProperties#VALID_NAME
@@ -269,8 +269,8 @@ public class Account {
      * @return the specified name if successfully checked
      * @throws InvalidNameFormatException is thrown if the name is not in a valid format
      */
-    public static String check_if_name_is_in_valid_format(String name) throws InvalidNameFormatException {
-        return check_if_instance_is_valid(
+    public static String checkIfNameIsInValidFormat(String name) throws InvalidNameFormatException {
+        return checkIfInstanceIsValid(
                 name,
                 VALID_NAME,
                 new InvalidNameFormatException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
@@ -286,8 +286,8 @@ public class Account {
      * @return the specified first name if successfully checked
      * @throws BadFirstNameException is thrown if the first name is not in a valid format
      */
-    public static String check_if_first_name_is_in_valid_format(String name) throws BadFirstNameException {
-        return check_if_instance_is_valid(
+    public static String checkIfFirstNameIsInValidFormat(String name) throws BadFirstNameException {
+        return checkIfInstanceIsValid(
                 name,
                 VALID_NAME,
                 new BadFirstNameException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
@@ -303,8 +303,8 @@ public class Account {
      * @return the specified last name if successfully checked
      * @throws BadLastNameException is thrown if the first name is not in a valid format
      */
-    public static String check_if_last_name_is_in_valid_format(String name) throws BadLastNameException {
-        return check_if_instance_is_valid(
+    public static String checkIfLastNameIsInValidFormat(String name) throws BadLastNameException {
+        return checkIfInstanceIsValid(
                 name,
                 VALID_NAME,
                 new BadLastNameException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
@@ -317,7 +317,7 @@ public class Account {
      * @param email the specified email to be checked
      * @throws EmailAlreadyInUseException if the specified email is already in use
      */
-    public static void is_email_already_in_use(final @NotNull String email) throws EmailAlreadyInUseException {
+    public static void isEmailAlreadyInUse(final @NotNull String email) throws EmailAlreadyInUseException {
         if( AccountOperations.getAccountByEmail(email) != null ) {
             throw new EmailAlreadyInUseException("This email is already in use: " + email);
         }
@@ -333,8 +333,8 @@ public class Account {
      * @return the specified email if successfully checked
      * @throws InvalidEmailFormatException is thrown if the email is not in a valid format
      */
-    public static String check_if_email_is_in_valid_format(String email) throws InvalidEmailFormatException {
-        return check_if_instance_is_valid(
+    public static String checkIfEmailIsInValidFormat(String email) throws InvalidEmailFormatException {
+        return checkIfInstanceIsValid(
                 email,
                 EMAIL_FORMAT,
                 new InvalidEmailFormatException(email)
@@ -347,14 +347,14 @@ public class Account {
      * @return the specified password if successfully checked
      * @throws InvalidPasswordFormatException is thrown if the password is not valid
      */
-    public static String check_if_password_is_valid(final @NotNull String password) throws InvalidPasswordFormatException {
+    public static String checkIfPasswordIsValid(final @NotNull String password) throws InvalidPasswordFormatException {
 
         if(password.length() < MINIMUM_PASSWORD_LENGTH) {
             throw new InvalidPasswordFormatException("Password must contain at least "
                     + MINIMUM_PASSWORD_LENGTH + " characters.");
         }
 
-        return check_if_instance_is_valid(
+        return checkIfInstanceIsValid(
                 password,
                 PASSWORD_POLICY,
                 new InvalidPasswordFormatException("Password is not safe. Enter a new password")
@@ -368,7 +368,7 @@ public class Account {
      * @return the specified birthdate if successfully checked
      * @throws IllegalBirthdateException is thrown if the birthdate is not legal
      */
-    public static Date check_if_birthdate_is_legal(Date birthDate) throws IllegalBirthdateException {
+    public static Date checkIfBirthdateIsLegal(Date birthDate) throws IllegalBirthdateException {
         return null;
         //TODO redo this
         /*
@@ -394,7 +394,7 @@ public class Account {
         // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
         if(phone_number == null || phone_number.isBlank() || phone_number.isEmpty() ) return null;
 
-        return check_if_instance_is_valid(
+        return checkIfInstanceIsValid(
                 phone_number,
                 PHONE_NUMBER_FORMAT,
                 new InvalidPhoneNumberFormatException(phone_number)
@@ -433,7 +433,7 @@ public class Account {
     }
 
     public void setEmail(String email) throws InvalidEmailFormatException {
-        this.email = check_if_email_is_in_valid_format(email);
+        this.email = checkIfEmailIsInValidFormat(email);
     }
 
     public String getPassword() {
@@ -441,7 +441,7 @@ public class Account {
     }
 
     public void setPassword(String password) throws InvalidPasswordFormatException {
-        this.password = check_if_password_is_valid(password);
+        this.password = checkIfPasswordIsValid(password);
     }
 
 
@@ -450,7 +450,7 @@ public class Account {
     }
 
     public void setLastName(String lastName) throws InvalidNameFormatException {
-        this.lastName = check_if_name_is_in_valid_format(lastName);
+        this.lastName = checkIfNameIsInValidFormat(lastName);
     }
 
     public String getFirstName() {

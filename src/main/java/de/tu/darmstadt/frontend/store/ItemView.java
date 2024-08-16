@@ -9,7 +9,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.account.LoginDialog;
@@ -97,7 +96,7 @@ public class ItemView extends VerticalLayout {
                 LoginDialog loginDialog = new LoginDialog();
                 loginDialog.open();
             }else{
-                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.get_ITEM_id());
+                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getITEMId());
             }
         });
 

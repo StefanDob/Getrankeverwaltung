@@ -6,11 +6,13 @@ import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCart;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
+<<<<<<< HEAD
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Hibernate;
+=======
+>>>>>>> 365acd3c60365d4f0a705b3359ca3405c9709f78
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class ShoppingCartService {
         // Check if the item already exists in the shopping cart
         ShoppingCartItem existingItem = null;
         for (ShoppingCartItem cartItem : shoppingCart.getItems()) {
-            if (cartItem.getItem().get_ITEM_id().equals(itemId)) {
+            if (cartItem.getItem().getITEMId().equals(itemId)) {
                 existingItem = cartItem;
                 break;
             }

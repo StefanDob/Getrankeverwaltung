@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayInputStream;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 /**
@@ -82,8 +82,10 @@ public class Item {
             return false;
         }
 
-        for (int i = 3 ; i < s.length() ; i++) {
-            if( !Character.isDigit(s.charAt(i)) ) {
+        for (int i = 3 ; i < s.length() ; i++)
+        {
+            if( !Character.isDigit(s.charAt(i)) )
+            {
                 return false;
             } // end of if
         } // end of for
@@ -172,7 +174,7 @@ public class Item {
      * @param ID the specified ID
      * @return true if the ID already exists.
      */
-    private static boolean is_item_ID_already_existing(Long ID) throws InvalidItemIDFormatException {
+    private static boolean isItemIDAlreadyExisting(Long ID) throws InvalidItemIDFormatException {
         return ItemOperations.getItemById(ID) != null;
     }
 
@@ -181,7 +183,7 @@ public class Item {
      * @param item_name the specified item name
      * @return true if the item name already exists.
      */
-    private static boolean is_item_name_already_in_use(String item_name) {
+    private static boolean isItemNameAlreadyInUse(String item_name) {
         item_name = item_name.trim();
 
         return false; // TODO: IMPLEMENT
@@ -202,7 +204,7 @@ public class Item {
         this.price = price;
     }
 
-    public Long get_ITEM_id() {
+    public Long getITEMId() {
         return id;
     }
 
@@ -240,7 +242,9 @@ public class Item {
             return item.getPrice() == getPrice()
                     && item.getName().equals(getName())
                     && item.getDescription().equals(getDescription())
-                    && item.getImage().equals(getImage());
+
+                    && Arrays.equals(item.getImage(), getImage()); // If any error occurs,
+            // replace this line with "item.getImage().equals(getImage())"
         }
 
         return false;
