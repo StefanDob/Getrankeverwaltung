@@ -21,7 +21,7 @@ import de.tu.darmstadt.frontend.account.SessionManagement;
 import de.tu.darmstadt.frontend.dashboard.DashboardView;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.frontend.store.StoreView;
-import de.tu.darmstadt.frontend.warenkorb.WarenkorbView;
+import de.tu.darmstadt.frontend.ShoppingCart.ShoppingCartView;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 /**
@@ -91,7 +91,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Store", StoreView.class, LineAwesomeIcon.STORE_SOLID.create()));
         nav.addItem(new SideNavItem("Dashboard", DashboardView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
         nav.addItem(new SideNavItem("Account", AccountView.class, LineAwesomeIcon.USER_CIRCLE.create()));
-        nav.addItem(new SideNavItem("Warenkorb", WarenkorbView.class, LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
+        nav.addItem(new SideNavItem("Warenkorb", ShoppingCartView.class, LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
         nav.addItem(new SideNavItem("Admin", AdminView.class, LineAwesomeIcon.TOOLBOX_SOLID.create()));
 
         return nav;

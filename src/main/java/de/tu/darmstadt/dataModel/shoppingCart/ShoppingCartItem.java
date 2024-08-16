@@ -52,5 +52,25 @@ public class ShoppingCartItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public String getName() {
+        return item.getName();
+    }
+
+    public String getDescription() {
+        return getItem().getDescription();
+    }
+
+    /**
+     *
+     * @return price for the item not for the item sum
+     */
+    public double getPrice() {
+        return getItem().getPrice();
+    }
+
+    public double getStock() {
+        return item.getStock();
+    }
 }
 
