@@ -81,7 +81,7 @@ public class ShoppingCartView extends VerticalLayout {
 
         // Set items to the grid
         grid.setItems(items);
-        grid.setHeight(150 * items.size() + "px");
+        grid.setHeight(165 * items.size() + "px");
 
         setTotalPriceLabel();
 

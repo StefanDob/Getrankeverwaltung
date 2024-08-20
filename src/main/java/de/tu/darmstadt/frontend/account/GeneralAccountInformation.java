@@ -71,4 +71,6 @@ public class GeneralAccountInformation extends Details {
         accountBalanceField.setReadOnly(readOnly);
     }
 
+    
+
 }

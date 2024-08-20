@@ -2,8 +2,11 @@ package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -40,10 +43,38 @@ public class ItemAdminDialog extends CreateItemDialog{
         Button deleteButton = new Button("Delete Item");
         deleteButton.setWidthFull();
         verticalLayout.add(deleteButton);
+
         deleteButton.addClickListener(event -> {
-            ItemOperations.deleteItem(item);
-            close();
-            UI.getCurrent().getPage().reload();
+            // Create a confirmation dialog
+            Dialog confirmationDialog = new Dialog();
+            confirmationDialog.setCloseOnEsc(false);
+            confirmationDialog.setCloseOnOutsideClick(false);
+
+            // Add a message to the confirmation dialog
+            Span message = new Span("Are you sure you want to delete this item?");
+            confirmationDialog.add(message);
+
+            // Create buttons for 'Confirm' and 'Cancel'
+            Button confirmButton = new Button("Confirm", e -> {
+                // Perform the delete operation if confirmed
+                ItemOperations.deleteItem(item);
+                confirmationDialog.close(); // Close the confirmation dialog
+                close(); // Close the original dialog
+                UI.getCurrent().getPage().reload(); // Reload the page
+            });
+
+            Button cancelButton = new Button("Cancel", e -> {
+                confirmationDialog.close(); // Close the confirmation dialog
+            });
+
+            // Add buttons to the dialog
+            HorizontalLayout buttons = new HorizontalLayout(confirmButton, cancelButton);
+            confirmationDialog.add(buttons);
+            buttons.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER); // Center horizontally
+            buttons.setWidthFull(); // Ensure the layout takes full width
+
+            // Open the confirmation dialog
+            confirmationDialog.open();
         });
 
         return verticalLayout;

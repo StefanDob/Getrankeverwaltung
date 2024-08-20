@@ -6,15 +6,13 @@ import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCart;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
-<<<<<<< HEAD
-import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Hibernate;
-=======
->>>>>>> 365acd3c60365d4f0a705b3359ca3405c9709f78
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartService {
@@ -68,16 +66,27 @@ public class ShoppingCartService {
         shoppingCartRepository.save(shoppingCart);
     }
 
-    @Transactional(readOnly = true) // Mark this method as read-only for better performance
+    @Transactional
     public List<ShoppingCartItem> getShoppingCartItems(Long accountId) {
-        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
         ShoppingCart shoppingCart = account.getShoppingCart();
 
         // Initialize the items list to avoid LazyInitializationException
         Hibernate.initialize(shoppingCart.getItems());
 
-        return shoppingCart.getItems();
+        // Filter out null items
+        List<ShoppingCartItem> items = shoppingCart.getItems().stream()
+                .filter(item -> item.getItem() != null)
+                .collect(Collectors.toList());
+
+        // Remove null items from the shopping cart in the database
+        shoppingCart.getItems().removeIf(item -> item.getItem() == null);
+        shoppingCartRepository.save(shoppingCart);
+
+        return items;
     }
+
 
     @Transactional
     public void save(ShoppingCartItem shoppingCartItem) {

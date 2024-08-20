@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
@@ -97,11 +98,12 @@ public class ItemView extends VerticalLayout {
                 loginDialog.open();
             }else{
                 ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getITEMId());
+                Notification.show("Item added to cart", 2000, Notification.Position.MIDDLE);
             }
         });
 
         addClickListener(e -> {
-            if (buttonclicked.get() == true) {
+            if (buttonclicked.get()) {
                 buttonclicked.set(false);
                 return; // Ignore clicks on buttons
             }
