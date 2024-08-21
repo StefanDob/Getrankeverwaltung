@@ -1,5 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
+import jakarta.persistence.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
@@ -9,38 +11,48 @@ import java.util.Date;
  * A transaction is a process where money is transferred from an {@link Account} to another {@link Account}.
  * This class is used to store the transaction history in a database.
  */
+@Entity
+@Table(name = "transaction")
 public class Transaction {
 
     /**
-     * The ID of the transaction.
+     * The ID of the transaction. It is automatically generated.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionID;
 
     /**
      * The sender of this {@link Transaction}.
      */
+    @Column(name = "sender", nullable = false)
     private Long sender;
 
     /**
      * The receiver of this {@link Transaction}.
      */
+    @Column(name = "receiver", nullable = false)
     private Long receiver;
 
     /**
      * The amount of money that is transferred during this {@link Transaction}.
      */
+    @Column(name = "amount", nullable = false)
     private double amount;
 
     /**
      * The timestamp at which the {@link Transaction} is performed.
      */
+    @Column(name = "transactionDate")
     private LocalDateTime transactionDate;
 
     /**
-     * The optional text of this {@link Transaction}.
+     * The optional text of this {@link Transaction}. By default, this attribute is never null and stores
+     * an empty {@link String}.
      */
-    @Nullable
-    private String transactionText;
+    @NotNull
+    @Column(name = "transactionText")
+    private String transactionText = "";
 
 
     public Transaction() {
@@ -118,15 +130,21 @@ public class Transaction {
         return transactionID;
     }
 
-    public @Nullable String getTransactionText()
+    public @NotNull String getTransactionText()
     {
         return transactionText;
     }
 
+    /**
+     * Sets the {@link #transactionText} to a new specified text. If the text is {@code null}, the attribute
+     * {@link #transactionText} is set to an empty {@link String} instead of {@link null}
+     *
+     * @param transactionText the new transaction text
+     */
     public void setTransactionText(final @Nullable String transactionText)
     {
         this.transactionText =
                 transactionText == null || transactionText.isBlank() || transactionText.isEmpty()
-                        ? null : transactionText.trim(); // trim() removes all leading and trailing whitespaces
+                        ? "" : transactionText.trim(); // trim() removes all leading and trailing whitespaces
     }
 }
