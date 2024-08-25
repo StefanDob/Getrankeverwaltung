@@ -100,3 +100,7 @@
     max-width: 800px;
     margin: auto;
 }
+
+.left-align-grid .vaadin-grid-cell-content {
+    text-align: left; /* Align text to the left */
+}

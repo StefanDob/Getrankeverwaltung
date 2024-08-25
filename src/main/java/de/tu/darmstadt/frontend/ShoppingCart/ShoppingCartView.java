@@ -10,12 +10,9 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.flow.component.notification.Notification;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
-import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
 import de.tu.darmstadt.frontend.MainLayout;
-import de.tu.darmstadt.frontend.account.AccountView;
 import de.tu.darmstadt.frontend.account.SessionManagement;
 
 import java.util.List;

@@ -1,5 +1,6 @@
 package de.tu.darmstadt.frontend.store;
 
+import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -26,9 +27,7 @@ public class ItemView extends VerticalLayout {
         this.item = item;
         setSpacing(false);
         setWidth("250px"); // Adjust width as needed
-
-        // Enforce a fixed height for consistent sizing
-        setHeight("350px");
+        setHeight("350px"); // Fixed height for consistent sizing
 
         setPadding(true);
         setMargin(true);
@@ -53,12 +52,12 @@ public class ItemView extends VerticalLayout {
         VerticalLayout details = new VerticalLayout();
         details.setSpacing(false);
         details.setWidth("100%");
-        // No need for explicit height as it will fill remaining space
+        details.setPadding(false);
+        details.setMargin(false);
         add(details);
 
         H2 header = new H2(item.getName());
         header.addClassName("item-view-title");
-        //header.addClassNames(LumoUtility.Margin.Top.SMALL, LumoUtility.Margin.Bottom.MEDIUM);
         details.add(header);
 
         Div priceDiv = new Div(new Paragraph("Price: " + item.getPrice() + " € (Stock: " + item.getStock() + ")"));
@@ -71,7 +70,6 @@ public class ItemView extends VerticalLayout {
         buttonLayout.setWidthFull();
         buttonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
         buttonLayout.setSpacing(true);
-        details.add(buttonLayout);
 
         // Buy now button with icon and text
         Button buyNowButton = new Button("Buy", new Icon(VaadinIcon.CASH));
@@ -84,6 +82,8 @@ public class ItemView extends VerticalLayout {
         addToCartButton.addThemeName("tertiary");
         addToCartButton.addClassName("styled-button");
         buttonLayout.add(addToCartButton);
+
+        details.add(buttonLayout);
 
         // Event handlers for buttons
         buyNowButton.addClickListener(event -> {

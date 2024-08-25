@@ -1,5 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
+import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +12,11 @@ import java.util.Date;
 /**
  * A transaction is a process where money is transferred from an {@link Account} to another {@link Account}.
  * This class is used to store the transaction history in a database.
+ * changed the name transaction to transfer in order to not make it less
+ * difficult for jpa to access the table
  */
 @Entity
-@Table(name = "transaction")
+@Table(name = "transfer")
 public class Transaction {
 
     /**
@@ -20,7 +24,7 @@ public class Transaction {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionID;
+    private Long id;
 
     /**
      * The sender of this {@link Transaction}.
@@ -125,9 +129,8 @@ public class Transaction {
         this.transactionDate = transactionDate;
     }
 
-    public Long getTransactionID()
-    {
-        return transactionID;
+    public long getId(){
+        return id;
     }
 
     public @NotNull String getTransactionText()
@@ -146,5 +149,23 @@ public class Transaction {
         this.transactionText =
                 transactionText == null || transactionText.isBlank() || transactionText.isEmpty()
                         ? "" : transactionText.trim(); // trim() removes all leading and trailing whitespaces
+    }
+
+    public String getSenderName() {
+        try {
+            Account account  = AccountOperations.getAccountByID(sender);
+            return account.getFirstName() + " " + account.getLastName();
+        } catch (AccountPolicyException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getReceiverName() {
+        try {
+            Account account  = AccountOperations.getAccountByID(receiver);
+            return account.getFirstName() + " " + account.getLastName();
+        } catch (AccountPolicyException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
