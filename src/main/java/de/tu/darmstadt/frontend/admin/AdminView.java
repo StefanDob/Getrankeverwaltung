@@ -1,4 +1,4 @@
-package de.tu.darmstadt.frontend.account;
+package de.tu.darmstadt.frontend.admin;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -17,7 +17,6 @@ import de.tu.darmstadt.frontend.MainLayout;
 import de.tu.darmstadt.frontend.store.CreateItemDialog;
 import de.tu.darmstadt.frontend.store.ItemAdminDialog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @PageTitle("Admin")
@@ -120,6 +119,12 @@ public class AdminView extends Details {
         List<Account> accounts = AccountOperations.getAllAccounts();
         if(accounts != null)
             grid.setItems(accounts);
+
+        grid.addItemClickListener(event -> {
+            Account clickedAccount = event.getItem();
+            AdminAccountsDetailsView adminAccountsDetailsView = new AdminAccountsDetailsView(clickedAccount);
+            adminAccountsDetailsView.open();
+        });
 
         // Add the grid to the VerticalLayout
         verticalLayout.add(grid);

@@ -16,7 +16,7 @@ import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.frontend.account.AccountView.AccountView;
-import de.tu.darmstadt.frontend.account.AdminView;
+import de.tu.darmstadt.frontend.admin.AdminView;
 import de.tu.darmstadt.frontend.account.SessionManagement;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.frontend.store.StoreView;

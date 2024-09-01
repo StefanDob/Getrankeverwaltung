@@ -46,7 +46,7 @@ public class AccountOperations {
         // TODO: make some logic that writes the parameter to the database
 
         AccountService accountService = SpringContext.getBean(AccountService.class);
-        accountService.saveAccount(account);
+        accountService.createAccount(account);
     }
 
     /**
@@ -151,4 +151,8 @@ public class AccountOperations {
     }
 
 
+    public static void saveAccount(Account account) {
+        AccountService accountService = SpringContext.getBean(AccountService.class);
+        accountService.saveAccount(account);
+    }
 }

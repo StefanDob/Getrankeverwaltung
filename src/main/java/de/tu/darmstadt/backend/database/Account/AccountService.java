@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class for accessing Account services
+ */
 @Service
 public class AccountService {
 
@@ -29,9 +32,9 @@ public class AccountService {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
-    // Example method to save an account
+    // Example method to create an account
     @Transactional
-    public void saveAccount(Account account) {
+    public void createAccount(Account account) {
         try {
             Account accountNew = new Account();
             accountNew.setFirstName(account.getFirstName());
@@ -55,6 +58,8 @@ public class AccountService {
 
     }
 
+
+
     public Optional<Account> getAccountByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
@@ -66,6 +71,10 @@ public class AccountService {
     // New method to retrieve all accounts
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
+    }
+
+    public void saveAccount(Account account) {
+        accountRepository.save(account);
     }
 
     // Other methods for CRUD operations or business logic can be defined here

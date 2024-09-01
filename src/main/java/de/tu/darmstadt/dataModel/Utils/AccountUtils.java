@@ -9,10 +9,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class AccountUtils {
     //TODO redo or delete if not needed
@@ -112,5 +109,30 @@ public class AccountUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Converts a java.util.Date to java.time.LocalDate using the system default time zone.
+     *
+     * @param date the java.util.Date to be converted
+     * @return the converted LocalDate
+     */
+    public static LocalDate convertToLocalDate(Date date) {
+        //TODO this method does not work right, check that it works fine
+        if (date == null) {
+            return null;
+        }
+
+        // Use Calendar to extract year, month, and day from java.util.Date
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // Extract year, month, and day
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Calendar.MONTH is 0-based
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Create and return LocalDate
+        return LocalDate.of(year, month, day);
     }
 }
