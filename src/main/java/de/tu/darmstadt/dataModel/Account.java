@@ -403,11 +403,11 @@ public class Account {
 
     // ::::::::::::::::::::::::::::::::::::::::::: METHODS ::::::::::::::::::::::::::::::::::::::::::::
 
-    protected void setStatus(AccountStatus status) {
+    public void setStatus(AccountStatus status) {
         this.status = status;
     }
 
-    protected AccountStatus getStatus() {
+    public AccountStatus getStatus() {
         return status;
     }
 
@@ -416,9 +416,9 @@ public class Account {
     }
 
     public void setSaldo(double saldo) throws DebtLimitExceedingException {
-        if(saldo < debtLimit) {
+        if(saldo < -debtLimit) {
             throw new DebtLimitExceedingException("Balance should not exceed the debt limit. " +
-                    "Current debt limit: " + debtLimit + " ; Balance after setting to new value: " + saldo );
+                    "Current debt limit: " + -debtLimit + " ; Balance after setting to new value: " + saldo );
         } // end of if
 
         this.saldo = saldo;
@@ -462,10 +462,10 @@ public class Account {
         return phoneNumber;
     }
 
-    public void setDebt_limit(double debt_limit) {
+    public void setDebtLimit(double debt_limit) {
         // The debt limit should always be a negative value.
         if(debt_limit > 0) {
-            this.debtLimit = -debt_limit;
+            this.debtLimit = debt_limit;
         } else {
             this.debtLimit = debt_limit;
         } // end of if-else
@@ -524,4 +524,5 @@ public class Account {
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
+
 }

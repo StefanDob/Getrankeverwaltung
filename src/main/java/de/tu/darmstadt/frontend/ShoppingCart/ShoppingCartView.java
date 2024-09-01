@@ -48,9 +48,9 @@ public class ShoppingCartView extends VerticalLayout {
         }).setHeader("Image");
 
         grid.addColumn(ShoppingCartItem::getName).setHeader("Name");
-        grid.addColumn(shoppingCartItem -> String.format("%.2f€", shoppingCartItem.getPrice()))
+        grid.addColumn(ShoppingCartItem::getPriceAsString)
                 .setHeader("Price");
-        grid.addColumn(ShoppingCartItem::getStock).setHeader("Stock");
+        grid.addColumn(ShoppingCartItem::getStockAsString).setHeader("Stock");
 
         // Add editable quantity column
         grid.addComponentColumn(shoppingCartItem -> {

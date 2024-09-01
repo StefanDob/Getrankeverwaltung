@@ -60,7 +60,7 @@ public class ItemView extends VerticalLayout {
         header.addClassName("item-view-title");
         details.add(header);
 
-        Div priceDiv = new Div(new Paragraph("Price: " + item.getPrice() + " € (Stock: " + item.getStock() + ")"));
+        Div priceDiv = new Div(new Paragraph("Price: " + item.getItemPriceAsString() + " (Stock: " + item.getStock() + ")"));
         priceDiv.setWidth("100%");
         priceDiv.getStyle().set("text-align", "left");
         details.add(priceDiv);

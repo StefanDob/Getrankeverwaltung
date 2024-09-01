@@ -36,7 +36,7 @@ public class ViewItemDialog extends ItemDialog{
 
         title = new H1(item.getName());
         title.addClassName("bordered-title");
-        price = new H3("" + item.getPrice() + "€");
+        price = new H3(item.getItemPriceAsString());
         price.addClassName("bordered-field");
         description = showDescription();
 

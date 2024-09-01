@@ -267,4 +267,8 @@ public class Item {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+
+    public String getItemPriceAsString() {
+        return String.format("%.2f €", price);
+    }
 }

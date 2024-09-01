@@ -1,5 +1,8 @@
 package de.tu.darmstadt.backend.database.transaction;
 
+import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
+import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,15 @@ public class TransactionService {
 
     @Transactional
     public Transaction addTransaction(Transaction transaction) {
+        try {
+            Account receiver = AccountOperations.getAccountByID(transaction.getReceiver());
+            receiver.setSaldo(receiver.getSaldo() + transaction.getAmount());
+            Account sender = AccountOperations.getAccountByID(transaction.getSender());
+            sender.setSaldo(sender.getSaldo() - transaction.getAmount());
+        } catch (AccountPolicyException e) {
+            //TODO make this better
+            throw new RuntimeException(e);
+        }
         return transactionRepository.save(transaction);
     }
 }

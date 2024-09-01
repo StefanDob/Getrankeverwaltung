@@ -62,7 +62,7 @@ public class AdminView extends Details {
 
         grid.addColumn(Item::getName).setHeader("Name");
         grid.addColumn(Item::getDescription).setHeader("Description");
-        grid.addColumn(Item::getPrice).setHeader("Price");
+        grid.addColumn(Item::getItemPriceAsString).setHeader("Price");
         grid.addColumn(Item::getStock).setHeader("Stock");
 
         // Set items to the grid
@@ -114,6 +114,7 @@ public class AdminView extends Details {
         grid.addColumn(Account::getSaldo).setHeader("Saldo");
         grid.addColumn(Account::getPhoneNumber).setHeader("Phone Number");
         grid.addColumn(Account::getDebtLimit).setHeader("Debt Limit");
+        grid.addColumn(Account::getStatus).setHeader("Status");
 
         // Set items to the grid
         List<Account> accounts = AccountOperations.getAllAccounts();

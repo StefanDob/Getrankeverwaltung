@@ -65,12 +65,20 @@ public class ShoppingCartItem {
      *
      * @return price for the item not for the item sum
      */
-    public double getPrice() {
+    public String getPriceAsString() {
+        return getItem().getItemPriceAsString();
+    }
+
+    public double getPrice(){
         return getItem().getPrice();
     }
 
     public double getStock() {
         return item.getStock();
+    }
+
+    public String getStockAsString(){
+        return "" + item.getStock();
     }
 }
 

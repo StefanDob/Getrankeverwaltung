@@ -19,9 +19,9 @@ public class TransactionInformation extends Details {
 
     private final Grid<Transaction> transactionGrid = new Grid<>(Transaction.class);
 
-    public TransactionInformation(Account currentAccount) {
+    public TransactionInformation() {
         super(new H2("Transactions"));
-        this.currentAccount = currentAccount;
+        this.currentAccount = SessionManagement.getAccount();
 
         // Populate the grid with account information
         populateGrid();

@@ -47,8 +47,11 @@ public class RegistrationDialog extends Dialog {
 
         Button createAccountButton = new Button("Create Account", event -> {
             Account account = createAccount();
-            SessionManagement.setAccount(account);
-            UI.getCurrent().getPage().reload();
+            if(account != null){
+                SessionManagement.setAccount(account);
+                UI.getCurrent().getPage().reload();
+            }
+
         }
                );
         Button cancelButton = new Button("Cancel", event -> close());
@@ -124,72 +127,6 @@ public class RegistrationDialog extends Dialog {
     }
 
 
-    /**
-     * @deprecated This method should not be used since it is faulty. Use {@link #createAccountV1()} instead.
-     */
-    private void createAccountV2() {
-
-        firstNameField.setInvalid(false);
-        lastNameField.setInvalid(false);
-        emailField.setInvalid(false);
-        passwordField.setInvalid(false);
-        birthDateField.setInvalid(false);
-        phoneNumberField.setInvalid(false);
-
-        // These are the data for creating a new account
-        String email = emailField.getValue();
-        String password = passwordField.getValue();
-        String firstName = firstNameField.getValue();
-        String lastName = lastNameField.getValue();
-        Date birthDate = AccountUtils.convertToDate(birthDateField.getValue());
-        String phoneNumber = phoneNumberField.getValue();
-
-        ArrayList<? extends AccountPolicyException> accountPolicyExceptions =
-                account_data_checker(email, password, firstName, lastName, birthDate, phoneNumber);
-
-        Account account;
-
-        if(accountPolicyExceptions.isEmpty()) {
-
-            try {
-                account = new Account(email, password, firstName, lastName, birthDate, phoneNumber);
-                AccountOperations.createAccount(account);
-            } catch (AccountPolicyException e) {
-                return; // terminate
-            }
-
-            Notification.show("Account created successfully!", 3000, Notification.Position.MIDDLE);
-            close();
-        }
-
-        for(AccountPolicyException ex : accountPolicyExceptions) {
-            if(ex instanceof InvalidEmailFormatException) {
-                emailField.setInvalid(true);
-                emailField.setErrorMessage(ex.getMessage());
-            } else if(ex instanceof EmailAlreadyInUseException) {
-                emailField.setInvalid(true);
-                emailField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof InvalidPasswordFormatException) {
-                passwordField.setInvalid(true);
-                passwordField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof BadFirstNameException) {
-                firstNameField.setInvalid(true);
-                firstNameField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof BadLastNameException) {
-                lastNameField.setInvalid(true);
-                lastNameField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof IllegalBirthdateException) {
-                birthDateField.setInvalid(true);
-                birthDateField.setErrorMessage(ex.getMessage());
-            } else if (ex instanceof InvalidPhoneNumberFormatException) {
-                phoneNumberField.setInvalid(true);
-                phoneNumberField.setErrorMessage(ex.getMessage());
-            }
-        }
-
-    }
-
-
     private Account createAccountV1() {
 
         firstNameField.setInvalid(false);
@@ -213,7 +150,7 @@ public class RegistrationDialog extends Dialog {
             account = new Account(email, password, firstName,
                     lastName, birthDate, phoneNumber);
 
-            AccountOperations.createAccount(account);
+            account = AccountOperations.createAccount(account);
 
         } catch (AccountPolicyException ex) {
 

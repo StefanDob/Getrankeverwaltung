@@ -1,6 +1,6 @@
 package de.tu.darmstadt.backend.database.Account;
 
-import de.tu.darmstadt.backend.database.Account.AccountRepository;
+import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.database.ShoppingCart.ShoppingCartRepository;
 import de.tu.darmstadt.backend.database.ShoppingCart.ShoppingCartService;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
@@ -34,7 +34,7 @@ public class AccountService {
 
     // Example method to create an account
     @Transactional
-    public void createAccount(Account account) {
+    public Account createAccount(Account account) {
         try {
             Account accountNew = new Account();
             accountNew.setFirstName(account.getFirstName());
@@ -43,6 +43,7 @@ public class AccountService {
             accountNew.setEmail(account.getEmail());
             accountNew.setBirthDate(account.getBirthDate());
             accountNew.setPhoneNumber(account.getPhoneNumber());
+            accountNew.setStatus(AccountStatus.RESTRICTED);
 
             accountNew = accountRepository.save(accountNew); // Save the account
             ShoppingCart shoppingCart = new ShoppingCart();
@@ -51,11 +52,12 @@ public class AccountService {
 
             accountNew.setShoppingCart(shoppingCart);
 
-            accountRepository.save(accountNew);
+            account = accountRepository.save(accountNew);
         } catch (AccountPolicyException e) {
             throw new RuntimeException(e);
         }
 
+        return account;
     }
 
 

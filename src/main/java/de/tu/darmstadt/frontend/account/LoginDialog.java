@@ -71,7 +71,7 @@ public class LoginDialog extends Dialog {
             } catch (AccountOperationException ex) {
                     emailField.setInvalid(true);
                     passwordField.setInvalid(true);
-                Notification.show("Invalid username or password", 3000, Notification.Position.MIDDLE);
+                Notification.show(ex.getMessage(), 3000, Notification.Position.MIDDLE);
             }
             if (currentAccount != null) {
                 SessionManagement.setAccount(currentAccount);

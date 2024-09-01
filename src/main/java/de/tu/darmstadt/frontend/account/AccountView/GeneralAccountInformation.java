@@ -10,6 +10,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.frontend.account.SessionManagement;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,9 +21,9 @@ public class GeneralAccountInformation extends Details {
 
     private final Grid<Property> propertyGrid = new Grid<>(Property.class);
 
-    public GeneralAccountInformation(Account currentAccount) {
+    public GeneralAccountInformation() {
         super(new H2("General Information"));
-        this.currentAccount = currentAccount;
+        this.currentAccount = SessionManagement.getAccount();
 
         // Populate the grid with account information
         populateGrid();
@@ -56,6 +57,8 @@ public class GeneralAccountInformation extends Details {
         properties.add(new Property("Birth Date", currentAccount.getBirthDate().toString()));
         properties.add(new Property("Phone Number", currentAccount.getPhoneNumber()));
         properties.add(new Property("Account Balance", String.valueOf(currentAccount.getSaldo())));
+        properties.add(new Property("Debt Limit", String.valueOf(currentAccount.getDebtLimit())));
+        properties.add(new Property("Status", String.valueOf(currentAccount.getStatus())));
 
         propertyGrid.setItems(properties);
     }
