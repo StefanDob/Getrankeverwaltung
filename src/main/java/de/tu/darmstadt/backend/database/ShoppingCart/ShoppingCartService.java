@@ -6,6 +6,8 @@ import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCart;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
+import de.tu.darmstadt.frontend.account.SessionManagement;
+import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,5 +93,23 @@ public class ShoppingCartService {
     @Transactional
     public void save(ShoppingCartItem shoppingCartItem) {
         shoppingCartItemRepository.save(shoppingCartItem);
+    }
+
+    @Transactional
+    public void delete(ShoppingCartItem shoppingCartItem) {
+        ShoppingCart shoppingCart = shoppingCartItem.getShoppingCart();
+        shoppingCart.getItems().remove(shoppingCartItem);
+        // This triggers the orphanRemoval
+        shoppingCartRepository.save(shoppingCart);
+    }
+
+    @Transactional
+    public void deleteAllShoppingCartItems() {
+        ShoppingCart shoppingCart = SessionManagement.getAccount().getShoppingCart();
+        // Clear the items list, which removes all items from the shopping cart
+        shoppingCart.getItems().clear();
+
+        // Save the shopping cart to apply the changes and trigger orphanRemoval
+        shoppingCartRepository.save(shoppingCart);
     }
 }

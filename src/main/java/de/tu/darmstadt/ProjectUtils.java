@@ -1,7 +1,19 @@
 package de.tu.darmstadt;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.notification.Notification;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendService.TransactionOperations;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
+import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.dataModel.Transaction;
+import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
+import de.tu.darmstadt.frontend.account.LoginDialog;
+import de.tu.darmstadt.frontend.account.SessionManagement;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -86,4 +98,49 @@ public final class ProjectUtils {
         return sb.toString();
     }
 
+    public static void buyItem(Item item) {
+        if (SessionManagement.getAccount() == null) {
+            LoginDialog loginDialog = new LoginDialog();
+            loginDialog.open();
+        } else {
+            long receiverId = Constants.getMasterID();
+
+            Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, item.getPrice(), LocalDateTime.now(), item.getName());
+            TransactionOperations.addTransaction(transaction);
+
+            //Make sure acount is updated everywhere
+            try {
+                SessionManagement.setAccount(AccountOperations.getAccountByID(SessionManagement.getAccount().getId()));
+            } catch (AccountPolicyException e) {
+                throw new RuntimeException(e);
+            }
+            UI.getCurrent().getPage().reload();
+            Notification.show("You bought a " + item.getName(), 3000, Notification.Position.MIDDLE);
+        }
+    }
+
+    public static void buyShoppingCart(List<ShoppingCartItem> shoppingCartItems, double totalPrice) {
+        StringBuilder description = new StringBuilder();
+        for(ShoppingCartItem shoppingCartItem : shoppingCartItems){
+            description.append(shoppingCartItem.getItem().getName()).append(" * ").append(shoppingCartItem.getQuantity()).append("; ");
+        }
+        if (SessionManagement.getAccount() == null) {
+            LoginDialog loginDialog = new LoginDialog();
+            loginDialog.open();
+        } else {
+            long receiverId = Constants.getMasterID();
+
+            Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, totalPrice, LocalDateTime.now(), description.toString());
+            TransactionOperations.addTransaction(transaction);
+
+            //Make sure acount is updated everywhere
+            try {
+                SessionManagement.setAccount(AccountOperations.getAccountByID(SessionManagement.getAccount().getId()));
+            } catch (AccountPolicyException e) {
+                throw new RuntimeException(e);
+            }
+            UI.getCurrent().getPage().reload();
+            Notification.show("You bought the Shopping Cart ", 3000, Notification.Position.MIDDLE);
+        }
+    }
 }

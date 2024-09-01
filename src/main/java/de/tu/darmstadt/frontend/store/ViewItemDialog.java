@@ -10,6 +10,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import de.tu.darmstadt.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.account.LoginDialog;
@@ -52,6 +53,9 @@ public class ViewItemDialog extends ItemDialog{
         });
 
         Button buyNowButton = new Button("Buy now");
+        buyNowButton.addClickListener(e -> {
+            ProjectUtils.buyItem(item);
+        });
         buyNowButton.setClassName("shopping-cart-button");
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();

@@ -1,5 +1,6 @@
 package de.tu.darmstadt.frontend.store;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
@@ -11,13 +12,21 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import de.tu.darmstadt.ProjectUtils;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
+import de.tu.darmstadt.backend.backendService.TransactionOperations;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.frontend.account.SessionManagement;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import de.tu.darmstadt.Constants;
 
 public class ItemView extends VerticalLayout {
 
@@ -85,12 +94,14 @@ public class ItemView extends VerticalLayout {
 
         details.add(buttonLayout);
 
+        AtomicBoolean buttonclicked = new AtomicBoolean(false);
         // Event handlers for buttons
         buyNowButton.addClickListener(event -> {
-            // Implement buy now logic
+            buttonclicked.set(true);
+            ProjectUtils.buyItem(item);
         });
 
-        AtomicBoolean buttonclicked = new AtomicBoolean(false);
+
         addToCartButton.addClickListener(event -> {
             buttonclicked.set(true);
             if(SessionManagement.getAccount() == null){

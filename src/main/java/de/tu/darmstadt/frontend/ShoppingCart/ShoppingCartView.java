@@ -10,6 +10,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.flow.component.notification.Notification;
+import de.tu.darmstadt.ProjectUtils;
+import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
 import de.tu.darmstadt.frontend.MainLayout;
@@ -86,8 +88,9 @@ public class ShoppingCartView extends VerticalLayout {
         Button buyNowButton = new Button("Buy Now");
         buyNowButton.addClassName("buy-now-button");
         buyNowButton.addClickListener(event -> {
-            // Add buy now action here
-            Notification.show("Proceeding to checkout...", 3000, Notification.Position.MIDDLE);
+            ProjectUtils.buyShoppingCart(ShoppingCartOperations.getShoppingCartItems(SessionManagement.getAccount().getId()), getTotalPrice());
+            ShoppingCartOperations.deleteAllShoppingCartItems();
+            Notification.show("Buying completed...", 3000, Notification.Position.MIDDLE);
         });
 
 
@@ -103,14 +106,15 @@ public class ShoppingCartView extends VerticalLayout {
     }
 
     private void setTotalPriceLabel() {
+        totalPriceLabel.setText(String.format("Total: %.2f€", getTotalPrice()));
+        totalPriceLabel.addClassName("total-price");
+    }
+
+    private double getTotalPrice() {
         List<ShoppingCartItem> items = ShoppingCartOperations.getShoppingCartItems(SessionManagement.getAccount().getId());
 
         // Calculate the total price
-        double totalPrice = items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
-
-        // Display the total price
-        totalPriceLabel.setText(String.format("Total: %.2f€", totalPrice));
-        totalPriceLabel.addClassName("total-price");
+        return items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
     }
 
 

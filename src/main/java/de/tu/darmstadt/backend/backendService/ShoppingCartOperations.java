@@ -24,6 +24,12 @@ public class ShoppingCartOperations {
     }
 
     public static void delete(ShoppingCartItem shoppingCartItem) {
-        //TODO implement some logic for deleting this shoppingCartItem
+        ShoppingCartService shoppingCartService = SpringContext.getBean(ShoppingCartService.class);
+        shoppingCartService.delete(shoppingCartItem);
+    }
+
+    public static void deleteAllShoppingCartItems() {
+        ShoppingCartService shoppingCartService = SpringContext.getBean(ShoppingCartService.class);
+        shoppingCartService.deleteAllShoppingCartItems();
     }
 }
