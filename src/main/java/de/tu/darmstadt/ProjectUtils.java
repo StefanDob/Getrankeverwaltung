@@ -2,6 +2,7 @@ package de.tu.darmstadt;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
+import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
@@ -97,12 +98,14 @@ public final class ProjectUtils {
 
         return sb.toString();
     }
-
+    //TODO check wether enough money is on the account
     public static void buyItem(Item item) {
         if (SessionManagement.getAccount() == null) {
             LoginDialog loginDialog = new LoginDialog();
             loginDialog.open();
-        } else {
+        }else if(SessionManagement.getAccount().getStatus() == AccountStatus.RESTRICTED){
+            Notification.show("Your account is restricted. Contact an admin.", 3000, Notification.Position.MIDDLE);
+        }else {
             long receiverId = Constants.getMasterID();
 
             Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, item.getPrice(), LocalDateTime.now(), item.getName());
@@ -120,14 +123,17 @@ public final class ProjectUtils {
     }
 
     public static void buyShoppingCart(List<ShoppingCartItem> shoppingCartItems, double totalPrice) {
-        StringBuilder description = new StringBuilder();
-        for(ShoppingCartItem shoppingCartItem : shoppingCartItems){
-            description.append(shoppingCartItem.getItem().getName()).append(" * ").append(shoppingCartItem.getQuantity()).append("; ");
-        }
         if (SessionManagement.getAccount() == null) {
             LoginDialog loginDialog = new LoginDialog();
             loginDialog.open();
-        } else {
+        }else if(SessionManagement.getAccount().getStatus() == AccountStatus.RESTRICTED){
+            Notification.show("Your account is restricted. Contact an admin.", 3000, Notification.Position.MIDDLE);
+        }else {
+            StringBuilder description = new StringBuilder();
+            for(ShoppingCartItem shoppingCartItem : shoppingCartItems){
+                description.append(shoppingCartItem.getItem().getName()).append(" * ").append(shoppingCartItem.getQuantity()).append("; ");
+            }
+
             long receiverId = Constants.getMasterID();
 
             Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, totalPrice, LocalDateTime.now(), description.toString());
