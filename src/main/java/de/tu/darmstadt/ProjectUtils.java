@@ -4,8 +4,10 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
+import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
@@ -147,6 +149,13 @@ public final class ProjectUtils {
             }
             UI.getCurrent().getPage().reload();
             Notification.show("You bought the Shopping Cart ", 3000, Notification.Position.MIDDLE);
+        }
+    }
+
+    public static void checkForCookies() {
+        Account account = CookieOperations.getAccount();
+        if(account != null){
+            SessionManagement.setAccount(account);
         }
     }
 }

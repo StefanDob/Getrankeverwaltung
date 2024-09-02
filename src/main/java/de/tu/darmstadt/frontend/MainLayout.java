@@ -15,6 +15,7 @@ import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import de.tu.darmstadt.ProjectUtils;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.frontend.account.AccountView.AccountView;
 import de.tu.darmstadt.frontend.admin.AdminView;
@@ -34,6 +35,7 @@ public class MainLayout extends AppLayout {
     private Button loginButton;
 
     public MainLayout() {
+        ProjectUtils.checkForCookies();
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();

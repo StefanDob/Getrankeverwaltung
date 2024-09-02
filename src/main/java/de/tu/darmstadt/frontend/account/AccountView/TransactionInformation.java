@@ -7,6 +7,7 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
@@ -48,6 +49,7 @@ public class TransactionInformation extends Details {
 
         Button logoutButton = new Button("Logout");
         logoutButton.addClickListener(e -> {
+            CookieOperations.deleteCurrentAccount();
             SessionManagement.setAccount(null);
             UI.getCurrent().getPage().reload();
         });

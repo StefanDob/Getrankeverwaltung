@@ -2,6 +2,7 @@ package de.tu.darmstadt.frontend.account;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Utils.AccountUtils;
@@ -23,10 +25,11 @@ public class RegistrationDialog extends Dialog {
 
     private final TextField firstNameField = new TextField("First Name");
     private final TextField lastNameField = new TextField("Last Name");
-    private final EmailField emailField = new EmailField("Email");;
+    private final EmailField emailField = new EmailField("Email");
     private final PasswordField passwordField = new PasswordField("Password");
     private final DatePicker birthDateField = new DatePicker("Birth Date");
     private final TextField phoneNumberField = new TextField("Phone Number (optional)");
+    private final Checkbox rememberMeCheckbox = new Checkbox("Remember Me");
 
     public RegistrationDialog() {
         setCloseOnEsc(true);
@@ -38,22 +41,13 @@ public class RegistrationDialog extends Dialog {
                 new FormLayout.ResponsiveStep("21em", 2),
                 new FormLayout.ResponsiveStep("32em", 3));
 
-
-
         formLayout.add(firstNameField, lastNameField);
         formLayout.add(emailField, 2);
         formLayout.add(passwordField, 2);
         formLayout.add(birthDateField, phoneNumberField);
+        formLayout.add(rememberMeCheckbox, 2);  // Add the Remember Me checkbox
 
-        Button createAccountButton = new Button("Create Account", event -> {
-            Account account = createAccount();
-            if(account != null){
-                SessionManagement.setAccount(account);
-                UI.getCurrent().getPage().reload();
-            }
-
-        }
-               );
+        Button createAccountButton = new Button("Create Account", event -> handleAccountCreation());
         Button cancelButton = new Button("Cancel", event -> close());
         cancelButton.getStyle().set("margin-left", "auto");
 
@@ -68,23 +62,22 @@ public class RegistrationDialog extends Dialog {
         add(new H3("Create Account"), formLayout, buttonLayout);
     }
 
-    /*
-    different problems until now:
-        name throws exception even though it is written right
-        I do not think that we can hold the concept with the exceptions at this stage, they can stay, but I need public access to the methods that validate those inputs
-            What happens if multiple fields are wrong at the same time? Program cannot throw multiple exceptions at once
-     */
-    private Account createAccount() {
-        return createAccountV1();
+    private void handleAccountCreation() {
+        Account account = createAccount();
+        if (account != null) {
+            // Save the account in a cookie if the "Remember Me" checkbox is checked
+            if (rememberMeCheckbox.getValue()) {
+                CookieOperations.saveAccount(account);
+            }
+            SessionManagement.setAccount(account);
+            UI.getCurrent().getPage().reload();
+        }
     }
 
-
     private @NotNull ArrayList<? extends AccountPolicyException> account_data_checker(String email, String password,
-                                                                            String firstName, String last_name,
-                                                                            Date birthDate, String phone_number)
-    {
+                                                                                      String firstName, String last_name,
+                                                                                      Date birthDate, String phone_number) {
         final ArrayList<AccountPolicyException> exceptions = new ArrayList<>(6);
-
 
         try {
             Account.checkIfEmailIsInValidFormat(email); // Checks if email is in a valid format
@@ -126,18 +119,21 @@ public class RegistrationDialog extends Dialog {
         return exceptions;
     }
 
+    private Account createAccount() {
+        return createAccountV1();
+    }
 
     private Account createAccountV1() {
 
+        // Reset field validity before validation
         firstNameField.setInvalid(false);
         lastNameField.setInvalid(false);
         emailField.setInvalid(false);
         passwordField.setInvalid(false);
         birthDateField.setInvalid(false);
         phoneNumberField.setInvalid(false);
-        // Implement your logic to create the account here
 
-        // The entered values are stored as local variables for better readability.
+        // Store entered values
         final String email = emailField.getValue();
         final String password = passwordField.getValue();
         final String firstName = firstNameField.getValue();
@@ -147,65 +143,67 @@ public class RegistrationDialog extends Dialog {
 
         Account account;
         try {
-            account = new Account(email, password, firstName,
-                    lastName, birthDate, phoneNumber);
-
+            account = new Account(email, password, firstName, lastName, birthDate, phoneNumber);
             account = AccountOperations.createAccount(account);
 
         } catch (AccountPolicyException ex) {
-
-            try {
-                Account.checkIfEmailIsInValidFormat(email); // Checks the email format
-                Account.isEmailAlreadyInUse(email); // Checks if an email is already in use
-            } catch (AccountPolicyException e) {
-                emailField.setInvalid(true);
-                emailField.setErrorMessage(e.getMessage());
-            }
-
-            try {
-                Account.checkIfPasswordIsValid(password);
-            } catch (InvalidPasswordFormatException e) {
-                passwordField.setInvalid(true);
-                passwordField.setErrorMessage(e.getMessage());
-            }
-
-            try {
-                Account.checkIfFirstNameIsInValidFormat(firstName);
-            } catch (BadFirstNameException e) {
-                firstNameField.setInvalid(true);
-                firstNameField.setErrorMessage(e.getMessage());
-            }
-
-            try {
-                Account.checkIfLastNameIsInValidFormat(lastName);
-            } catch (BadLastNameException e) {
-                lastNameField.setInvalid(true);
-                lastNameField.setErrorMessage(e.getMessage());
-            }
-
-            try {
-                Account.checkIfBirthdateIsLegal(birthDate);
-            } catch (IllegalBirthdateException e) {
-                birthDateField.setInvalid(true);
-                birthDateField.setErrorMessage(e.getMessage());
-            }
-
-            try {
-                Account.check_if_phone_number_is_in_valid_format(phoneNumber);
-            } catch (InvalidPhoneNumberFormatException e) {
-                phoneNumberField.setInvalid(true);
-                phoneNumberField.setErrorMessage(e.getMessage());
-            }
-
+            validateInputFields(email, password, firstName, lastName, birthDate, phoneNumber);
             return null;
-
-        } // end of try-catch
-
+        }
 
         Notification.show("Account created successfully!", 3000, Notification.Position.MIDDLE);
         close();
         return account;
     }
 
+    private void validateInputFields(String email, String password, String firstName, String lastName, Date birthDate, String phoneNumber) {
+        // Validate email
+        try {
+            Account.checkIfEmailIsInValidFormat(email);
+            Account.isEmailAlreadyInUse(email);
+        } catch (AccountPolicyException e) {
+            emailField.setInvalid(true);
+            emailField.setErrorMessage(e.getMessage());
+        }
 
+        // Validate password
+        try {
+            Account.checkIfPasswordIsValid(password);
+        } catch (InvalidPasswordFormatException e) {
+            passwordField.setInvalid(true);
+            passwordField.setErrorMessage(e.getMessage());
+        }
+
+        // Validate first name
+        try {
+            Account.checkIfFirstNameIsInValidFormat(firstName);
+        } catch (BadFirstNameException e) {
+            firstNameField.setInvalid(true);
+            firstNameField.setErrorMessage(e.getMessage());
+        }
+
+        // Validate last name
+        try {
+            Account.checkIfLastNameIsInValidFormat(lastName);
+        } catch (BadLastNameException e) {
+            lastNameField.setInvalid(true);
+            lastNameField.setErrorMessage(e.getMessage());
+        }
+
+        // Validate birth date
+        try {
+            Account.checkIfBirthdateIsLegal(birthDate);
+        } catch (IllegalBirthdateException e) {
+            birthDateField.setInvalid(true);
+            birthDateField.setErrorMessage(e.getMessage());
+        }
+
+        // Validate phone number
+        try {
+            Account.check_if_phone_number_is_in_valid_format(phoneNumber);
+        } catch (InvalidPhoneNumberFormatException e) {
+            phoneNumberField.setInvalid(true);
+            phoneNumberField.setErrorMessage(e.getMessage());
+        }
+    }
 }
