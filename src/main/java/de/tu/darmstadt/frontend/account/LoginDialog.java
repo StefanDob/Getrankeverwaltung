@@ -14,12 +14,12 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
-import de.tu.darmstadt.backend.exceptions.accountOperation.IncorrectEmailException;
 import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.frontend.MainLayout;
 
 public class LoginDialog extends Dialog {
 
@@ -29,7 +29,7 @@ public class LoginDialog extends Dialog {
 
     public LoginDialog() {
         // Header and close button
-        Header header = new Header(new H2("Login"));
+        Header header = new Header(new H2(LanguageManager.getLocalizedText("Login")));
         HorizontalLayout headerLayout = new HorizontalLayout();
         headerLayout.setWidthFull();
         headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
@@ -43,24 +43,24 @@ public class LoginDialog extends Dialog {
         formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
 
         // Email field
-        emailField = new TextField("Email");
+        emailField = new TextField(LanguageManager.getLocalizedText("Email"));
         formLayout.add(emailField);
 
         // Password field
-        passwordField = new PasswordField("Password");
+        passwordField = new PasswordField(LanguageManager.getLocalizedText("Password"));
         formLayout.add(passwordField);
 
         // Remember Me checkbox
-        rememberMeCheckbox = new Checkbox("Remember Me");
+        rememberMeCheckbox = new Checkbox(LanguageManager.getLocalizedText("Remember Me"));
         formLayout.add(rememberMeCheckbox);
 
         // Login button
-        Button loginButton = new Button("Login");
+        Button loginButton = new Button(LanguageManager.getLocalizedText("Login"));
         loginButton.setWidthFull();
         loginButton.addClickListener(e -> handleLogin());
 
         // Register button
-        Button registerButton = new Button("Create Account");
+        Button registerButton = new Button(LanguageManager.getLocalizedText("Create Account"));
         registerButton.setWidthFull();
         registerButton.addClickListener(e -> openRegistrationDialog());
 

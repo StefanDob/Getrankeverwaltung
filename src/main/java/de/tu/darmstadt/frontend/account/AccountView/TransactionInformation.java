@@ -7,11 +7,12 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class TransactionInformation extends Details {
     private final Grid<Transaction> transactionGrid = new Grid<>(Transaction.class);
 
     public TransactionInformation() {
-        super(new H2("Transactions"));
+        super(new H2(LanguageManager.getLocalizedText("Transactions")));
         this.currentAccount = SessionManagement.getAccount();
 
         // Populate the grid with account information
@@ -38,7 +39,7 @@ public class TransactionInformation extends Details {
         transactionGrid.setHeight("55vh");
 
         VerticalLayout verticalLayout = new VerticalLayout();
-        Button addTransactionButton = new Button("Transfer Money");
+        Button addTransactionButton = new Button(LanguageManager.getLocalizedText("Transfer Money"));
         addTransactionButton.addClickListener(e -> {
             NewTransactionDialog newTransactionDialog = new NewTransactionDialog(currentAccount);
             newTransactionDialog.open();
@@ -47,7 +48,7 @@ public class TransactionInformation extends Details {
         verticalLayout.add(transactionGrid);
         add(verticalLayout);
 
-        Button logoutButton = new Button("Logout");
+        Button logoutButton = new Button(LanguageManager.getLocalizedText("Logout"));
         logoutButton.addClickListener(e -> {
             CookieOperations.deleteCurrentAccount();
             SessionManagement.setAccount(null);
@@ -74,11 +75,11 @@ public class TransactionInformation extends Details {
         transactionGrid.removeAllColumns();
 
         // Manually define columns
-        transactionGrid.addColumn(Transaction::getAmount).setHeader("Amount").setTextAlign(ColumnTextAlign.END);
-        transactionGrid.addColumn(Transaction::getSenderName).setHeader("Sender").setTextAlign(ColumnTextAlign.START);
-        transactionGrid.addColumn(Transaction::getReceiverName).setHeader("Receiver").setTextAlign(ColumnTextAlign.START);
-        transactionGrid.addColumn(Transaction::getTransactionText).setHeader("Text").setTextAlign(ColumnTextAlign.START);
-        transactionGrid.addColumn(Transaction::getTransactionDate).setHeader("Date").setTextAlign(ColumnTextAlign.START);
+        transactionGrid.addColumn(Transaction::getAmount).setHeader(LanguageManager.getLocalizedText("Amount")).setTextAlign(ColumnTextAlign.END);
+        transactionGrid.addColumn(Transaction::getSenderName).setHeader(LanguageManager.getLocalizedText("Sender")).setTextAlign(ColumnTextAlign.START);
+        transactionGrid.addColumn(Transaction::getReceiverName).setHeader(LanguageManager.getLocalizedText("Receiver")).setTextAlign(ColumnTextAlign.START);
+        transactionGrid.addColumn(Transaction::getTransactionText).setHeader(LanguageManager.getLocalizedText("Text")).setTextAlign(ColumnTextAlign.START);
+        transactionGrid.addColumn(Transaction::getTransactionDate).setHeader(LanguageManager.getLocalizedText("Date")).setTextAlign(ColumnTextAlign.START);
 
 
     }

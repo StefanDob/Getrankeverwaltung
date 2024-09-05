@@ -9,12 +9,13 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 
 import java.time.LocalDateTime;
 
@@ -29,9 +30,9 @@ public class NewTransactionDialog extends Dialog {
     public NewTransactionDialog(Account currentAccount) {
         this.currentAccount = currentAccount;
         // Initialize components
-        receiverField = new TextField("Receiver");
+        receiverField = new TextField(LanguageManager.getLocalizedText("Receiver"));
         amountField = new NumberField("Amount");
-        transactionTextField = new TextField("Transaction Text");
+        transactionTextField = new TextField(LanguageManager.getLocalizedText("Transaction Text"));
 
         receiverField.setWidth("35vw");
         amountField.setWidth("35vw");
@@ -41,8 +42,8 @@ public class NewTransactionDialog extends Dialog {
         amountField.setMin(0);
 
         // Create buttons
-        Button saveButton = new Button("Save", event -> saveTransaction());
-        Button cancelButton = new Button("Cancel", event -> close());
+        Button saveButton = new Button(LanguageManager.getLocalizedText("Save"), event -> saveTransaction());
+        Button cancelButton = new Button(LanguageManager.getLocalizedText("Cancel"), event -> close());
 
         // Layout for form fields
         VerticalLayout formLayout = new VerticalLayout(receiverField, amountField, transactionTextField);
@@ -73,7 +74,7 @@ public class NewTransactionDialog extends Dialog {
         Transaction transaction = new Transaction(currentAccount.getId(), receiverId, amount, LocalDateTime.now(),transactionText);
         TransactionOperations.addTransaction(transaction);
 
-        Notification.show("Transaction commited", 3000, Notification.Position.MIDDLE);
+        Notification.show(LanguageManager.getLocalizedText("Transaction commited"), 3000, Notification.Position.MIDDLE);
         //Make sure acount is updated everywhere
         try {
             SessionManagement.setAccount(AccountOperations.getAccountByID(currentAccount.getId()));
@@ -90,25 +91,25 @@ public class NewTransactionDialog extends Dialog {
         amountField.setInvalid(false);
         if(receiverField.isEmpty()){
             receiverField.setInvalid(true);
-            receiverField.setErrorMessage("Please Enter Receiver");
+            receiverField.setErrorMessage(LanguageManager.getLocalizedText("Please Enter Receiver"));
             return false;
         }else if(AccountOperations.getAccountByEmail(receiverField.getValue()) == null){
             receiverField.setInvalid(true);
-            receiverField.setErrorMessage("Receiver does not exist");
+            receiverField.setErrorMessage(LanguageManager.getLocalizedText("Receiver does not exist"));
             return false;
         }
         else if(amountField.isEmpty()){
             amountField.setInvalid(true);
-            amountField.setErrorMessage("Enter Amount");
+            amountField.setErrorMessage(LanguageManager.getLocalizedText("Enter Amount"));
             return false;
         }
         else if(amountField.getValue() == 0){
             amountField.setInvalid(true);
-            amountField.setErrorMessage("Please enter amount that is not 0");
+            amountField.setErrorMessage(LanguageManager.getLocalizedText("Amount cannot be 0"));
             return false;
         }else if((currentAccount.getSaldo() + currentAccount.getDebtLimit()) < amountField.getValue()){
             amountField.setInvalid(true);
-            amountField.setErrorMessage("Your account does not have enough coverage");
+            amountField.setErrorMessage(LanguageManager.getLocalizedText("Your account does not have enough coverage"));
             return false;
         }
         return true;

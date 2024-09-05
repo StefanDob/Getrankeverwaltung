@@ -11,6 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.DebtLimitExceedingException;
@@ -18,7 +19,7 @@ import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidEmailFormatExcept
 import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidNameFormatException;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidPasswordFormatException;
 import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.dataModel.Utils.AccountUtils;
+import de.tu.darmstadt.Utils.AccountUtils;
 
 public class AdminAccountsDetailsView extends Dialog {
 
@@ -41,22 +42,22 @@ public class AdminAccountsDetailsView extends Dialog {
         setWidth("40vw");
 
         // Create and configure the UI components
-        firstNameField = new TextField("First Name");
-        lastNameField = new TextField("Last Name");
-        emailField = new TextField("Email");
-        passwordField = new PasswordField("Password");
-        birthDatePicker = new DatePicker("Birth Date");
-        phoneNumberField = new TextField("Phone Number");
-        debtLimitField = new TextField("Debt Limit");
-        saldoField = new TextField("Saldo");
+        firstNameField = new TextField(LanguageManager.getLocalizedText("First Name"));
+        lastNameField = new TextField(LanguageManager.getLocalizedText("Last Name"));
+        emailField = new TextField(LanguageManager.getLocalizedText("Email"));
+        passwordField = new PasswordField(LanguageManager.getLocalizedText("Password"));
+        birthDatePicker = new DatePicker(LanguageManager.getLocalizedText("Birth Date"));
+        phoneNumberField = new TextField(LanguageManager.getLocalizedText("Phone Number"));
+        debtLimitField = new TextField(LanguageManager.getLocalizedText("Debt Limit"));
+        saldoField = new TextField(LanguageManager.getLocalizedText("Balance"));
 
         // Add status field
-        statusComboBox = new ComboBox<>("Status");
+        statusComboBox = new ComboBox<>(LanguageManager.getLocalizedText("State"));
         statusComboBox.setItems(AccountStatus.values());  // Set items to enum values
         statusComboBox.setWidthFull();
 
-        saveButton = new Button("Save", event -> saveAccount());
-        cancelButton = new Button("Cancel", event -> this.close());
+        saveButton = new Button(LanguageManager.getLocalizedText("Save"), event -> saveAccount());
+        cancelButton = new Button(LanguageManager.getLocalizedText("Cancel"), event -> this.close());
 
         // Populate fields with account data
         populateFields(account);
@@ -141,14 +142,14 @@ public class AdminAccountsDetailsView extends Dialog {
             try {
                 account.setDebtLimit(Double.parseDouble(event.getValue()));
             } catch (NumberFormatException e) {
-                Notification.show("Invalid debt limit format");
+                Notification.show(LanguageManager.getLocalizedText("Invalid debt limit format"));
             }
         });
         saldoField.addValueChangeListener(event -> {
             try {
                 account.setSaldo(Double.parseDouble(event.getValue()));
             } catch (NumberFormatException e) {
-                Notification.show("Invalid saldo format");
+                Notification.show(LanguageManager.getLocalizedText("Invalid balance format"));
             } catch (DebtLimitExceedingException e) {
                 // TODO make this better
                 throw new RuntimeException(e);
@@ -160,7 +161,7 @@ public class AdminAccountsDetailsView extends Dialog {
     private void saveAccount() {
         // Update account with data from fields
         AccountOperations.saveAccount(account);
-        Notification.show("Account updated successfully");
+        Notification.show(LanguageManager.getLocalizedText("Account updated successfully"));
         close();
         UI.getCurrent().getPage().reload();
     }

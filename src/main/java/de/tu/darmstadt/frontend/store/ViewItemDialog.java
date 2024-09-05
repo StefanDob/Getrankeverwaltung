@@ -10,11 +10,12 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import de.tu.darmstadt.ProjectUtils;
+import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.account.LoginDialog;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 
 public class ViewItemDialog extends ItemDialog{
     HorizontalLayout headerLayout;
@@ -41,7 +42,7 @@ public class ViewItemDialog extends ItemDialog{
         price.addClassName("bordered-field");
         description = showDescription();
 
-        Button addToCartButton = new Button("Add to Shopping Cart");
+        Button addToCartButton = new Button(LanguageManager.getLocalizedText("Add to Shopping Cart"));
         addToCartButton.setClassName("shopping-cart-button");
         addToCartButton.addClickListener(e -> {
             if(SessionManagement.getAccount() == null){
@@ -52,7 +53,7 @@ public class ViewItemDialog extends ItemDialog{
             }
         });
 
-        Button buyNowButton = new Button("Buy now");
+        Button buyNowButton = new Button(LanguageManager.getLocalizedText("Buy Now"));
         buyNowButton.addClickListener(e -> {
             ProjectUtils.buyItem(item);
         });
@@ -101,7 +102,7 @@ public class ViewItemDialog extends ItemDialog{
     @Override
     protected HorizontalLayout createHeader() {
         // Close button in the dialog header
-        Button closeButton = new Button("Close");
+        Button closeButton = new Button(LanguageManager.getLocalizedText("Close"));
         closeButton.addClickListener(event -> close());
         closeButton.getStyle().set("margin-left", "auto"); // Move the button to the right
 

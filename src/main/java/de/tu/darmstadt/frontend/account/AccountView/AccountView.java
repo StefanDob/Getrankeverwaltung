@@ -7,11 +7,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.MainLayout;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 
 @PageTitle("Account")
 @Route(value = "account", layout = MainLayout.class)
@@ -47,7 +48,7 @@ public class AccountView extends VerticalLayout {
 
 
     private void showLastTransactions() {
-        Details lastTransactions = new Details(new H2("Last Transactions"));
+        Details lastTransactions = new Details(new H2(LanguageManager.getLocalizedText("Last Transactions")));
         lastTransactions.setOpened(true);
         lastTransactions.getStyle().set("border", "1px solid #ccc");
         lastTransactions.getStyle().set("border-radius", "6px");
@@ -57,7 +58,7 @@ public class AccountView extends VerticalLayout {
 
         // Configure the grid
         grid.setItems(AccountOperations.getTransactionsByAccount(currentAccount));
-        grid.setColumns("sender", "receiver", "amount", "transactionDate");
+        grid.setColumns(LanguageManager.getLocalizedText("sender"), LanguageManager.getLocalizedText("receiver"), LanguageManager.getLocalizedText("amount"), LanguageManager.getLocalizedText("transactionDate"));
         grid.setWidth("100%");
         grid.setAllRowsVisible(true);
 

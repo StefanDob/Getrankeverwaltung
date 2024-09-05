@@ -1,7 +1,5 @@
 package de.tu.darmstadt.frontend.store;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -12,21 +10,15 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import de.tu.darmstadt.ProjectUtils;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
-import de.tu.darmstadt.backend.backendService.TransactionOperations;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.account.LoginDialog;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import de.tu.darmstadt.Constants;
 
 public class ItemView extends VerticalLayout {
 
@@ -69,7 +61,7 @@ public class ItemView extends VerticalLayout {
         header.addClassName("item-view-title");
         details.add(header);
 
-        Div priceDiv = new Div(new Paragraph("Price: " + item.getItemPriceAsString() + " (Stock: " + item.getStock() + ")"));
+        Div priceDiv = new Div(new Paragraph(LanguageManager.getLocalizedText("Price") + ": " + item.getItemPriceAsString() + " (" + LanguageManager.getLocalizedText("Stock") + ": " + item.getStock() + ")"));
         priceDiv.setWidth("100%");
         priceDiv.getStyle().set("text-align", "left");
         details.add(priceDiv);
@@ -81,13 +73,13 @@ public class ItemView extends VerticalLayout {
         buttonLayout.setSpacing(true);
 
         // Buy now button with icon and text
-        Button buyNowButton = new Button("Buy", new Icon(VaadinIcon.CASH));
+        Button buyNowButton = new Button(LanguageManager.getLocalizedText("Buy"), new Icon(VaadinIcon.CASH));
         buyNowButton.addThemeName("tertiary");
         buyNowButton.addClassName("styled-button");
         buttonLayout.add(buyNowButton);
 
         // Add to cart button with icon and text
-        Button addToCartButton = new Button("Cart", new Icon(VaadinIcon.CART));
+        Button addToCartButton = new Button(LanguageManager.getLocalizedText("Cart"), new Icon(VaadinIcon.CART));
         addToCartButton.addThemeName("tertiary");
         addToCartButton.addClassName("styled-button");
         buttonLayout.add(addToCartButton);
@@ -109,7 +101,7 @@ public class ItemView extends VerticalLayout {
                 loginDialog.open();
             }else{
                 ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getITEMId());
-                Notification.show("Item added to cart", 2000, Notification.Position.MIDDLE);
+                Notification.show(LanguageManager.getLocalizedText("Item added to cart"), 2000, Notification.Position.MIDDLE);
             }
         });
 

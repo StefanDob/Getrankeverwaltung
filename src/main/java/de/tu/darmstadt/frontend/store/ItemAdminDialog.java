@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
 import de.tu.darmstadt.dataModel.Item;
@@ -40,7 +41,7 @@ public class ItemAdminDialog extends CreateItemDialog{
         priceField.setValue(item.getPrice());
         stockField.setValue("" + item.getStock());
 
-        Button deleteButton = new Button("Delete Item");
+        Button deleteButton = new Button(LanguageManager.getLocalizedText("Delete Item"));
         deleteButton.setWidthFull();
         verticalLayout.add(deleteButton);
 
@@ -51,11 +52,11 @@ public class ItemAdminDialog extends CreateItemDialog{
             confirmationDialog.setCloseOnOutsideClick(false);
 
             // Add a message to the confirmation dialog
-            Span message = new Span("Are you sure you want to delete this item?");
+            Span message = new Span(LanguageManager.getLocalizedText("Are you sure you want to delete this item?"));
             confirmationDialog.add(message);
 
             // Create buttons for 'Confirm' and 'Cancel'
-            Button confirmButton = new Button("Confirm", e -> {
+            Button confirmButton = new Button(LanguageManager.getLocalizedText("Confirm"), e -> {
                 // Perform the delete operation if confirmed
                 ItemOperations.deleteItem(item);
                 confirmationDialog.close(); // Close the confirmation dialog
@@ -63,7 +64,7 @@ public class ItemAdminDialog extends CreateItemDialog{
                 UI.getCurrent().getPage().reload(); // Reload the page
             });
 
-            Button cancelButton = new Button("Cancel", e -> {
+            Button cancelButton = new Button(LanguageManager.getLocalizedText("Cancel"), e -> {
                 confirmationDialog.close(); // Close the confirmation dialog
             });
 

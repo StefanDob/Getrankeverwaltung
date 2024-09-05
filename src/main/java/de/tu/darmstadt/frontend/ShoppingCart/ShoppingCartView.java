@@ -10,12 +10,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import com.vaadin.flow.component.notification.Notification;
-import de.tu.darmstadt.ProjectUtils;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCartItem;
 import de.tu.darmstadt.frontend.MainLayout;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 
 import java.util.List;
 
@@ -47,12 +47,12 @@ public class ShoppingCartView extends VerticalLayout {
             image.setHeight("120px");
             image.addClassName("item-image");
             return image;
-        }).setHeader("Image");
+        }).setHeader(LanguageManager.getLocalizedText("Image"));
 
-        grid.addColumn(ShoppingCartItem::getName).setHeader("Name");
+        grid.addColumn(ShoppingCartItem::getName).setHeader(LanguageManager.getLocalizedText("Name"));
         grid.addColumn(ShoppingCartItem::getPriceAsString)
-                .setHeader("Price");
-        grid.addColumn(ShoppingCartItem::getStockAsString).setHeader("Stock");
+                .setHeader(LanguageManager.getLocalizedText("Price"));
+        grid.addColumn(ShoppingCartItem::getStockAsString).setHeader(LanguageManager.getLocalizedText("Stock"));
 
         // Add editable quantity column
         grid.addComponentColumn(shoppingCartItem -> {
@@ -66,17 +66,17 @@ public class ShoppingCartView extends VerticalLayout {
                 if(event.getValue() == 0){
                     ShoppingCartOperations.delete(shoppingCartItem);
                     UI.getCurrent().getPage().reload();
-                    Notification.show("Item removed", 2000, Notification.Position.MIDDLE);
+                    Notification.show(LanguageManager.getLocalizedText("Item removed"), 2000, Notification.Position.MIDDLE);
                 }else{
                     shoppingCartItem.setQuantity(event.getValue().intValue());
                     ShoppingCartOperations.save(shoppingCartItem);
                     setTotalPriceLabel();
-                    Notification.show("Quantity updated", 2000, Notification.Position.MIDDLE);
+                    Notification.show(LanguageManager.getLocalizedText("Quantity updated"), 2000, Notification.Position.MIDDLE);
                 }
 
             });
             return quantityField;
-        }).setHeader("Quantity");
+        }).setHeader(LanguageManager.getLocalizedText("Quantity"));
 
         // Set items to the grid
         grid.setItems(items);
@@ -85,12 +85,12 @@ public class ShoppingCartView extends VerticalLayout {
         setTotalPriceLabel();
 
         // Add "Buy Now" button
-        Button buyNowButton = new Button("Buy Now");
+        Button buyNowButton = new Button(LanguageManager.getLocalizedText("Buy Now"));
         buyNowButton.addClassName("buy-now-button");
         buyNowButton.addClickListener(event -> {
             ProjectUtils.buyShoppingCart(ShoppingCartOperations.getShoppingCartItems(SessionManagement.getAccount().getId()), getTotalPrice());
             ShoppingCartOperations.deleteAllShoppingCartItems();
-            Notification.show("Buying completed...", 3000, Notification.Position.MIDDLE);
+            Notification.show(LanguageManager.getLocalizedText("Buying completed..."), 3000, Notification.Position.MIDDLE);
         });
 
 
@@ -125,10 +125,10 @@ public class ShoppingCartView extends VerticalLayout {
         img.setWidth("200px");
         add(img);
 
-        H2 header = new H2("You are not logged in yet");
+        H2 header = new H2(LanguageManager.getLocalizedText("You are not logged in yet"));
         header.addClassNames(Margin.Top.XLARGE, Margin.Bottom.MEDIUM);
         add(header);
-        add(new Paragraph("Please login if you want to use the Shopping Cart 🤗"));
+        add(new Paragraph(LanguageManager.getLocalizedText("Please login if you want to use the Shopping Cart 🤗")));
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);

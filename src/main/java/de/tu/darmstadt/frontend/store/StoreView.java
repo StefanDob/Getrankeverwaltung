@@ -10,6 +10,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.MainLayout;
@@ -43,7 +44,7 @@ public class StoreView extends VerticalLayout {
 
         // Create the TextField for the search bar
         TextField searchBar = new TextField();
-        searchBar.setPlaceholder("Search items...");
+        searchBar.setPlaceholder(LanguageManager.getLocalizedText("Search items..."));
         searchBar.setWidth("80%"); // Set a width that aligns with the itemContainer
         searchBar.setValueChangeMode(ValueChangeMode.EAGER); // Set to trigger on each keystroke
 

@@ -13,12 +13,14 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.UploadI18N;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.server.StreamResource;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.Utils.ItemUtils;
+import de.tu.darmstadt.Utils.ItemUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -57,7 +59,7 @@ public class CreateItemDialog extends ItemDialog {
                 .set("object-fit", "contain");
 
         // Create a TextField for inputting the image link
-        imageLinkField = new TextArea("Image URL");
+        imageLinkField = new TextArea(LanguageManager.getLocalizedText("Image URL"));
         imageLinkField.setWidth("40vw");
         imageLinkField.setHeight("8vh");
         imageLinkField.getStyle().set("font-size", "12px");
@@ -71,15 +73,25 @@ public class CreateItemDialog extends ItemDialog {
             try {
                 cachedImage = ItemUtils.downloadImageAsByteArray(imageUrl);
             } catch (IOException e) {
-                Notification.show("Failed to load image from URL: " + e.getMessage());
+                Notification.show(LanguageManager.getLocalizedText("Failed to load image from URL: ") + e.getMessage());
             }
         });
 
         // Create a MemoryBuffer to hold the uploaded file
         MemoryBuffer buffer = new MemoryBuffer();
         Upload upload = new Upload(buffer);
+
         upload.setAcceptedFileTypes("image/jpeg", "image/png", "image/gif");
         upload.setWidth("40vw");
+        //set Text on upload button
+        UploadI18N i18n = new UploadI18N();
+        i18n.setAddFiles(new UploadI18N.AddFiles().setOne(LanguageManager.getLocalizedText("Select file..."))); // Custom text for the upload button
+        i18n.setDropFiles(new UploadI18N.DropFiles().setOne(LanguageManager.getLocalizedText("Drop file here..."))); // Custom text for the drop area
+        i18n.setUploading(new UploadI18N.Uploading()
+                .setStatus(new UploadI18N.Uploading.Status()
+                        .setProcessing(LanguageManager.getLocalizedText("Uploading file...")))); // Custom text during upload
+
+        upload.setI18n(i18n);
 
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
@@ -98,7 +110,7 @@ public class CreateItemDialog extends ItemDialog {
         });
 
         upload.addFailedListener(event ->
-                Notification.show("Image upload failed: " + event.getReason().getMessage())
+                Notification.show(LanguageManager.getLocalizedText("Image upload failed: ") + event.getReason().getMessage())
         );
 
         // Add the components to the layout
@@ -109,17 +121,17 @@ public class CreateItemDialog extends ItemDialog {
 
     @Override
     VerticalLayout createRightPart() {
-        priceField = new NumberField("Price");
+        priceField = new NumberField(LanguageManager.getLocalizedText("Price"));
         priceField.setWidthFull();
 
-        stockField = new TextField("Stock");
+        stockField = new TextField(LanguageManager.getLocalizedText("Stock"));
         stockField.setWidthFull();
 
-        nameField = new TextField("Name");
+        nameField = new TextField(LanguageManager.getLocalizedText("Name"));
         nameField.setWidthFull();
         nameField.getStyle().set("font-size", "30px");
 
-        descriptionField = new TextArea("Description");
+        descriptionField = new TextArea(LanguageManager.getLocalizedText("Description"));
         descriptionField.setWidthFull();
         descriptionField.setHeight("30vh");
 
@@ -137,7 +149,7 @@ public class CreateItemDialog extends ItemDialog {
     @Override
     Component createHeader() {
         // Save button in the dialog header
-        Button saveButton = new Button("Save");
+        Button saveButton = new Button(LanguageManager.getLocalizedText("Save"));
         saveButton.addClickListener(event -> save());
         saveButton.getStyle().set("margin-right", "0.5em");
 

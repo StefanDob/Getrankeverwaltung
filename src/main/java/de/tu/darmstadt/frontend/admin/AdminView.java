@@ -9,6 +9,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Account;
@@ -24,7 +25,7 @@ import java.util.List;
 public class AdminView extends Details {
 
     public AdminView(){
-        super(new H2("Admin Options"));
+        super(new H2(LanguageManager.getLocalizedText("Admin Options")));
         setOpened(true);
         setWidth("100%");
         getStyle().set("border", "1px solid #ccc");
@@ -43,7 +44,7 @@ public class AdminView extends Details {
         verticalLayout.getStyle().set("overflow", "auto");
 
         // Create a title
-        H3 title = new H3("Items List");
+        H3 title = new H3(LanguageManager.getLocalizedText("Items List"));
 
         // Add title to the VerticalLayout
         verticalLayout.add(title);
@@ -54,16 +55,16 @@ public class AdminView extends Details {
 
         // Add columns
         grid.addComponentColumn(item -> {
-            Image image = new Image(item.getImageAsResource(), "Item image");
+            Image image = new Image(item.getImageAsResource(), LanguageManager.getLocalizedText("Item image"));
             image.setWidth("100px");
             image.setHeight("100px");
             return image;
-        }).setHeader("Image");
+        }).setHeader(LanguageManager.getLocalizedText("Image"));
 
-        grid.addColumn(Item::getName).setHeader("Name");
-        grid.addColumn(Item::getDescription).setHeader("Description");
-        grid.addColumn(Item::getItemPriceAsString).setHeader("Price");
-        grid.addColumn(Item::getStock).setHeader("Stock");
+        grid.addColumn(Item::getName).setHeader(LanguageManager.getLocalizedText("Name"));
+        grid.addColumn(Item::getDescription).setHeader(LanguageManager.getLocalizedText("Description"));
+        grid.addColumn(Item::getItemPriceAsString).setHeader(LanguageManager.getLocalizedText("Price"));
+        grid.addColumn(Item::getStock).setHeader(LanguageManager.getLocalizedText("Stock"));
 
         // Set items to the grid
         List<Item> items = ItemOperations.getAllShopItems();
@@ -77,7 +78,7 @@ public class AdminView extends Details {
         });
 
         // Create and add the "Create Item" button
-        Button createItemButton = new Button("Create Item");
+        Button createItemButton = new Button(LanguageManager.getLocalizedText("Create Item"));
         verticalLayout.add(createItemButton);
 
         // Add click listener for "Create Item" button (**implement your logic here**)
@@ -99,7 +100,7 @@ public class AdminView extends Details {
         verticalLayout.getStyle().set("overflow", "auto");
 
         // Create a title
-        H3 title = new H3("Accounts List");
+        H3 title = new H3(LanguageManager.getLocalizedText("Accounts List"));
 
         // Add title to the VerticalLayout
         verticalLayout.add(title);
@@ -109,12 +110,12 @@ public class AdminView extends Details {
         grid.addClassName("account-grid");
 
         // Add columns
-        grid.addColumn(Account::getFirstName).setHeader("First Name");
-        grid.addColumn(Account::getLastName).setHeader("Last Name");
-        grid.addColumn(Account::getSaldo).setHeader("Saldo");
-        grid.addColumn(Account::getPhoneNumber).setHeader("Phone Number");
-        grid.addColumn(Account::getDebtLimit).setHeader("Debt Limit");
-        grid.addColumn(Account::getStatus).setHeader("Status");
+        grid.addColumn(Account::getFirstName).setHeader(LanguageManager.getLocalizedText("First Name"));
+        grid.addColumn(Account::getLastName).setHeader(LanguageManager.getLocalizedText("Last Name"));
+        grid.addColumn(Account::getSaldo).setHeader(LanguageManager.getLocalizedText("Balance"));
+        grid.addColumn(Account::getPhoneNumber).setHeader(LanguageManager.getLocalizedText("Phone Number"));
+        grid.addColumn(Account::getDebtLimit).setHeader(LanguageManager.getLocalizedText("Debt Limit"));
+        grid.addColumn(Account::getStatus).setHeader(LanguageManager.getLocalizedText("State"));
 
         // Set items to the grid
         List<Account> accounts = AccountOperations.getAllAccounts();

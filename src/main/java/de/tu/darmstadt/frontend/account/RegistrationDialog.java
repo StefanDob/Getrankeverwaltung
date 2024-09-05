@@ -11,11 +11,13 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.dataModel.Utils.AccountUtils;
+import de.tu.darmstadt.Utils.AccountUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -23,13 +25,13 @@ import java.util.Date;
 
 public class RegistrationDialog extends Dialog {
 
-    private final TextField firstNameField = new TextField("First Name");
-    private final TextField lastNameField = new TextField("Last Name");
-    private final EmailField emailField = new EmailField("Email");
-    private final PasswordField passwordField = new PasswordField("Password");
-    private final DatePicker birthDateField = new DatePicker("Birth Date");
-    private final TextField phoneNumberField = new TextField("Phone Number (optional)");
-    private final Checkbox rememberMeCheckbox = new Checkbox("Remember Me");
+    private final TextField firstNameField = new TextField(LanguageManager.getLocalizedText("First Name"));
+    private final TextField lastNameField = new TextField(LanguageManager.getLocalizedText("Last Name"));
+    private final EmailField emailField = new EmailField(LanguageManager.getLocalizedText("Email"));
+    private final PasswordField passwordField = new PasswordField(LanguageManager.getLocalizedText("Password"));
+    private final DatePicker birthDateField = new DatePicker(LanguageManager.getLocalizedText("Birth Date"));
+    private final TextField phoneNumberField = new TextField(LanguageManager.getLocalizedText("Phone Number (optional)"));
+    private final Checkbox rememberMeCheckbox = new Checkbox(LanguageManager.getLocalizedText("Remember Me"));
 
     public RegistrationDialog() {
         setCloseOnEsc(true);
@@ -47,8 +49,8 @@ public class RegistrationDialog extends Dialog {
         formLayout.add(birthDateField, phoneNumberField);
         formLayout.add(rememberMeCheckbox, 2);  // Add the Remember Me checkbox
 
-        Button createAccountButton = new Button("Create Account", event -> handleAccountCreation());
-        Button cancelButton = new Button("Cancel", event -> close());
+        Button createAccountButton = new Button(LanguageManager.getLocalizedText("Create Account"), event -> handleAccountCreation());
+        Button cancelButton = new Button(LanguageManager.getLocalizedText("Cancel"), event -> close());
         cancelButton.getStyle().set("margin-left", "auto");
 
         FormLayout buttonLayout = new FormLayout(createAccountButton, cancelButton);
@@ -57,9 +59,9 @@ public class RegistrationDialog extends Dialog {
         buttonLayout.setColspan(createAccountButton, 1);
         buttonLayout.setColspan(cancelButton, 1);
         buttonLayout.setColspan(formLayout, 2);
-        buttonLayout.setColspan(new H3("Create Account"), 2);
+        buttonLayout.setColspan(new H3(LanguageManager.getLocalizedText("Create Account")), 2);
 
-        add(new H3("Create Account"), formLayout, buttonLayout);
+        add(new H3(LanguageManager.getLocalizedText("Create Account")), formLayout, buttonLayout);
     }
 
     private void handleAccountCreation() {
@@ -151,7 +153,7 @@ public class RegistrationDialog extends Dialog {
             return null;
         }
 
-        Notification.show("Account created successfully!", 3000, Notification.Position.MIDDLE);
+        Notification.show(LanguageManager.getLocalizedText("Account created successfully!"), 3000, Notification.Position.MIDDLE);
         close();
         return account;
     }

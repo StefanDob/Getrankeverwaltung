@@ -1,18 +1,13 @@
 package de.tu.darmstadt.frontend.account.AccountView;
 
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.PasswordField;
-import com.vaadin.flow.component.textfield.TextField;
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.frontend.account.SessionManagement;
+import de.tu.darmstadt.Utils.SessionManagement;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +17,7 @@ public class GeneralAccountInformation extends Details {
     private final Grid<Property> propertyGrid = new Grid<>(Property.class);
 
     public GeneralAccountInformation() {
-        super(new H2("General Information"));
+        super(new H2(LanguageManager.getLocalizedText("General Information")));
         this.currentAccount = SessionManagement.getAccount();
 
         // Populate the grid with account information
@@ -50,15 +45,15 @@ public class GeneralAccountInformation extends Details {
 
     private void populateGrid() {
         List<Property> properties = new ArrayList<>();
-        properties.add(new Property("First Name", currentAccount.getFirstName()));
-        properties.add(new Property("Last Name", currentAccount.getLastName()));
-        properties.add(new Property("Email", currentAccount.getEmail()));
-        properties.add(new Property("Password", currentAccount.getPassword()));
-        properties.add(new Property("Birth Date", currentAccount.getBirthDate().toString()));
-        properties.add(new Property("Phone Number", currentAccount.getPhoneNumber()));
-        properties.add(new Property("Account Balance", String.valueOf(currentAccount.getSaldo())));
-        properties.add(new Property("Debt Limit", String.valueOf(currentAccount.getDebtLimit())));
-        properties.add(new Property("Status", String.valueOf(currentAccount.getStatus())));
+        properties.add(new Property(LanguageManager.getLocalizedText("First Name"), currentAccount.getFirstName()));
+        properties.add(new Property(LanguageManager.getLocalizedText("Last Name"), currentAccount.getLastName()));
+        properties.add(new Property(LanguageManager.getLocalizedText("Email"), currentAccount.getEmail()));
+        properties.add(new Property(LanguageManager.getLocalizedText("Password"), currentAccount.getPassword()));
+        properties.add(new Property(LanguageManager.getLocalizedText("Birth Date"), currentAccount.getBirthDate().toString()));
+        properties.add(new Property(LanguageManager.getLocalizedText("Phone Number"), currentAccount.getPhoneNumber()));
+        properties.add(new Property(LanguageManager.getLocalizedText("Account Balance"), String.valueOf(currentAccount.getSaldo())));
+        properties.add(new Property(LanguageManager.getLocalizedText("Debt Limit"), String.valueOf(currentAccount.getDebtLimit())));
+        properties.add(new Property(LanguageManager.getLocalizedText("Status"), String.valueOf(currentAccount.getStatus())));
 
         propertyGrid.setItems(properties);
     }

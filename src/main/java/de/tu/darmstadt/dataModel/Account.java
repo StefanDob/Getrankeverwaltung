@@ -1,6 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
+import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
@@ -13,8 +14,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 
 import static de.tu.darmstadt.backend.ItemShopProperties.*;
-import static de.tu.darmstadt.ProjectUtils.*;
-import static de.tu.darmstadt.dataModel.Utils.ExceptionChecker.*;
+import static de.tu.darmstadt.Utils.ProjectUtils.*;
+import static de.tu.darmstadt.Utils.ExceptionChecker.*;
 
 /**
  * An {@link Account} for the drink shop is a superclass of those classes that grants a user of the drink shop an
@@ -245,7 +246,7 @@ public class Account {
         final String resulting_ID = stringBuilder.toString();
 
         if( !VALID_ACCOUNT_ID_FORMAT.test(resulting_ID) ) {
-            throw new AccountPolicyException("ID is not in a valid format: " + resulting_ID);
+            throw new AccountPolicyException(LanguageManager.getLocalizedText("ID is not in a valid format: ") + resulting_ID);
         } // end of if
 
         return resulting_ID;
@@ -273,7 +274,7 @@ public class Account {
         return checkIfInstanceIsValid(
                 name,
                 VALID_NAME,
-                new InvalidNameFormatException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
+                new InvalidNameFormatException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
         );
     }
 
@@ -290,7 +291,7 @@ public class Account {
         return checkIfInstanceIsValid(
                 name,
                 VALID_NAME,
-                new BadFirstNameException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
+                new BadFirstNameException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
         );
     }
 
@@ -307,7 +308,7 @@ public class Account {
         return checkIfInstanceIsValid(
                 name,
                 VALID_NAME,
-                new BadLastNameException("Only a-z or A-Z, as well as '-' and white spaces are allowed in names.")
+                new BadLastNameException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
         );
     }
 
@@ -319,7 +320,7 @@ public class Account {
      */
     public static void isEmailAlreadyInUse(final @NotNull String email) throws EmailAlreadyInUseException {
         if( AccountOperations.getAccountByEmail(email) != null ) {
-            throw new EmailAlreadyInUseException("This email is already in use: " + email);
+            throw new EmailAlreadyInUseException(LanguageManager.getLocalizedText("This email is already in use: ") + email);
         }
 
     }
@@ -350,14 +351,14 @@ public class Account {
     public static String checkIfPasswordIsValid(final @NotNull String password) throws InvalidPasswordFormatException {
 
         if(password.length() < MINIMUM_PASSWORD_LENGTH) {
-            throw new InvalidPasswordFormatException("Password must contain at least "
-                    + MINIMUM_PASSWORD_LENGTH + " characters.");
+            throw new InvalidPasswordFormatException(LanguageManager.getLocalizedText("Password must contain at least ")
+                    + MINIMUM_PASSWORD_LENGTH + LanguageManager.getLocalizedText(" characters."));
         }
 
         return checkIfInstanceIsValid(
                 password,
                 PASSWORD_POLICY,
-                new InvalidPasswordFormatException("Password is not safe. Enter a new password")
+                new InvalidPasswordFormatException(LanguageManager.getLocalizedText("Password is not safe. Enter a new password"))
         );
     }
 
@@ -417,8 +418,8 @@ public class Account {
 
     public void setSaldo(double saldo) throws DebtLimitExceedingException {
         if(saldo < -debtLimit) {
-            throw new DebtLimitExceedingException("Balance should not exceed the debt limit. " +
-                    "Current debt limit: " + -debtLimit + " ; Balance after setting to new value: " + saldo );
+            throw new DebtLimitExceedingException(LanguageManager.getLocalizedText("Balance should not exceed the debt limit. ") +
+                    LanguageManager.getLocalizedText("Current debt limit: ") + -debtLimit + LanguageManager.getLocalizedText(" ; Balance after setting to new value: ") + saldo );
         } // end of if
 
         this.saldo = saldo;

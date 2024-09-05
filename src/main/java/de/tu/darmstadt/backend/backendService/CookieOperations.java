@@ -3,8 +3,7 @@ package de.tu.darmstadt.backend.backendService;
 import com.vaadin.flow.server.VaadinService;
 import de.tu.darmstadt.backend.database.SpringContext;
 
-import de.tu.darmstadt.frontend.account.SessionManagement;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.database.Token.RememberMeTokenService;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
