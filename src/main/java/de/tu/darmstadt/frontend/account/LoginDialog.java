@@ -93,7 +93,7 @@ public class LoginDialog extends Dialog {
         } catch (AccountOperationException ex) {
             emailField.setInvalid(true);
             passwordField.setInvalid(true);
-            Notification.show(ex.getMessage(), 3000, Notification.Position.MIDDLE);
+            Notification.show(LanguageManager.getLocalizedText("Email/Passwort combination does not exist"), 3000, Notification.Position.MIDDLE);
         }
     }
 

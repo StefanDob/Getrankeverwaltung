@@ -90,7 +90,6 @@ public class ShoppingCartView extends VerticalLayout {
         buyNowButton.addClickListener(event -> {
             ProjectUtils.buyShoppingCart(ShoppingCartOperations.getShoppingCartItems(SessionManagement.getAccount().getId()), getTotalPrice());
             ShoppingCartOperations.deleteAllShoppingCartItems();
-            Notification.show(LanguageManager.getLocalizedText("Buying completed..."), 3000, Notification.Position.MIDDLE);
         });
 
 

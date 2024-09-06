@@ -105,7 +105,7 @@ public class LanguageManager {
         addTranslation("Balance should not exceed the debt limit. ", "Balance should not exceed the debt limit. ", "Kontostand nach der Transaktion darf die Schuldengrenze nicht überschreiten");
         addTranslation("Current debt limit: ", "Current debt limit: ", "Aktuelle Schuldengrenze: ");
         addTranslation(" ; Balance after setting to new value: ", " ; Balance after setting to new value: ", " ; Kontostand nach der Trnsaktion: ");
-
+        addTranslation("Email/Password combination does not exist", "Email/Password combination does not exist", "Email/Passwort Kombination existiert nicht");
         //addTranslation("hello", "Hello", "Hallo");
 
 

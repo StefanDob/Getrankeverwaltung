@@ -63,7 +63,7 @@ public class AccountOperations {
         // The account that is accessed via email.
         Account acc = getAccountByEmail( email );
 
-        if( acc == null ) {
+        if( acc == null  ) {
             // If acc is null, it means that there is no Account with the email existing.
             throw new NoSuchAccountException("User with the email " + email + " does not exist.");
         }
