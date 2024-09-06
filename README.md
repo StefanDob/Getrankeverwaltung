@@ -14,9 +14,10 @@ Maven project. Read more on [how to import Vaadin projects to different IDEs](ht
 
 ## Development hints:
 For testing account features this are a few example accounts that are currently in the database. You can also create some test accounts of your own:
-monamartinez@example.com; Passwort: password010
-paulclark@example.com; Passwort: password343
-tinaroberts@example.com; Passwort: password787
+<br>Restricted Account: monamartinez@example.com; Passwort: password010
+<br>Standard   Account: paulclark@example.com; Passwort: password343
+<br>Admin      Account: dobreastefan68@gmail.com; Passwort: stefan123
+
 
 ## Deploying to Production
 
