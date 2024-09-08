@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * This class is used to test any functionalities of data model.
+ * //TODO @Toni what does this class do? Delete this?
  */
 public class DataModelPlayground {
 

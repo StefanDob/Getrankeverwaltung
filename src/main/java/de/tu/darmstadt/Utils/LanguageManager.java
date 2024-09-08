@@ -4,13 +4,21 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Manages language translations for the application.
+ * <p>
+ * This class provides methods to get localized text based on the current language setting and to change the language.
+ */
 public class LanguageManager {
 
+    /** Default locale set to English. */
     private static Locale locale = Locale.ENGLISH;
 
-    private static Map<String, Map<Locale, String>> languageMap = new HashMap<>();
+    /** Map storing translations for different keys and locales. */
+    private static final Map<String, Map<Locale, String>> languageMap = new HashMap<>();
 
     static {
+        // Add translations for various keys
         addTranslation("buy", "Buy", "Kaufen");
         addTranslation("Last Transactions", "Last Transactions", "Letzte Transaktionen");
         addTranslation("Store", "Store", "Laden");
@@ -114,7 +122,13 @@ public class LanguageManager {
 
 
     }
-
+    /**
+     * Adds a translation for a given key in English and German.
+     *
+     * @param key the key for the translation
+     * @param englishTranslation the translation in English
+     * @param germanTranslation the translation in German
+     */
     private static void addTranslation(String key, String englishTranslation, String germanTranslation) {
         Map<Locale, String> translations = new HashMap<>();
         translations.put(Locale.ENGLISH, englishTranslation);
@@ -122,15 +136,31 @@ public class LanguageManager {
         languageMap.put(key, translations);
     }
 
+    /**
+     * Returns the localized text for a given key based on the current language setting.
+     *
+     * @param key the key for which to retrieve the localized text
+     * @return the localized text if available, otherwise returns the key itself
+     */
     public static String getLocalizedText(String key) {
         Map<Locale, String> translations = languageMap.get(key);
         return translations != null ? translations.get(locale) : key;
     }
 
+    /**
+     * Returns the current language locale.
+     *
+     * @return the current locale
+     */
     public static Locale getCurrentLanguage() {
         return locale;
     }
 
+    /**
+     * Sets the language for the application.
+     *
+     * @param selectedLocale the locale to set as the current language
+     */
     public static void setLanguage(Locale selectedLocale) {
         locale = selectedLocale;
     }

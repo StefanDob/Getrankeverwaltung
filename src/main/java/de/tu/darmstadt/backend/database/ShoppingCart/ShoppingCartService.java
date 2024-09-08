@@ -38,7 +38,7 @@ public class ShoppingCartService {
         // Check if the item already exists in the shopping cart
         ShoppingCartItem existingItem = null;
         for (ShoppingCartItem cartItem : shoppingCart.getItems()) {
-            if (cartItem.getItem().getITEMId().equals(itemId)) {
+            if (cartItem.getItem().getId().equals(itemId)) {
                 existingItem = cartItem;
                 break;
             }

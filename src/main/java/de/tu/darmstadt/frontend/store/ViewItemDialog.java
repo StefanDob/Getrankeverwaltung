@@ -49,7 +49,7 @@ public class ViewItemDialog extends ItemDialog{
                 LoginDialog loginDialog = new LoginDialog();
                 loginDialog.open();
             }else{
-                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getITEMId());
+                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getId());
             }
         });
 

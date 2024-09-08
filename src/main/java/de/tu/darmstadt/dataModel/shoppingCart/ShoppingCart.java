@@ -24,9 +24,11 @@ public class ShoppingCart {
     @OneToMany(mappedBy = "shoppingCart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ShoppingCartItem> items = new ArrayList<>();
 
-    // Constructors, getters, and setters
+    // Constructor
     public ShoppingCart() {
     }
+
+    //getters and setters
 
     public Long getId() {
         return id;

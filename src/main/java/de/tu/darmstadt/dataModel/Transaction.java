@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * A transaction is a process where money is transferred from an {@link Account} to another {@link Account}.
  * This class is used to store the transaction history in a database.
- * changed the name transaction to transfer in order to not make it less
+ * changed the name of the table transaction to transfer in order to not make it less
  * difficult for jpa to access the table
  */
 @Entity

@@ -1,6 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
 // DO NOT REMOVE ANY IMPORTED PACKAGES !!!
+import de.tu.darmstadt.Utils.AccountUtils;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
@@ -125,6 +126,8 @@ public class Account {
      * @param birthDate the specified birthdate
      * @param phoneNumber the specified phone number (optional). May be {@code null}
      *
+     * TODO @Toni if possible remove this constructor as having such constructors is not the intended way for jpa mappings
+     *
      * @throws AccountPolicyException is thrown if any personal data does not meet the {@link Account}
      * {@link ItemShopProperties policies}
      */
@@ -148,6 +151,7 @@ public class Account {
      * @param phoneNumber the specified phone number (optional)
      * @param status the specified {@link AccountStatus}
      * @param debtLimit the specified debt limit
+     *TODO @Toni if possible remove this constructor as having such constructors is not the intended way for jpa mappings
      *
      * @throws AccountPolicyException is thrown if any data does not meet the requirements specified in the policies.
      */
@@ -162,17 +166,17 @@ public class Account {
         firstName = firstName.trim();
         lastName = lastName.trim();
 
-        this.firstName = checkIfFirstNameIsInValidFormat(firstName);
-        this.lastName = checkIfLastNameIsInValidFormat(lastName);
+        this.firstName = AccountUtils.checkIfFirstNameIsInValidFormat(firstName);
+        this.lastName = AccountUtils.checkIfLastNameIsInValidFormat(lastName);
 
         // Checks if the specified email is already in use
-        isEmailAlreadyInUse(email); // throws EmailIsAlreadyInUseException
+        AccountUtils.isEmailAlreadyInUse(email); // throws EmailIsAlreadyInUseException
 
-        this.email = checkIfEmailIsInValidFormat(email);
-        this.password = checkIfPasswordIsValid(password);
+        this.email = AccountUtils.checkIfEmailIsInValidFormat(email);
+        this.password = AccountUtils.checkIfPasswordIsValid(password);
         //TODO add the logic for checking birth date again
         this.birthDate = birthDate; // The birthdate is stored in String format
-        this.phoneNumber = check_if_phone_number_is_in_valid_format(phoneNumber);
+        this.phoneNumber = AccountUtils.check_if_phone_number_is_in_valid_format(phoneNumber);
 
         // The debt limit should always be a negative value.
         if(debtLimit > 0) {
@@ -186,24 +190,9 @@ public class Account {
     }
 
     // :::::::::::::::::::::::::::::::::::::: AUXILIARY METHODS :::::::::::::::::::::::::::::::::::::::
-    //TODO check what this method does and delete if necessary
-    /*
-    private static String setID() {
 
-        String id;
-        try {
-            do {
-                id = generateID();
-            } while ( is_ID_already_existing(id) ); // end of do-while
 
-            return id;
-        } catch (AccountPolicyException e) {
-            throw new RuntimeException("Account ID is not in a valid format.");
-        }
 
-    }
-
- */
 
     /**
      * Checks if a specified ID is already existing.
@@ -216,191 +205,10 @@ public class Account {
         return AccountOperations.getAccountByID(ID) != null;
     }
 
-    /**
-     * This static method generates an {@link #id ID} as a {@link String} value for the {@link Account}.
-     *
-     * @return the ID generated for the {@link Account}
-     */
-    private static @NotNull String generateID() throws AccountPolicyException {
 
-        // if(true) throw new RuntimeException("This static method is under construction and should not be called yet!");
 
-        final char[] ch_set0 = new char[]{'a', 'z'}; // Set of chars: {'a', 'b', ... , 'z'}
-        final char[] ch_set1 = new char[]{'A', 'Z'}; // Set of chars: {'A', 'B', ... , 'Z'}
-        final char[] ch_set2 = new char[]{'0', '9'}; // Set of chars: {'0', '1', ... , '9'}
 
-        final int number_of_id_segments = 5;
-        final int length_of_id_segment = 5;
 
-        // The StringBuilder already contains the first ID segment.
-        StringBuilder stringBuilder = new StringBuilder( randomString(length_of_id_segment, ch_set0, ch_set1, ch_set2) );
-
-        // The for-loop appends further ID segments which are separated by a '-'.
-        for (int i = 1; i < number_of_id_segments; i++) {
-            stringBuilder
-                    .append("-") // '-' separates ID segments
-                    .append( randomString(length_of_id_segment, ch_set0, ch_set1, ch_set2) ); // new ID segment
-        } // end of for
-
-        // The result to be returned. First of all, it is checked if it is in a valid format in the following if-block.
-        final String resulting_ID = stringBuilder.toString();
-
-        if( !VALID_ACCOUNT_ID_FORMAT.test(resulting_ID) ) {
-            throw new AccountPolicyException(LanguageManager.getLocalizedText("ID is not in a valid format: ") + resulting_ID);
-        } // end of if
-
-        return resulting_ID;
-    }
-
-    /**
-     * This static method generates an {@link #id ID} as a long value for an {@link Account}.
-     *
-     * @return the ID generated for the {@link Account}
-     */
-    private static long generateLongID() {
-        return RANDOM.nextLong();
-    }
-
-    /**
-     * This static method is used to check if a specified name is in a valid format.
-     *
-     * @see ItemShopProperties#VALID_NAME
-     *
-     * @param name the specified name to be checked
-     * @return the specified name if successfully checked
-     * @throws InvalidNameFormatException is thrown if the name is not in a valid format
-     */
-    public static String checkIfNameIsInValidFormat(String name) throws InvalidNameFormatException {
-        return checkIfInstanceIsValid(
-                name,
-                VALID_NAME,
-                new InvalidNameFormatException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
-        );
-    }
-
-    /**
-     * This static method is used to check if a specified first name is in a valid format.
-     *
-     * @see ItemShopProperties#VALID_NAME
-     *
-     * @param name the specified first name to be checked
-     * @return the specified first name if successfully checked
-     * @throws BadFirstNameException is thrown if the first name is not in a valid format
-     */
-    public static String checkIfFirstNameIsInValidFormat(String name) throws BadFirstNameException {
-        return checkIfInstanceIsValid(
-                name,
-                VALID_NAME,
-                new BadFirstNameException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
-        );
-    }
-
-    /**
-     * This static method is used to check if a specified last name is in a valid format.
-     *
-     * @see ItemShopProperties#VALID_NAME
-     *
-     * @param name the specified last name to be checked
-     * @return the specified last name if successfully checked
-     * @throws BadLastNameException is thrown if the first name is not in a valid format
-     */
-    public static String checkIfLastNameIsInValidFormat(String name) throws BadLastNameException {
-        return checkIfInstanceIsValid(
-                name,
-                VALID_NAME,
-                new BadLastNameException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
-        );
-    }
-
-    /**
-     * This method checks if a specified email is already in use.
-     *
-     * @param email the specified email to be checked
-     * @throws EmailAlreadyInUseException if the specified email is already in use
-     */
-    public static void isEmailAlreadyInUse(final @NotNull String email) throws EmailAlreadyInUseException {
-        if( AccountOperations.getAccountByEmail(email) != null ) {
-            throw new EmailAlreadyInUseException(LanguageManager.getLocalizedText("This email is already in use: ") + email);
-        }
-
-    }
-
-    /**
-     * This static method is used to check if a specified email is in a valid format.
-     *
-     * @see ItemShopProperties#EMAIL_FORMAT
-     *
-     * @param email the specified email to be checked
-     * @return the specified email if successfully checked
-     * @throws InvalidEmailFormatException is thrown if the email is not in a valid format
-     */
-    public static String checkIfEmailIsInValidFormat(String email) throws InvalidEmailFormatException {
-        return checkIfInstanceIsValid(
-                email,
-                EMAIL_FORMAT,
-                new InvalidEmailFormatException(email)
-        );
-    }
-
-    /**
-     * This static method is used to check if a specified password is valid.
-     * @param password the password to be checked
-     * @return the specified password if successfully checked
-     * @throws InvalidPasswordFormatException is thrown if the password is not valid
-     */
-    public static String checkIfPasswordIsValid(final @NotNull String password) throws InvalidPasswordFormatException {
-
-        if(password.length() < MINIMUM_PASSWORD_LENGTH) {
-            throw new InvalidPasswordFormatException(LanguageManager.getLocalizedText("Password must contain at least ")
-                    + MINIMUM_PASSWORD_LENGTH + LanguageManager.getLocalizedText(" characters."));
-        }
-
-        return checkIfInstanceIsValid(
-                password,
-                PASSWORD_POLICY,
-                new InvalidPasswordFormatException(LanguageManager.getLocalizedText("Password is not safe. Enter a new password"))
-        );
-    }
-
-    /**
-     * This static method is used to check if a specified {@link #birthDate} is legal.
-     *
-     * @param birthDate the specified birthdate to be checked
-     * @return the specified birthdate if successfully checked
-     * @throws IllegalBirthdateException is thrown if the birthdate is not legal
-     */
-    public static Date checkIfBirthdateIsLegal(Date birthDate) throws IllegalBirthdateException {
-        return null;
-        //TODO redo this
-        /*
-        return check_if_instance_is_valid(
-                birth_date,
-                AGE_REQUIREMENTS,
-                new IllegalBirthdateException("Age requirements not met")
-        );
-
-         */
-    }
-
-    /**
-     * This static method is used to check if a specified {@link #phoneNumber} is in a valid format.
-     *
-     * @param phone_number the specified phone number to be checked
-     * @return the specified phone number if successfully checked
-     * @throws InvalidPhoneNumberFormatException is thrown if the phone number is not in a valid format
-     */
-    public static @Nullable String check_if_phone_number_is_in_valid_format(@Nullable String phone_number)
-            throws InvalidPhoneNumberFormatException
-    {
-        // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
-        if(phone_number == null || phone_number.isBlank() || phone_number.isEmpty() ) return null;
-
-        return checkIfInstanceIsValid(
-                phone_number,
-                PHONE_NUMBER_FORMAT,
-                new InvalidPhoneNumberFormatException(phone_number)
-        ).replaceAll("\\s", ""); // removes all whitespaces used for the number
-    }
 
     // ::::::::::::::::::::::::::::::::::::::::::: METHODS ::::::::::::::::::::::::::::::::::::::::::::
 
@@ -434,7 +242,7 @@ public class Account {
     }
 
     public void setEmail(String email) throws InvalidEmailFormatException {
-        this.email = checkIfEmailIsInValidFormat(email);
+        this.email = AccountUtils.checkIfEmailIsInValidFormat(email);
     }
 
     public String getPassword() {
@@ -442,7 +250,7 @@ public class Account {
     }
 
     public void setPassword(String password) throws InvalidPasswordFormatException {
-        this.password = checkIfPasswordIsValid(password);
+        this.password = AccountUtils.checkIfPasswordIsValid(password);
     }
 
 
@@ -451,7 +259,7 @@ public class Account {
     }
 
     public void setLastName(String lastName) throws InvalidNameFormatException {
-        this.lastName = checkIfNameIsInValidFormat(lastName);
+        this.lastName = AccountUtils.checkIfNameIsInValidFormat(lastName);
     }
 
     public String getFirstName() {

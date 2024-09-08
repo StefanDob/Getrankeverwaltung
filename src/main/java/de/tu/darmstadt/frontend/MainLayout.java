@@ -32,14 +32,17 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 import java.util.Locale;
 
 /**
- * The main view is a top-level placeholder for other views.
+ * MainLayout is the primary layout class for the application. It sets up the main structure of the application
+ * including the top navbar, side navigation drawer, and footer.
  */
 public class MainLayout extends AppLayout {
 
     private H2 viewTitle;
-
     private Button loginButton;
 
+    /**
+     * Constructs the MainLayout instance and initializes the application layout.
+     */
     public MainLayout() {
         ProjectUtils.checkForCookies();
         setPrimarySection(Section.DRAWER);
@@ -47,6 +50,9 @@ public class MainLayout extends AppLayout {
         addHeaderContent();
     }
 
+    /**
+     * Adds header content including the menu toggle, view title, login button, and language selection.
+     */
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.setAriaLabel("Menu toggle");
@@ -55,7 +61,7 @@ public class MainLayout extends AppLayout {
         viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
         // Create a layout for the login button
-        if(SessionManagement.getAccount() == null) {
+        if (SessionManagement.getAccount() == null) {
             loginButton = new Button("Login");
             loginButton.addClickListener(e -> loginToAccount());
         } else {
@@ -63,36 +69,29 @@ public class MainLayout extends AppLayout {
             loginButton.addClickListener(e -> UI.getCurrent().navigate(AccountView.class));
         }
 
-        loginButton.getStyle().set("margin-right", "16px"); // Adjust margin as needed
+        loginButton.getStyle().set("margin-right", "16px");
 
         // Create a ComboBox for language selection
         ComboBox<String> languageComboBox = new ComboBox<>();
-        //Set Value depending on currently set language
         languageComboBox.setItems("EN", "DE");
-        //Set Value depending on currently set language
-        if(LanguageManager.getCurrentLanguage() == Locale.ENGLISH){
-            languageComboBox.setValue("EN");
-        }else{
-            languageComboBox.setValue("DE");
-        }
+        languageComboBox.setValue(LanguageManager.getCurrentLanguage() == Locale.ENGLISH ? "EN" : "DE");
 
         languageComboBox.addValueChangeListener(event -> {
             String selectedLanguage = event.getValue();
-            if(selectedLanguage.equals("DE")){
+            if (selectedLanguage.equals("DE")) {
                 LanguageManager.setLanguage(Locale.GERMAN);
-            }else{
+            } else {
                 LanguageManager.setLanguage(Locale.ENGLISH);
             }
             UI.getCurrent().getPage().reload();
         });
 
-        // Adjust ComboBox width to fit content
         languageComboBox.setWidth("80px");
         languageComboBox.getElement().executeJs("this.inputElement.setAttribute('readonly', 'readonly')");
 
         // Layout for login button and language switch
         HorizontalLayout headerRightContent = new HorizontalLayout();
-        headerRightContent.add(languageComboBox, loginButton); // Add language combo box and login button
+        headerRightContent.add(languageComboBox, loginButton);
         headerRightContent.setWidthFull();
         headerRightContent.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
 
@@ -100,12 +99,17 @@ public class MainLayout extends AppLayout {
         addToNavbar(true, toggle, viewTitle, headerRightContent);
     }
 
-
+    /**
+     * Opens the login dialog when the login button is clicked.
+     */
     private void loginToAccount() {
         LoginDialog loginDialog = new LoginDialog();
         loginDialog.open();
     }
 
+    /**
+     * Adds drawer content including the application name, navigation items, and footer.
+     */
     private void addDrawerContent() {
         H1 appName = new H1(LanguageManager.getLocalizedText("Shopping"));
         appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
@@ -116,32 +120,49 @@ public class MainLayout extends AppLayout {
         addToDrawer(header, scroller, createFooter());
     }
 
+    /**
+     * Creates the side navigation with links to different views.
+     * Adds an "Admin" link if the current user has admin status.
+     *
+     * @return the SideNav component with navigation items.
+     */
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Store"), StoreView.class, LineAwesomeIcon.STORE_SOLID.create()));
         nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Account"), AccountView.class, LineAwesomeIcon.USER_CIRCLE.create()));
         nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Shopping Cart"), ShoppingCartView.class, LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
-        if(SessionManagement.getAccount() != null && SessionManagement.getAccount().getStatus() == AccountStatus.ADMIN){
+
+        if (SessionManagement.getAccount() != null && SessionManagement.getAccount().getStatus() == AccountStatus.ADMIN) {
             nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Admin"), AdminView.class, LineAwesomeIcon.TOOLBOX_SOLID.create()));
         }
-
 
         return nav;
     }
 
+    /**
+     * Creates the footer for the layout.
+     *
+     * @return the Footer component.
+     */
     private Footer createFooter() {
-        Footer layout = new Footer();
-
-        return layout;
+        return new Footer();
     }
 
+    /**
+     * Updates the view title after navigation based on the current page's title.
+     */
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
         viewTitle.setText(getCurrentPageTitle());
     }
 
+    /**
+     * Retrieves the current page title from the PageTitle annotation.
+     *
+     * @return the localized page title.
+     */
     private String getCurrentPageTitle() {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : LanguageManager.getLocalizedText(title.value());

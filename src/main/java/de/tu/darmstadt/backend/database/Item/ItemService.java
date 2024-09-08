@@ -55,7 +55,7 @@ public class ItemService {
 
     public void deleteItem(Item item) {
         // Ensure the item exists in the database before deleting
-        Optional<Item> existingItem = itemRepository.findById(item.getITEMId());
+        Optional<Item> existingItem = itemRepository.findById(item.getId());
         if (existingItem.isPresent()) {
             itemRepository.delete(item);
         } else {

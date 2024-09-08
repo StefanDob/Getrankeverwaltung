@@ -1,8 +1,11 @@
 package de.tu.darmstadt.Utils;
 
+import de.tu.darmstadt.backend.ItemShopProperties;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -11,8 +14,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+import static de.tu.darmstadt.Utils.ExceptionChecker.checkIfInstanceIsValid;
+import static de.tu.darmstadt.backend.ItemShopProperties.*;
+import static de.tu.darmstadt.backend.ItemShopProperties.PHONE_NUMBER_FORMAT;
+
 public class AccountUtils {
-    //TODO redo or delete if not needed
+    //TODO @Toni redo or delete if not needed
     public static void main(String[] args) {
         try {
             for(int i = 0 ; i < 50 ; i++){}
@@ -33,7 +40,12 @@ public class AccountUtils {
         return Date.from(instant);
     }
 
-    public static List<Account> generateExampleAccounts() throws AccountPolicyException {
+    /**
+     * method for generating example accounts in order to test functionality
+     * @return generated accounts
+     * @throws AccountPolicyException if during the generation an error occurs
+     */
+    private static List<Account> generateExampleAccounts() throws AccountPolicyException {
         List<Account> accounts = new ArrayList<>();
 
         // Define a date format for simplicity
@@ -88,6 +100,9 @@ public class AccountUtils {
         return accounts;
     }
 
+    /**
+     * this is the top level method for accessing the createExample accounts from other classes
+     */
     public static void createExampleAccounts() {
         List<Account> exampleAccounts = null;
         try {
@@ -99,8 +114,11 @@ public class AccountUtils {
             AccountOperations.createAccount(account);
         });
     }
-    /*
 
+    /**
+     * parses a String that writes a date to a Date object
+     * @param dateStr input string
+     * @return represented Date
      */
     private static Date parseDate(String dateStr) {
         try {
@@ -134,5 +152,147 @@ public class AccountUtils {
 
         // Create and return LocalDate
         return LocalDate.of(year, month, day);
+    }
+
+    /**
+     * This static method is used to check if a specified name is in a valid format.
+     *
+     * @see ItemShopProperties#VALID_NAME
+     *
+     * @param name the specified name to be checked
+     * @return the specified name if successfully checked
+     * @throws InvalidNameFormatException is thrown if the name is not in a valid format
+     */
+    public static String checkIfNameIsInValidFormat(String name) throws InvalidNameFormatException {
+        return checkIfInstanceIsValid(
+                name,
+                VALID_NAME,
+                new InvalidNameFormatException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified first name is in a valid format.
+     *
+     * @see ItemShopProperties#VALID_NAME
+     *
+     * @param name the specified first name to be checked
+     * @return the specified first name if successfully checked
+     * @throws BadFirstNameException is thrown if the first name is not in a valid format
+     */
+    public static String checkIfFirstNameIsInValidFormat(String name) throws BadFirstNameException {
+        return checkIfInstanceIsValid(
+                name,
+                VALID_NAME,
+                new BadFirstNameException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified last name is in a valid format.
+     *
+     * @see ItemShopProperties#VALID_NAME
+     *
+     * @param name the specified last name to be checked
+     * @return the specified last name if successfully checked
+     * @throws BadLastNameException is thrown if the first name is not in a valid format
+     */
+    public static String checkIfLastNameIsInValidFormat(String name) throws BadLastNameException {
+        return checkIfInstanceIsValid(
+                name,
+                VALID_NAME,
+                new BadLastNameException(LanguageManager.getLocalizedText("Only a-z or A-Z, as well as '-' and white spaces are allowed in names."))
+        );
+    }
+
+    /**
+     * This method checks if a specified email is already in use.
+     *
+     * @param email the specified email to be checked
+     * @throws EmailAlreadyInUseException if the specified email is already in use
+     */
+    public static void isEmailAlreadyInUse(final @NotNull String email) throws EmailAlreadyInUseException {
+        if( AccountOperations.getAccountByEmail(email) != null ) {
+            throw new EmailAlreadyInUseException(LanguageManager.getLocalizedText("This email is already in use: ") + email);
+        }
+
+    }
+
+    /**
+     * This static method is used to check if a specified email is in a valid format.
+     *
+     * @see ItemShopProperties#EMAIL_FORMAT
+     *
+     * @param email the specified email to be checked
+     * @return the specified email if successfully checked
+     * @throws InvalidEmailFormatException is thrown if the email is not in a valid format
+     * TODO @Toni: Why are emails with a dot on the left side not accepted: like stefan.dob@gmail.com?
+     */
+    public static String checkIfEmailIsInValidFormat(String email) throws InvalidEmailFormatException {
+        return checkIfInstanceIsValid(
+                email,
+                EMAIL_FORMAT,
+                new InvalidEmailFormatException(email)
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified password is valid.
+     * @param password the password to be checked
+     * @return the specified password if successfully checked
+     * @throws InvalidPasswordFormatException is thrown if the password is not valid
+     */
+    public static String checkIfPasswordIsValid(final @NotNull String password) throws InvalidPasswordFormatException {
+
+        if(password.length() < MINIMUM_PASSWORD_LENGTH) {
+            throw new InvalidPasswordFormatException(LanguageManager.getLocalizedText("Password must contain at least ")
+                    + MINIMUM_PASSWORD_LENGTH + LanguageManager.getLocalizedText(" characters."));
+        }
+
+        return checkIfInstanceIsValid(
+                password,
+                PASSWORD_POLICY,
+                new InvalidPasswordFormatException(LanguageManager.getLocalizedText("Password is not safe. Enter a new password"))
+        );
+    }
+
+    /**
+     * This static method is used to check if a specified birthDate is legal.
+     *
+     * @param birthDate the specified birthdate to be checked
+     * @return the specified birthdate if successfully checked
+     * @throws IllegalBirthdateException is thrown if the birthdate is not legal
+     */
+    public static Date checkIfBirthdateIsLegal(Date birthDate) throws IllegalBirthdateException {
+        return null;
+        //TODO redo this
+        /*
+        return check_if_instance_is_valid(
+                birth_date,
+                AGE_REQUIREMENTS,
+                new IllegalBirthdateException("Age requirements not met")
+        );
+
+         */
+    }
+
+    /**
+     * This static method is used to check if a specified phoneNumber is in a valid format.
+     *
+     * @param phone_number the specified phone number to be checked
+     * @return the specified phone number if successfully checked
+     * @throws InvalidPhoneNumberFormatException is thrown if the phone number is not in a valid format
+     */
+    public static @Nullable String check_if_phone_number_is_in_valid_format(@Nullable String phone_number)
+            throws InvalidPhoneNumberFormatException
+    {
+        // This null case must be explicitly handled to avoid NullPointerExceptions when calling replaceAll().
+        if(phone_number == null || phone_number.isBlank() || phone_number.isEmpty() ) return null;
+
+        return checkIfInstanceIsValid(
+                phone_number,
+                PHONE_NUMBER_FORMAT,
+                new InvalidPhoneNumberFormatException(phone_number)
+        ).replaceAll("\\s", ""); // removes all whitespaces used for the number
     }
 }

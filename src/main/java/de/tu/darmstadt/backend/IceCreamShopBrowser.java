@@ -13,6 +13,7 @@ import static de.tu.darmstadt.backend.ItemShopProperties.*;
 /**
  * An {@link IceCreamShopBrowser} grants the user a terminal for accessing to an {@link Account} or
  * to create a new {@link Account}.
+ * //TODO @Toni this class still necessary?
  */
 public class IceCreamShopBrowser {
 

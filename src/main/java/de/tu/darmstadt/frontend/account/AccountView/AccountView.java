@@ -14,63 +14,54 @@ import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.MainLayout;
 import de.tu.darmstadt.Utils.SessionManagement;
 
+
+/**
+ * AccountView displays account-related information if the user is logged in.
+ * If the user is not logged in, a message prompting them to log in is shown.
+ */
 @PageTitle("Account")
 @Route(value = "account", layout = MainLayout.class)
 public class AccountView extends VerticalLayout {
 
-    Account currentAccount;
+    private final Account currentAccount;
 
-
-
+    /**
+     * Constructor for AccountView. It checks if the user is logged in and either
+     * shows the account information or a login prompt.
+     */
     public AccountView() {
         currentAccount = SessionManagement.getAccount();
-        
-        if(currentAccount == null){
-            showNotLoggedInJetMessage();
-        } else {
-            showAccount();
-        }
 
-        
+        if (currentAccount == null) {
+            showNotLoggedInMessage();
+        } else {
+            showAccountDetails();
+        }
     }
 
-    private void showAccount() {
+    /**
+     * Displays the account information components on the page.
+     */
+    private void showAccountDetails() {
         add(new GeneralAccountInformation());
         add(new TransactionInformation());
-        //showLastTransactions();
+        configureLayoutForAccount();
+    }
 
+    /**
+     * Configures the layout for when the account information is displayed.
+     */
+    private void configureLayoutForAccount() {
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.START);
         setDefaultHorizontalComponentAlignment(Alignment.START);
         getStyle().set("text-align", "center");
     }
 
-
-
-    private void showLastTransactions() {
-        Details lastTransactions = new Details(new H2(LanguageManager.getLocalizedText("Last Transactions")));
-        lastTransactions.setOpened(true);
-        lastTransactions.getStyle().set("border", "1px solid #ccc");
-        lastTransactions.getStyle().set("border-radius", "6px");
-        lastTransactions.setWidth("100%");
-
-        Grid<Transaction> grid = new Grid<>(Transaction.class);
-
-        // Configure the grid
-        grid.setItems(AccountOperations.getTransactionsByAccount(currentAccount));
-        grid.setColumns(LanguageManager.getLocalizedText("sender"), LanguageManager.getLocalizedText("receiver"), LanguageManager.getLocalizedText("amount"), LanguageManager.getLocalizedText("transactionDate"));
-        grid.setWidth("100%");
-        grid.setAllRowsVisible(true);
-
-
-        // Add the grid to the layout
-        lastTransactions.add(grid);
-        add(lastTransactions);
-    }
-
-
-
-    private void showNotLoggedInJetMessage() {
+    /**
+     * Displays a message to the user that they need to log in, along with a placeholder image.
+     */
+    private void showNotLoggedInMessage() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");
@@ -81,14 +72,17 @@ public class AccountView extends VerticalLayout {
         header.addClassNames(Margin.Top.XLARGE, Margin.Bottom.MEDIUM);
         add(header);
 
+        configureLayoutForNotLoggedIn();
+    }
 
-
+    /**
+     * Configures the layout for when the user is not logged in.
+     */
+    private void configureLayoutForNotLoggedIn() {
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
     }
-
-
-
 }
+

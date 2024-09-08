@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * This class serves as the jpa mapping of the remember me session.
+ * The table maps the tokens in the browser cookies to specific accounts in order
+ * to be able to remember users trough cookies
+ */
 @Entity
 @Table(name = "remember_me_token")
 public class RememberMeToken {

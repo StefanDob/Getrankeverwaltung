@@ -1,7 +1,6 @@
 package de.tu.darmstadt.backend.exceptions.shoppingCart;
 
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.dataModel.ShoppingCartOld;
 
 /**
  * This class is a subclass of {@link ShoppingCartException}. It is a checked exception that is thrown if the

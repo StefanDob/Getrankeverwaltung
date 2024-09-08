@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class is used to specify the properties of an ice cream shop.
+ * //TODO @Toni this class seems to be used in the code, but change it to not include anything about an ice cream shop
  */
 public final class ItemShopProperties {
 

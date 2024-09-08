@@ -123,16 +123,33 @@ public final class ProjectUtils {
         }
     }
 
+    /**
+     * Handles the process of purchasing items in the shopping cart.
+     * <p>
+     * This method performs the following actions:
+     * <ul>
+     *     <li>If the user is not logged in, opens the login dialog.</li>
+     *     <li>If the user's account status is restricted, shows a notification indicating that the account is restricted.</li>
+     *     <li>If the user is logged in and their account is not restricted, processes the transaction by creating a transaction record and updating the account information.</li>
+     *     <li>Reloads the current page and displays a notification indicating that the shopping cart has been purchased.</li>
+     * </ul>
+     *
+     * @param shoppingCartItems a list of {@link ShoppingCartItem} objects representing the items in the shopping cart
+     * @param totalPrice the total price of the items in the shopping cart
+     */
     public static void buyShoppingCart(List<ShoppingCartItem> shoppingCartItems, double totalPrice) {
         if (SessionManagement.getAccount() == null) {
             LoginDialog loginDialog = new LoginDialog();
             loginDialog.open();
-        }else if(SessionManagement.getAccount().getStatus() == AccountStatus.RESTRICTED){
+        } else if (SessionManagement.getAccount().getStatus() == AccountStatus.RESTRICTED) {
             Notification.show(LanguageManager.getLocalizedText("Your account is restricted. Contact an admin."), 3000, Notification.Position.MIDDLE);
-        }else {
+        } else {
             StringBuilder description = new StringBuilder();
-            for(ShoppingCartItem shoppingCartItem : shoppingCartItems){
-                description.append(shoppingCartItem.getItem().getName()).append(" * ").append(shoppingCartItem.getQuantity()).append("; ");
+            for (ShoppingCartItem shoppingCartItem : shoppingCartItems) {
+                description.append(shoppingCartItem.getItem().getName())
+                        .append(" * ")
+                        .append(shoppingCartItem.getQuantity())
+                        .append("; ");
             }
 
             long receiverId = Constants.getMasterID();
@@ -140,7 +157,7 @@ public final class ProjectUtils {
             Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, totalPrice, LocalDateTime.now(), description.toString());
             TransactionOperations.addTransaction(transaction);
 
-            //Make sure acount is updated everywhere
+            // Make sure account is updated everywhere
             try {
                 SessionManagement.setAccount(AccountOperations.getAccountByID(SessionManagement.getAccount().getId()));
             } catch (AccountPolicyException e) {
@@ -151,9 +168,14 @@ public final class ProjectUtils {
         }
     }
 
+    /**
+     * Checks for the presence of cookies and sets the account information if available.
+     * <p>
+     * This method retrieves the account information from cookies (if present) and updates the session with the retrieved account.
+     */
     public static void checkForCookies() {
         Account account = CookieOperations.getAccount();
-        if(account != null){
+        if (account != null) {
             SessionManagement.setAccount(account);
         }
     }

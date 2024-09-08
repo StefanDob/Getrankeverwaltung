@@ -21,60 +21,78 @@ import de.tu.darmstadt.backend.backendService.CookieOperations;
 import de.tu.darmstadt.backend.exceptions.accountOperation.AccountOperationException;
 import de.tu.darmstadt.dataModel.Account;
 
+/**
+ * LoginDialog handles user login by displaying a form with email, password, and a "Remember Me" option.
+ * It performs account validation and manages session or cookie storage based on the user's preferences.
+ */
 public class LoginDialog extends Dialog {
 
-    private TextField emailField;
-    private PasswordField passwordField;
-    private Checkbox rememberMeCheckbox;
+    private final TextField emailField;
+    private final PasswordField passwordField;
+    private final Checkbox rememberMeCheckbox;
 
+    /**
+     * Constructor for LoginDialog.
+     * Initializes the dialog with form fields for email, password, and a login button.
+     */
     public LoginDialog() {
-        // Header and close button
-        Header header = new Header(new H2(LanguageManager.getLocalizedText("Login")));
-        HorizontalLayout headerLayout = new HorizontalLayout();
-        headerLayout.setWidthFull();
-        headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        headerLayout.setAlignItems(FlexComponent.Alignment.BASELINE);
-        Button closeButton = new Button(new Icon(VaadinIcon.CLOSE));
-        closeButton.addClickListener(e -> close());
-        headerLayout.add(header, closeButton);
-
-        // Form layout for fields
-        FormLayout formLayout = new FormLayout();
-        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
-
-        // Email field
+        // Initialize form fields
         emailField = new TextField(LanguageManager.getLocalizedText("Email"));
-        formLayout.add(emailField);
-
-        // Password field
         passwordField = new PasswordField(LanguageManager.getLocalizedText("Password"));
-        formLayout.add(passwordField);
-
-        // Remember Me checkbox
         rememberMeCheckbox = new Checkbox(LanguageManager.getLocalizedText("Remember Me"));
-        formLayout.add(rememberMeCheckbox);
 
-        // Login button
-        Button loginButton = new Button(LanguageManager.getLocalizedText("Login"));
-        loginButton.setWidthFull();
-        loginButton.addClickListener(e -> handleLogin());
-
-        // Register button
-        Button registerButton = new Button(LanguageManager.getLocalizedText("Create Account"));
-        registerButton.setWidthFull();
-        registerButton.addClickListener(e -> openRegistrationDialog());
-
-        // Add components to the form layout
-        formLayout.add(emailField, passwordField, rememberMeCheckbox, loginButton, registerButton);
+        // Create and set up the layout
+        HorizontalLayout headerLayout = createHeaderLayout();
+        FormLayout formLayout = createFormLayout();
 
         // Add header and form layout to the dialog
         add(headerLayout, formLayout);
     }
 
+    /**
+     * Creates the header layout with a title and a close button.
+     *
+     * @return a HorizontalLayout containing the header components.
+     */
+    private HorizontalLayout createHeaderLayout() {
+        Header header = new Header(new H2(LanguageManager.getLocalizedText("Login")));
+        Button closeButton = new Button(new Icon(VaadinIcon.CLOSE));
+        closeButton.addClickListener(e -> close());
+
+        HorizontalLayout headerLayout = new HorizontalLayout(header, closeButton);
+        headerLayout.setWidthFull();
+        headerLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
+        headerLayout.setAlignItems(FlexComponent.Alignment.BASELINE);
+
+        return headerLayout;
+    }
+
+    /**
+     * Creates the form layout with input fields and buttons for login and registration.
+     *
+     * @return a FormLayout containing the input fields and buttons.
+     */
+    private FormLayout createFormLayout() {
+        FormLayout formLayout = new FormLayout();
+        formLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1));
+
+        Button loginButton = new Button(LanguageManager.getLocalizedText("Login"), e -> handleLogin());
+        loginButton.setWidthFull();
+
+        Button registerButton = new Button(LanguageManager.getLocalizedText("Create Account"), e -> openRegistrationDialog());
+        registerButton.setWidthFull();
+
+        formLayout.add(emailField, passwordField, rememberMeCheckbox, loginButton, registerButton);
+        return formLayout;
+    }
+
+    /**
+     * Handles the login process by validating the email and password fields.
+     * If valid, it logs in the user and manages session and cookies.
+     */
     private void handleLogin() {
-        // Get entered email and password
-        final String enteredEmail = emailField.getValue().trim();
-        final String enteredPassword = passwordField.getValue();
+        String enteredEmail = emailField.getValue().trim();
+        String enteredPassword = passwordField.getValue();
 
         try {
             Account currentAccount = AccountOperations.getAccountByEmail(enteredEmail, enteredPassword);
@@ -82,24 +100,32 @@ public class LoginDialog extends Dialog {
             if (currentAccount != null) {
                 SessionManagement.setAccount(currentAccount);
 
-                // Save the account in a cookie if the "Remember Me" checkbox is checked
                 if (rememberMeCheckbox.getValue()) {
                     CookieOperations.saveAccount(currentAccount);
                 }
 
                 UI.getCurrent().getPage().reload();
-                close(); // Close the dialog after successful login
+                close();
             }
         } catch (AccountOperationException ex) {
-            emailField.setInvalid(true);
-            passwordField.setInvalid(true);
-            Notification.show(LanguageManager.getLocalizedText("Email/Passwort combination does not exist"), 3000, Notification.Position.MIDDLE);
+            showLoginError();
         }
     }
 
+    /**
+     * Displays an error notification if login fails due to invalid credentials.
+     */
+    private void showLoginError() {
+        emailField.setInvalid(true);
+        passwordField.setInvalid(true);
+        Notification.show(LanguageManager.getLocalizedText("Email/Password combination does not exist"), 3000, Notification.Position.MIDDLE);
+    }
+
+    /**
+     * Opens the registration dialog and closes the current login dialog.
+     */
     private void openRegistrationDialog() {
-        close(); // Close the login dialog before navigating
-        RegistrationDialog registrationDialog = new RegistrationDialog();
-        registrationDialog.open();
+        close();
+        new RegistrationDialog().open();
     }
 }

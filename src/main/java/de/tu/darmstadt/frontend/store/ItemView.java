@@ -100,7 +100,7 @@ public class ItemView extends VerticalLayout {
                 LoginDialog loginDialog = new LoginDialog();
                 loginDialog.open();
             }else{
-                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getITEMId());
+                ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getId());
                 Notification.show(LanguageManager.getLocalizedText("Item added to cart"), 2000, Notification.Position.MIDDLE);
             }
         });

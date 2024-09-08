@@ -3,6 +3,7 @@ package de.tu.darmstadt.backend;
 /**
  * {@link IceCream} refers to an edible item made of frozen milk and is a popular dish
  * in warm weather.
+ * //TODO @TONI delete this class? What does it even do?
  */
 public class IceCream {
 

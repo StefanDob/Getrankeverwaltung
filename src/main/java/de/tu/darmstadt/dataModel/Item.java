@@ -10,10 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayInputStream;
 
 import java.util.Arrays;
-import java.util.function.Predicate;
 
 /**
- * An {@link Item} is a class of instances sold in the drink shop.
+ * An {@link Item} is a class of instances sold in the shop.
  */
 @Entity
 @Table(name = "item")
@@ -40,7 +39,7 @@ public class Item {
     private double price;
 
     /**
-     * The {@link ItemImage image} is an attribute to display an image of the {@link Item}.
+     * The image is an attribute to display an image of the {@link Item}.
      */
     @Column(columnDefinition = "BLOB")
     private byte[] image;
@@ -54,51 +53,16 @@ public class Item {
     @Column(name = "stock")
     private int stock;
 
-    // ::::::::::::::::::::::::::::::: PROPERTIES ::::::::::::::::::::::::::::::::
 
-    /**
-     * The prefix of an item ID. It should never be altered again.
-     */
-    private static final String ID_PREFIX = "IT-";
-
-    /**
-     * This constant determines the length of the X...X part in {@link Item#id}.
-     */
-    private static final int ID_OFFSET_LENGTH = 6;
-
-    /**
-     * This {@link Predicate} checks if the ID of {@link Item} is in the following format:
-     * <p>
-     *     {@code "IT-X...X"}
-     *
-     * <p>
-     *     The ID always starts with "IT", followed by a '-' that separates the "IT" and "X...X".
-     *     Each 'X' is a placeholder for any digit.
-     */
-    public final static Predicate<? super String> ITEM_ID_FORMAT = s -> {
-        if( !s.subSequence(0, ID_PREFIX.length()).equals(ID_PREFIX)
-                || s.length() != ID_PREFIX.length() + ID_OFFSET_LENGTH )
-        {
-            return false;
-        }
-
-        for (int i = 3 ; i < s.length() ; i++)
-        {
-            if( !Character.isDigit(s.charAt(i)) )
-            {
-                return false;
-            } // end of if
-        } // end of for
-
-        return true;
-    };
 
 
     // :::::::::::::::::::::::::::::::::: CONSTRUCTORS ::::::::::::::::::::::::::::::::::::
 
     /**
      * Constructs a new {@link Item} with a specified {@link #price}, {@link #name}, {@link #image} and
-     * {@link #description}.
+     * {@link #description}.+
+     * TODO @Toni if you have time delete this constructor as it is not the way jpa wants you to create objects, it is better
+     * to create objects with an empty constructor and then set the attributes via methods
      *
      * @param price the specified price
      * @param name the specified name
@@ -120,59 +84,13 @@ public class Item {
 
     // ::::::::::::::::::::::::::::::: AUXILIARY METHODS ::::::::::::::::::::::::::::::::::
 
-    /**
-     * This static method generates an ID for an {@link Item}.
-     * TODO: Implement how to check if the ID is already contained.
-     *
-     * @return the randomly generated ID for an {@link Item}
-     */
-    /*
 
-    private static String generate_item_ID() throws InvalidItemIDFormatException {
-        String result;
-
-        do {
-            result = ID_PREFIX + build_ID_offset(0, 10);
-        } while (is_item_ID_already_existing(result));
-
-        if( !ITEM_ID_FORMAT.test(result) ) {
-            throw new InvalidItemIDFormatException(result);
-        }
-
-        return result;
-    }
-
-     */
-
-    /**
-     * This method is used to construct the "X...X" part of the {@link Item#id}.
-     *
-     * @param min_number the minimum occurring digit (inclusive)
-     * @param max_number the maximum occurring digit (exclusive)
-     * @return the offset
-     */
-    /*
-    private static @NotNull String build_ID_offset(int min_number, int max_number) {
-        if(min_number < 0 || max_number < 1 || max_number < min_number) {
-            throw new IllegalArgumentException
-                    ("Invalid arguments. Expected: min_number, max_number > 1 and min_number < max_number");
-        }
-
-        StringBuilder sb = new StringBuilder(ID_OFFSET_LENGTH);
-
-        for(int i = 0 ; i < ID_OFFSET_LENGTH ; i++) {
-            sb.append(ThreadLocalRandom.current().nextInt(min_number, max_number));
-        } // end of for
-
-        return sb.toString();
-    }
-
-     */
 
     /**
      * Checks if a specified ID already exists.
      * @param ID the specified ID
      * @return true if the ID already exists.
+     * //TODO @Toni  move this method to the ItemOperations class
      */
     private static boolean isItemIDAlreadyExisting(Long ID) throws InvalidItemIDFormatException {
         return ItemOperations.getItemById(ID) != null;
@@ -182,6 +100,7 @@ public class Item {
      * Checks if a specified item name already exists.
      * @param item_name the specified item name
      * @return true if the item name already exists.
+     * //TODO @Toni  move this method to the ItemOperations class and implement it
      */
     private static boolean isItemNameAlreadyInUse(String item_name) {
         item_name = item_name.trim();
@@ -204,7 +123,7 @@ public class Item {
         this.price = price;
     }
 
-    public Long getITEMId() {
+    public Long getId() {
         return id;
     }
 
