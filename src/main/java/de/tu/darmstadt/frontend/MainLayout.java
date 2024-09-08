@@ -20,6 +20,7 @@ import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.AccountStatus;
+import de.tu.darmstadt.frontend.Contact.SupportView;
 import de.tu.darmstadt.frontend.account.AccountView.AccountView;
 import de.tu.darmstadt.frontend.admin.AdminView;
 import de.tu.darmstadt.frontend.account.LoginDialog;
@@ -132,6 +133,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Store"), StoreView.class, LineAwesomeIcon.STORE_SOLID.create()));
         nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Account"), AccountView.class, LineAwesomeIcon.USER_CIRCLE.create()));
         nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Shopping Cart"), ShoppingCartView.class, LineAwesomeIcon.CART_ARROW_DOWN_SOLID.create()));
+        nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Support"), SupportView.class, LineAwesomeIcon.HEADSET_SOLID.create()));
 
         if (SessionManagement.getAccount() != null && SessionManagement.getAccount().getStatus() == AccountStatus.ADMIN) {
             nav.addItem(new SideNavItem(LanguageManager.getLocalizedText("Admin"), AdminView.class, LineAwesomeIcon.TOOLBOX_SOLID.create()));
