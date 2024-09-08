@@ -1,5 +1,6 @@
 package de.tu.darmstadt.backend.backendService;
 
+import de.tu.darmstadt.backend.database.Account.AccountService;
 import de.tu.darmstadt.backend.database.ShoppingCart.ShoppingCartService;
 import de.tu.darmstadt.backend.database.SpringContext;
 import de.tu.darmstadt.backend.database.transaction.TransactionService;
@@ -16,5 +17,10 @@ public class TransactionOperations {
     public static void addTransaction(Transaction transaction){
         TransactionService transactionService = SpringContext.getBean(TransactionService.class);
         transactionService.addTransaction(transaction);
+    }
+
+    public static List<Transaction> getAllTransactions() {
+        TransactionService transactionService = SpringContext.getBean(TransactionService.class);
+        return transactionService.getAllTransactions();
     }
 }

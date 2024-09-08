@@ -14,42 +14,56 @@ import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
+import de.tu.darmstadt.frontend.ItemManagment.ViewItemDialog;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.Utils.SessionManagement;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The ItemView class represents a visual component for displaying an individual item.
+ * It includes the item image, name, price, stock information, and provides buttons for
+ * purchasing or adding the item to the shopping cart. The class also handles user interaction
+ * through button clicks and item selection.
+ */
 public class ItemView extends VerticalLayout {
 
+    // The item associated with this view
     private final Item item;
 
+    /**
+     * Constructor to initialize the item view with a specific item.
+     *
+     * @param item The item to be displayed in this view.
+     */
     public ItemView(@NotNull Item item) {
         this.item = item;
-        setSpacing(false);
-        setWidth("250px"); // Adjust width as needed
-        setHeight("350px"); // Fixed height for consistent sizing
 
+        // Set layout properties
+        setSpacing(false);
+        setWidth("250px");  // Set a fixed width for the item view
+        setHeight("350px"); // Set a fixed height for consistent display
         setPadding(true);
         setMargin(true);
 
-        // Add a CSS class for styling
+        // Add a CSS class for custom styling
         addClassName("item-view");
 
-        // Image container with fixed height
+        // Create and add image wrapper to display the item's image
         Div imageWrapper = new Div();
         imageWrapper.setWidth("100%");
-        imageWrapper.setHeight("150px"); // Set a fixed height for the image container
-        imageWrapper.getStyle().set("text-align", "center");
+        imageWrapper.setHeight("150px");  // Set a fixed height for the image container
+        imageWrapper.getStyle().set("text-align", "center");  // Center the image
         add(imageWrapper);
 
-        // Responsive image
+        // Create and configure the image for the item
         Image img = new Image(item.getImageAsResource(), item.getName());
-        img.setMaxHeight("100%"); // Maintain aspect ratio
+        img.setMaxHeight("100%");  // Maintain the aspect ratio
         img.setMaxWidth("100%");
         imageWrapper.add(img);
 
-        // Item details
+        // Create a layout for item details (name, price, and stock)
         VerticalLayout details = new VerticalLayout();
         details.setSpacing(false);
         details.setWidth("100%");
@@ -57,78 +71,96 @@ public class ItemView extends VerticalLayout {
         details.setMargin(false);
         add(details);
 
+        // Display the item name as a header
         H2 header = new H2(item.getName());
         header.addClassName("item-view-title");
         details.add(header);
 
-        Div priceDiv = new Div(new Paragraph(LanguageManager.getLocalizedText("Price") + ": " + item.getItemPriceAsString() + " (" + LanguageManager.getLocalizedText("Stock") + ": " + item.getStock() + ")"));
+        // Display the item price and stock information
+        Div priceDiv = new Div(new Paragraph(
+                LanguageManager.getLocalizedText("Price") + ": " +
+                        item.getItemPriceAsString() + " (" +
+                        LanguageManager.getLocalizedText("Stock") + ": " + item.getStock() + ")"
+        ));
         priceDiv.setWidth("100%");
-        priceDiv.getStyle().set("text-align", "left");
+        priceDiv.getStyle().set("text-align", "left");  // Align price text to the left
         details.add(priceDiv);
 
-        // Button layout
+        // Create a button layout for the action buttons
         HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.setWidthFull();
-        buttonLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        buttonLayout.setWidthFull();  // Ensure the button layout takes full width
+        buttonLayout.setJustifyContentMode(JustifyContentMode.CENTER);  // Center buttons
         buttonLayout.setSpacing(true);
 
-        // Buy now button with icon and text
+        // Create 'Buy Now' button with icon and custom theme
         Button buyNowButton = new Button(LanguageManager.getLocalizedText("Buy"), new Icon(VaadinIcon.CASH));
         buyNowButton.addThemeName("tertiary");
         buyNowButton.addClassName("styled-button");
         buttonLayout.add(buyNowButton);
 
-        // Add to cart button with icon and text
+        // Create 'Add to Cart' button with icon and custom theme
         Button addToCartButton = new Button(LanguageManager.getLocalizedText("Cart"), new Icon(VaadinIcon.CART));
         addToCartButton.addThemeName("tertiary");
         addToCartButton.addClassName("styled-button");
         buttonLayout.add(addToCartButton);
 
+        // Add the button layout to the details section
         details.add(buttonLayout);
 
-        AtomicBoolean buttonclicked = new AtomicBoolean(false);
-        // Event handlers for buttons
+        // AtomicBoolean to track if a button was clicked
+        AtomicBoolean buttonClicked = new AtomicBoolean(false);
+
+        // Add click listener to the 'Buy Now' button
         buyNowButton.addClickListener(event -> {
-            buttonclicked.set(true);
-            ProjectUtils.buyItem(item);
+            buttonClicked.set(true);  // Mark button click as true
+            ProjectUtils.buyItem(item);  // Handle the item purchase
         });
 
-
+        // Add click listener to the 'Add to Cart' button
         addToCartButton.addClickListener(event -> {
-            buttonclicked.set(true);
-            if(SessionManagement.getAccount() == null){
+            buttonClicked.set(true);  // Mark button click as true
+            if (SessionManagement.getAccount() == null) {
+                // Show login dialog if the user is not logged in
                 LoginDialog loginDialog = new LoginDialog();
                 loginDialog.open();
-            }else{
+            } else {
+                // Add the item to the shopping cart
                 ShoppingCartOperations.addItemToCart(SessionManagement.getAccount().getId(), item.getId());
                 Notification.show(LanguageManager.getLocalizedText("Item added to cart"), 2000, Notification.Position.MIDDLE);
             }
         });
 
+        // Add click listener to the entire item view to show item details on click
         addClickListener(e -> {
-            if (buttonclicked.get()) {
-                buttonclicked.set(false);
-                return; // Ignore clicks on buttons
+            if (buttonClicked.get()) {
+                buttonClicked.set(false);  // Reset the button click flag
+                return;  // Ignore clicks that occurred on buttons
             }
-            showItemDetails();
+            showItemDetails();  // Show item details if the item itself is clicked
         });
     }
 
     /**
-     * this method displays the item details once the item is clicked
+     * Displays a dialog showing the detailed view of the item when the item view is clicked.
      */
     private void showItemDetails() {
-        // Creating a dialog to display item details
+        // Create a dialog to display item details
         ViewItemDialog viewItemDialog = new ViewItemDialog(item);
 
-        // Opening the dialog
+        // Open the dialog
         viewItemDialog.open();
     }
 
+    /**
+     * Returns the item associated with this view.
+     *
+     * @return The item displayed in this view.
+     */
     public Item getItem() {
         return item;
     }
 }
+
 
 
 

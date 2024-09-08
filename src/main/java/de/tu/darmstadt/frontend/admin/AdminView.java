@@ -7,6 +7,9 @@ import com.vaadin.flow.router.Route;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.frontend.MainLayout;
 import com.vaadin.flow.component.html.H2;
+import de.tu.darmstadt.frontend.admin.AdminLists.AccountListView;
+import de.tu.darmstadt.frontend.admin.AdminLists.ItemListView;
+import de.tu.darmstadt.frontend.admin.AdminLists.TransactionListView;
 
 
 /**
@@ -28,7 +31,7 @@ public class AdminView extends Details {
 
         // Create the wrapper layout for admin views
         VerticalLayout wrapper = createWrapperLayout();
-        wrapper.add(new AccountListView(), new ItemListView());
+        wrapper.add(new AccountListView(), new ItemListView(), new TransactionListView());
 
         // Add wrapper to the Details component
         add(wrapper);
