@@ -124,6 +124,15 @@ public class LanguageManager {
         addTranslation("The product is currently not available", "The product is currently not available", "Das Produkt ist momentan nicht auf Lager");
         addTranslation("One of the products exceeds the stock, please make it fit", "One of the products exceeds the stock, please make it fit", "Eines der Einträge ist mit einer höheren Menge als es im Lager gibt angegeben. Bitte ändern!");
 
+        addTranslation("Name needs to be inputted", "Name needs to be inputted", "Bitte Namen eingeben");
+        addTranslation("Item name cannot exceed 16 characters", "Item name cannot exceed 16 characters", "Name kann nicht mehr als 16 Zeichen beinhalten");
+        addTranslation("Price cannot be empty or negative", "Price cannot be empty or negative", "Preis kann nicht lehr oder negativ sein");
+        addTranslation("Stock field cannot be empty ", "Stock field cannot be empty ", "Bitte geben sie an wieviel auf Lager ist");
+        addTranslation("Stock needs to be a number ", "Stock needs to be a number ", "Lagerfeld muss eine Nummer enthalten");
+        addTranslation("Stock cannot be negative", "Stock cannot be negative", "Lager kann nicht negativ sein");
+        //addTranslation("", "", "");
+        //addTranslation("", "", "");
+
 
 
 
