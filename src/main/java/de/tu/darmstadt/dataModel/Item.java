@@ -23,7 +23,7 @@ public class Item {
      * key for the {@link Item}.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

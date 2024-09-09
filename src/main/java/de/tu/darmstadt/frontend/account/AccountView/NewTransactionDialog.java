@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
@@ -136,20 +137,26 @@ public class NewTransactionDialog extends Dialog {
             receiverField.setInvalid(true);
             receiverField.setErrorMessage(LanguageManager.getLocalizedText("Receiver does not exist"));
             return false;
+        }else if (AccountOperations.getAccountByEmail(receiverField.getValue()).getStatus() == AccountStatus.RESTRICTED || AccountOperations.getAccountByEmail(receiverField.getValue()).getStatus() == AccountStatus.CLOSED) {
+            receiverField.setInvalid(true);
+            receiverField.setErrorMessage(LanguageManager.getLocalizedText("You cannot send money to restricted or closed accounts"));
+            return false;
+        }else if (currentAccount.getStatus() == AccountStatus.RESTRICTED || currentAccount.getStatus() == AccountStatus.CLOSED) {
+            Notification.show(LanguageManager.getLocalizedText("You do not have the rights to commit transactions. Contact an Admin"), 3000, Notification.Position.MIDDLE);
+            return false;
         } else if (amountField.isEmpty()) {
             amountField.setInvalid(true);
             amountField.setErrorMessage(LanguageManager.getLocalizedText("Enter Amount"));
             return false;
-        } else if (amountField.getValue() == 0) {
+        } else if (amountField.getValue() <= 0) {
             amountField.setInvalid(true);
-            amountField.setErrorMessage(LanguageManager.getLocalizedText("Amount cannot be 0"));
+            amountField.setErrorMessage(LanguageManager.getLocalizedText("Amount cannot be negative or 0"));
             return false;
-        } else if ((currentAccount.getSaldo() + currentAccount.getDebtLimit()) < amountField.getValue()) {
+        } else if (currentAccount.checkForCoverage(amountField.getValue())) {
             amountField.setInvalid(true);
             amountField.setErrorMessage(LanguageManager.getLocalizedText("Your account does not have enough coverage"));
             return false;
         }
-
         return true;
     }
 }

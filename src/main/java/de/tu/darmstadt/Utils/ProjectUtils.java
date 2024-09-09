@@ -3,9 +3,8 @@ package de.tu.darmstadt.Utils;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.backendService.CookieOperations;
-import de.tu.darmstadt.backend.backendService.TransactionOperations;
+import de.tu.darmstadt.backend.backendService.*;
+import de.tu.darmstadt.backend.database.Item.ItemRepository;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Item;
@@ -99,18 +98,26 @@ public final class ProjectUtils {
 
         return sb.toString();
     }
-    //TODO check wether enough money is on the account
+
     public static void buyItem(Item item) {
         if (SessionManagement.getAccount() == null) {
             LoginDialog loginDialog = new LoginDialog();
             loginDialog.open();
         }else if(SessionManagement.getAccount().getStatus() == AccountStatus.RESTRICTED){
             Notification.show(LanguageManager.getLocalizedText("Your account is restricted. Contact an admin."), 3000, Notification.Position.MIDDLE);
+        }else if(SessionManagement.getAccount().checkForCoverage(item.getPrice())){
+            Notification.show(LanguageManager.getLocalizedText("Your account does not have enough coverage"), 3000, Notification.Position.MIDDLE);
+        }else if(item.getStock() <= 0){
+            Notification.show(LanguageManager.getLocalizedText("The product is currently not available"), 3000, Notification.Position.MIDDLE);
         }else {
             long receiverId = Constants.getMasterID();
 
             Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, item.getPrice(), LocalDateTime.now(), item.getName());
             TransactionOperations.addTransaction(transaction);
+
+            //update the stock of the item
+            item.setStock(item.getStock()-1);
+            ItemOperations.saveItem(item);
 
             //Make sure acount is updated everywhere
             try {
@@ -143,29 +150,56 @@ public final class ProjectUtils {
             loginDialog.open();
         } else if (SessionManagement.getAccount().getStatus() == AccountStatus.RESTRICTED) {
             Notification.show(LanguageManager.getLocalizedText("Your account is restricted. Contact an admin."), 3000, Notification.Position.MIDDLE);
-        } else {
+        } else if(SessionManagement.getAccount().checkForCoverage(totalPrice)){
+            Notification.show(LanguageManager.getLocalizedText("Your account does not have enough coverage"), 3000, Notification.Position.MIDDLE);
+        }else if(checkShoppingCartItems(shoppingCartItems)){
+            Notification.show(LanguageManager.getLocalizedText("One of the products exceeds the stock, please make it fit"), 3000, Notification.Position.MIDDLE);
+        }
+        else {
             StringBuilder description = new StringBuilder();
             for (ShoppingCartItem shoppingCartItem : shoppingCartItems) {
+                //create description for transaction
                 description.append(shoppingCartItem.getItem().getName())
                         .append(" * ")
                         .append(shoppingCartItem.getQuantity())
                         .append("; ");
+
+                //update the item stock too
+                Item item = shoppingCartItem.getItem();
+                item.setStock(item.getStock()-shoppingCartItem.getQuantity());
+                ItemOperations.saveItem(item);
+
             }
 
             long receiverId = Constants.getMasterID();
 
             Transaction transaction = new Transaction(SessionManagement.getAccount().getId(), receiverId, totalPrice, LocalDateTime.now(), description.toString());
             TransactionOperations.addTransaction(transaction);
-
+            //shopping cart allows checking out event tough we buy more items than there are in the stock
             // Make sure account is updated everywhere
             try {
                 SessionManagement.setAccount(AccountOperations.getAccountByID(SessionManagement.getAccount().getId()));
             } catch (AccountPolicyException e) {
                 throw new RuntimeException(e);
             }
+            ShoppingCartOperations.deleteAllShoppingCartItems();
             UI.getCurrent().getPage().reload();
             Notification.show(LanguageManager.getLocalizedText("You bought the Shopping Cart "), 3000, Notification.Position.MIDDLE);
         }
+    }
+
+    /**
+     *
+     * @param shoppingCartItems that need to be checked
+     * @return false if shoppingcartItems are ok and true if there is a fault
+     */
+    private static boolean checkShoppingCartItems(List<ShoppingCartItem> shoppingCartItems) {
+        for(ShoppingCartItem shoppingCartItem : shoppingCartItems){
+            if(shoppingCartItem.getQuantity() > shoppingCartItem.getItem().getStock()){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -178,5 +212,19 @@ public final class ProjectUtils {
         if (account != null) {
             SessionManagement.setAccount(account);
         }
+    }
+
+    /**
+     * method that checks wether a string is parsable to int
+     * @param value string to be parsed
+     * @return false if string is parsable, true if string parsing throws error
+     */
+    public static boolean checkStringToInt(String value) {
+        try{
+            Integer.parseInt(value);
+        }catch(NumberFormatException ex){
+            return true;
+        }
+        return false;
     }
 }

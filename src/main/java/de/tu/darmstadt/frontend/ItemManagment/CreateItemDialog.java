@@ -18,13 +18,18 @@ import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.server.StreamResource;
 import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.Utils.ItemUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * The CreateItemDialog class is responsible for creating a dialog that allows
@@ -153,6 +158,7 @@ public class CreateItemDialog extends ItemDialog {
     protected VerticalLayout createRightPart() {
         // Initialize the form fields
         priceField = new NumberField(LanguageManager.getLocalizedText("Price"));
+        priceField.setMin(0.0);
         priceField.setWidthFull();
 
         stockField = new TextField(LanguageManager.getLocalizedText("Stock"));
@@ -204,18 +210,62 @@ public class CreateItemDialog extends ItemDialog {
      * it to the ItemOperations class for persistence.
      */
     protected void save() {
-        // Create a new item with the form data and save it
-        Item newItem = new Item(
-                nameField.getValue(),
-                priceField.getValue(),
-                Integer.valueOf(stockField.getValue()),
-                cachedImage,
-                descriptionField.getValue()
-        );
+        if(validateInput()) {
+            // Create a new item with the form data and save it
+            Item newItem = new Item(
+                    nameField.getValue(),
+                    priceField.getValue(),
+                    Integer.parseInt(stockField.getValue()),
+                    cachedImage,
+                    descriptionField.getValue()
+            );
 
-        ItemOperations.saveItem(newItem);
-        close();
-        UI.getCurrent().getPage().reload();  // Reload the page to reflect changes
+            ItemOperations.saveItem(newItem);
+            close();
+            UI.getCurrent().getPage().reload();  // Reload the page to reflect changes
+        }
+    }
+
+    /**
+     * this method checks wether the input in the CreateItemDialog is valid
+     * @return true if the in put is valid, false if input is invalid
+     */
+    protected boolean validateInput() {
+        nameField.setInvalid(false);
+        stockField.setInvalid(false);
+        priceField.setInvalid(false);
+        if(nameField.isEmpty()){
+            nameField.setInvalid(true);
+            nameField.setErrorMessage(LanguageManager.getLocalizedText("Name needs to be inputted"));
+        }else if(nameField.getValue().toCharArray().length > 16){
+            nameField.setInvalid(true);
+            nameField.setErrorMessage(LanguageManager.getLocalizedText("Item name cannot exceed 16 characters"));
+        }else if(priceField.isEmpty() || priceField.getValue() < 0){
+            priceField.setInvalid(true);
+            priceField.setErrorMessage(LanguageManager.getLocalizedText("Price cannot be empty or negative"));
+        }else if(stockField.isEmpty()){
+            stockField.setInvalid(true);
+            stockField.setErrorMessage(LanguageManager.getLocalizedText("Stock field cannot be empty "));
+        }else if(ProjectUtils.checkStringToInt(stockField.getValue())){
+            stockField.setInvalid(true);
+            stockField.setErrorMessage(LanguageManager.getLocalizedText("Stock needs to be a number "));
+        }else if(Integer.parseInt(stockField.getValue())<0){
+            stockField.setInvalid(true);
+            stockField.setErrorMessage(LanguageManager.getLocalizedText("Stock cannot be negative"));
+        }else{
+            //make sure an image will be saved
+            if(cachedImage == null){
+                Path path = Paths.get("src/main/resources/META-INF/resources/images/empty_item.png");
+                try {
+                    cachedImage = Files.readAllBytes(path);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            return true;
+        }
+        return false;
     }
 }
 

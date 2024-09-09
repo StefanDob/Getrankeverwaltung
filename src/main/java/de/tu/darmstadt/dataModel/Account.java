@@ -334,4 +334,12 @@ public class Account {
         this.shoppingCart = shoppingCart;
     }
 
+    /**
+     * this method checks wether the account has enough coverage for a transaction
+     * @param amount
+     * @return true if the account has enough coverage
+     */
+    public boolean checkForCoverage(Double amount) {
+        return (getSaldo() + getDebtLimit()) < amount;
+    }
 }

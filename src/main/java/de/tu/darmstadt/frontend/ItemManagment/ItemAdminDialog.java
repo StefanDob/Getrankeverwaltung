@@ -119,6 +119,7 @@ public class ItemAdminDialog extends CreateItemDialog {
      */
     @Override
     protected void save() {
+        if(validateInput()){
         // Update the item's name, image (if changed), price, description, and stock
         item.setName(nameField.getValue());
 
@@ -140,5 +141,6 @@ public class ItemAdminDialog extends CreateItemDialog {
 
         close();  // Close the dialog
         UI.getCurrent().getPage().reload();  // Reload the page to reflect changes
+        }
     }
 }

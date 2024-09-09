@@ -46,7 +46,7 @@ public class LanguageManager {
         addTranslation("Please Enter Receiver", "Please Enter Receiver", "Bitte fügen sie den Empfänger hinzu");
         addTranslation("Receiver does not exist", "Receiver does not exist", "Empfänger existiert nicht");
         addTranslation("Enter Amount", "Enter Amount", "Betrag einfügen!");
-        addTranslation("Amount cannot be 0", "Amount cannot be 0", "Betrag darf nicht 0 sein");
+        addTranslation("Amount cannot be negative or 0", "Amount cannot be negative or 0", "Betrag darf nicht negativ oder 0 sein");
         addTranslation("Your account does not have enough coverage", "Your account does not have enough coverage", "Konto hat nicht genug liquide Mittel");
         addTranslation("Transactions", "Transactions", "Transaktionen");
         addTranslation("Transfer Money", "Transfer Money", "Geld senden");
@@ -114,7 +114,18 @@ public class LanguageManager {
         addTranslation("Current debt limit: ", "Current debt limit: ", "Aktuelle Schuldengrenze: ");
         addTranslation(" ; Balance after setting to new value: ", " ; Balance after setting to new value: ", " ; Kontostand nach der Trnsaktion: ");
         addTranslation("Email/Password combination does not exist", "Email/Password combination does not exist", "Email/Passwort Kombination existiert nicht");
-        //addTranslation("hello", "Hello", "Hallo");
+        addTranslation("Download Instruction Manual", "Download Instruction Manual", "Anleitung runterladen");
+        addTranslation("Suggestions", "Suggestions", "Vorschläge");
+        addTranslation("Enter your suggestions here...", "Enter your suggestions here...", "Vorschläge hier eingeben ...");
+        addTranslation("Submit", "Submit", "Einreichen");
+        addTranslation("Please enter a suggestion", "Please enter a suggestion", "Bitte Vorschlage eingeben");
+        addTranslation("Thank you for your suggestion!", "Thank you for your suggestion!", "Vielen Dank für den Vorschlag");
+        addTranslation("Your account does not have enough coverage", "Your account does not have enough coverage", "Dein Konto ist nicht ausreichend gedeckt!");
+        addTranslation("The product is currently not available", "The product is currently not available", "Das Produkt ist momentan nicht auf Lager");
+        addTranslation("One of the products exceeds the stock, please make it fit", "One of the products exceeds the stock, please make it fit", "Eines der Einträge ist mit einer höheren Menge als es im Lager gibt angegeben. Bitte ändern!");
+
+
+
 
 
 

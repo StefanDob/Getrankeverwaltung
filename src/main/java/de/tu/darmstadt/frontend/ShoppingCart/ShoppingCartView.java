@@ -109,6 +109,11 @@ public class ShoppingCartView extends VerticalLayout {
         quantityField.setMax(item.getStock());
         quantityField.setStep(1);
         quantityField.setWidth("80px");
+        if(item.getQuantity() > item.getItem().getStock()){
+            quantityField.setInvalid(true);
+        }else{
+            quantityField.setInvalid(false);
+        }
         quantityField.addValueChangeListener(event -> handleQuantityChange(item, event.getValue()));
 
         return quantityField;
@@ -118,17 +123,20 @@ public class ShoppingCartView extends VerticalLayout {
      * Handles changes to the quantity field.
      * Updates the item quantity or removes the item from the cart if the quantity is zero.
      *
-     * @param item the shopping cart item being updated.
+     * @param shoppingCartItem the shopping cart item being updated.
      * @param newValue the new quantity value.
      */
-    private void handleQuantityChange(ShoppingCartItem item, Double newValue) {
-        if (newValue == 0) {
-            ShoppingCartOperations.delete(item);
+    private void handleQuantityChange(ShoppingCartItem shoppingCartItem, Double newValue) {
+        if(newValue < 0){
+            UI.getCurrent().getPage().reload();
+            Notification.show(LanguageManager.getLocalizedText("New quantity cannot be negative"), 3000, Notification.Position.MIDDLE);
+        }else if (newValue == 0) {
+            ShoppingCartOperations.delete(shoppingCartItem);
             UI.getCurrent().getPage().reload();
             Notification.show(LanguageManager.getLocalizedText("Item removed"), 2000, Notification.Position.MIDDLE);
         } else {
-            item.setQuantity(newValue.intValue());
-            ShoppingCartOperations.save(item);
+            shoppingCartItem.setQuantity(newValue.intValue());
+            ShoppingCartOperations.save(shoppingCartItem);
             setTotalPriceLabel();
             Notification.show(LanguageManager.getLocalizedText("Quantity updated"), 2000, Notification.Position.MIDDLE);
         }
@@ -145,7 +153,6 @@ public class ShoppingCartView extends VerticalLayout {
         buyNowButton.addClickListener(event -> {
             List<ShoppingCartItem> items = ShoppingCartOperations.getShoppingCartItems(SessionManagement.getAccount().getId());
             ProjectUtils.buyShoppingCart(items, getTotalPrice());
-            ShoppingCartOperations.deleteAllShoppingCartItems();
         });
 
         return buyNowButton;

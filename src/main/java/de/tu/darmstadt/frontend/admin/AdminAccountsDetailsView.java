@@ -13,12 +13,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import de.tu.darmstadt.Utils.LanguageManager;
+import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.DebtLimitExceedingException;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidEmailFormatException;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidNameFormatException;
-import de.tu.darmstadt.backend.exceptions.accountPolicy.InvalidPasswordFormatException;
+import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.Utils.AccountUtils;
 
@@ -163,6 +161,15 @@ public class AdminAccountsDetailsView extends Dialog {
         AccountOperations.saveAccount(account);
         Notification.show(LanguageManager.getLocalizedText("Account updated successfully"), 3000, Notification.Position.MIDDLE);
         close();
+        //Make sure that the current account gets updated in case the change has been made to the current account
+        if(SessionManagement.getAccount() != null){
+            try {
+                SessionManagement.setAccount(AccountOperations.getAccountByID(SessionManagement.getAccount().getId()));
+            } catch (AccountPolicyException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         UI.getCurrent().getPage().reload();
     }
 
