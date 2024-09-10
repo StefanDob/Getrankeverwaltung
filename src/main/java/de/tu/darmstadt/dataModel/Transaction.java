@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * A transaction is a process where money is transferred from an {@link Account} to another {@link Account}.
  * This class is used to store the transaction history in a database.
- * changed the name of the table transaction to transfer in order to not make it less
+ * Changed the name of the table transaction to transfer to not make it less
  * difficult for jpa to access the table
  */
 @Entity
@@ -47,7 +47,7 @@ public class Transaction {
     /**
      * The timestamp at which the {@link Transaction} is performed.
      */
-    @Column(name = "transactionDate")
+    @Column(name = "transaction_Date")
     private LocalDateTime transactionDate;
 
     /**
@@ -55,7 +55,7 @@ public class Transaction {
      * an empty {@link String}.
      */
     @NotNull
-    @Column(name = "transactionText")
+    @Column(name = "transaction_Text")
     private String transactionText = "";
 
 
