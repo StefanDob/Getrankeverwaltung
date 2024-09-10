@@ -1,5 +1,6 @@
 package de.tu.darmstadt.backend.database.Item;
 
+import de.tu.darmstadt.backend.backendService.EmailOperations;
 import de.tu.darmstadt.dataModel.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,20 @@ public class ItemService {
     // :::::::::::::::::::::::::::::::::::::: METHODS :::::::::::::::::::::::::::::::::::::::
 
     public void saveItem(final Item item) {
+        checkForLowStock(item);
         itemRepository.save(item);
+    }
+
+    //TODO coding style and documentation
+    private void checkForLowStock(Item item) {
+        int schwelle = 20;
+        int bevore = 0;
+        if(itemRepository.findItemById(item.getId()).isPresent()){
+            bevore = itemRepository.findItemById(item.getId()).get().getStock();
+        }
+        if(bevore > schwelle && item.getStock() <= schwelle){
+            EmailOperations.sendLowStockNotification(item.getName(),item.getStock());
+        }
     }
 
     public Optional<Item> deleteItem(final String id) {

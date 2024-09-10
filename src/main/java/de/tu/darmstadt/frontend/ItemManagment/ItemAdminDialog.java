@@ -119,13 +119,17 @@ public class ItemAdminDialog extends CreateItemDialog {
      */
     @Override
     protected void save() {
+        if (cachedImage != null) {
+            item.setImage(cachedImage);  // Update image if a new one is provided
+        }else{
+            cachedImage = item.getImage();
+        }
+
         if(validateInput()){
         // Update the item's name, image (if changed), price, description, and stock
         item.setName(nameField.getValue());
 
-        if (cachedImage != null) {
-            item.setImage(cachedImage);  // Update image if a new one is provided
-        }
+
 
         try {
             item.setPrice(priceField.getValue());
