@@ -84,7 +84,7 @@ public final class ItemShopProperties {
 
                 // The format (1st argument) that the email should have.
                 // return Pattern.matches("[a-zA-Z0-9-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,4}", s);
-                return Pattern.matches("[a-zA-Z0-9-.-]+@[a-zA-Z0-9-]+\\.[a-zA-Z]{2,4}", s);
+                return Pattern.matches("[a-zA-Z0-9-.-]+@[a-zA-Z0-9-.-]+\\.[a-zA-Z]{2,4}", s);
             };
 
 
