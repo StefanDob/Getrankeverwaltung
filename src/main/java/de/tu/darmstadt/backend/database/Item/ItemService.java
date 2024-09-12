@@ -43,7 +43,7 @@ public class ItemService {
             bevore = itemRepository.findItemById(item.getId()).get().getStock();
         }
         if(bevore > schwelle && item.getStock() <= schwelle){
-            EmailOperations.sendLowStockNotification(item.getName(),item.getStock());
+            EmailOperations.sendLowStockNotification(item);
         }
     }
 

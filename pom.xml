@@ -148,8 +148,11 @@
             <version>6.4.8.Final</version>
             <type>pom</type>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version> <!-- Make sure to use a recent version -->
+        </dependency>
 
 
 

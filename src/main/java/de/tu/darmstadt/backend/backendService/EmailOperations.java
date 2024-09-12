@@ -1,12 +1,17 @@
 package de.tu.darmstadt.backend.backendService;
 
+import de.tu.darmstadt.backend.AccountStatus;
+import de.tu.darmstadt.dataModel.Account;
+import de.tu.darmstadt.dataModel.Item;
+
 public class EmailOperations {
 
     public static void sendSuggestionToAdmin(String message){
-        //TODO @Stefan: implement this method
+        MailjetEmailSender.sendEmailToAdmins( "Suggestion received", message);
     }
 
-    public static void sendLowStockNotification(String item, int stock){
-        //TODO implement this method
+    public static void sendLowStockNotification(Item item){
+        MailjetEmailSender.sendEmailToAdmins( "Low Stock Notification" , "The stock for the item: " + item.getName() + " is low. It i" +
+                "is currently at: " + item.getStock() + "." );
     }
 }
