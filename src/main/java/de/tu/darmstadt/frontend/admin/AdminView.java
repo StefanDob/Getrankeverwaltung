@@ -37,7 +37,7 @@ public class AdminView extends Details {
         if(SessionManagement.getAccount() != null && SessionManagement.getAccount().getStatus() == AccountStatus.ADMIN){
             // Create the wrapper layout for admin views
             VerticalLayout wrapper = createWrapperLayout();
-            wrapper.add(new AccountListView(), new ItemListView(), new TransactionListView());
+            wrapper.add(new AccountListView(), new ItemListView(), new TransactionListView(), new DrinkConsumptionChartView());
 
             // Add wrapper to the Details component
             add(wrapper);

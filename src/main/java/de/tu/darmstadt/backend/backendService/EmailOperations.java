@@ -7,7 +7,7 @@ import de.tu.darmstadt.dataModel.Item;
 public class EmailOperations {
 
     public static void sendSuggestionToAdmin(String message){
-        MailjetEmailSender.sendEmailToAdmins( "Suggestion received", message);
+        MailjetEmailSender.sendEmailToAdmins( "Suggestion received", "You received the following Sugggestion:\n" + message);
     }
 
     public static void sendLowStockNotification(Item item){

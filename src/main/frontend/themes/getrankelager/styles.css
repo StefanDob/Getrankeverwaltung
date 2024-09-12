@@ -104,3 +104,9 @@
 .left-align-grid .vaadin-grid-cell-content {
     text-align: left; /* Align text to the left */
 }
+
+#drinkChart {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+}
