@@ -61,6 +61,18 @@ public class NewTransactionDialog extends Dialog {
 
         // Configure NumberField to accept only positive numbers
         amountField.setMin(0);
+
+        // Configure NumberField to accept a maximum of two decimal places
+        amountField.addValueChangeListener(event -> {
+            Double value = event.getValue();
+            if (value != null) {
+                // Round to two decimal places
+                double roundedValue = Math.round(value * 100.0) / 100.0;
+                amountField.setValue(roundedValue);
+            }
+        });
+
+
     }
 
     /**
@@ -155,6 +167,10 @@ public class NewTransactionDialog extends Dialog {
         } else if (currentAccount.checkForCoverage(amountField.getValue())) {
             amountField.setInvalid(true);
             amountField.setErrorMessage(LanguageManager.getLocalizedText("Your account does not have enough coverage"));
+            return false;
+        } else if(currentAccount.getEmail().equals(receiverField.getValue())){
+            receiverField.setInvalid(true);
+            receiverField.setErrorMessage(LanguageManager.getLocalizedText("You cannot send money to yourself"));
             return false;
         }
         return true;

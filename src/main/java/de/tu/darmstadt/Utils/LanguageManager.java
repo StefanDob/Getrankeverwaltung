@@ -130,7 +130,7 @@ public class LanguageManager {
         addTranslation("Stock field cannot be empty ", "Stock field cannot be empty ", "Bitte geben sie an wieviel auf Lager ist");
         addTranslation("Stock needs to be a number ", "Stock needs to be a number ", "Lagerfeld muss eine Nummer enthalten");
         addTranslation("Stock cannot be negative", "Stock cannot be negative", "Lager kann nicht negativ sein");
-        //addTranslation("", "", "");
+        addTranslation("You cannot send money to yourself", "You cannot send money to yourself", "Es ist verboten sich selber Geld zuzusenden");
         //addTranslation("", "", "");
 
 
