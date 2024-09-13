@@ -13,6 +13,7 @@ import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -101,12 +102,16 @@ public class TransactionListView extends VerticalLayout {
                 .setHeader(LanguageManager.getLocalizedText("Transaction Text"));
 
         // Add column for transaction amount
-        grid.addColumn(Transaction::getAmount)
+        grid.addColumn(transaction -> String.format("%.2f €", transaction.getAmount()))
                 .setHeader(LanguageManager.getLocalizedText("Amount"));
 
+
         // Add column for transaction date
-        grid.addColumn(Transaction::getTransactionDate)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+        grid.addColumn(transaction -> transaction.getTransactionDate().format(formatter))
                 .setHeader(LanguageManager.getLocalizedText("Date"));
+
 
         // Add item click listener to open transaction details when a row is clicked
         grid.addItemClickListener(event -> {

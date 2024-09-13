@@ -160,7 +160,7 @@ public final class ProjectUtils {
             for (ShoppingCartItem shoppingCartItem : shoppingCartItems) {
                 //create description for transaction
                 description.append(shoppingCartItem.getItem().getName())
-                        .append(" * ")
+                        .append(" x ")
                         .append(shoppingCartItem.getQuantity())
                         .append("; ");
 

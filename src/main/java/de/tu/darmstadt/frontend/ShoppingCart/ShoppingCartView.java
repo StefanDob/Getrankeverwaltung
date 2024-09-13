@@ -5,6 +5,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -102,13 +103,14 @@ public class ShoppingCartView extends VerticalLayout {
      * @param item the shopping cart item.
      * @return the NumberField component for adjusting the item's quantity.
      */
-    private NumberField createQuantityField(ShoppingCartItem item) {
-        NumberField quantityField = new NumberField();
-        quantityField.setValue((double) item.getQuantity());
+    private IntegerField createQuantityField(ShoppingCartItem item) {
+        IntegerField quantityField = new IntegerField();
+        quantityField.setStepButtonsVisible(true);
+        quantityField.setValue(item.getQuantity());
         quantityField.setMin(1);
-        quantityField.setMax(item.getStock());
+        quantityField.setMax((int) item.getStock());
         quantityField.setStep(1);
-        quantityField.setWidth("80px");
+        quantityField.setWidth("120px");
         if(item.getQuantity() > item.getItem().getStock()){
             quantityField.setInvalid(true);
         }else{
@@ -126,7 +128,7 @@ public class ShoppingCartView extends VerticalLayout {
      * @param shoppingCartItem the shopping cart item being updated.
      * @param newValue the new quantity value.
      */
-    private void handleQuantityChange(ShoppingCartItem shoppingCartItem, Double newValue) {
+    private void handleQuantityChange(ShoppingCartItem shoppingCartItem, int newValue) {
         if(newValue < 0){
             UI.getCurrent().getPage().reload();
             Notification.show(LanguageManager.getLocalizedText("New quantity cannot be negative"), 3000, Notification.Position.MIDDLE);
@@ -135,7 +137,7 @@ public class ShoppingCartView extends VerticalLayout {
             UI.getCurrent().getPage().reload();
             Notification.show(LanguageManager.getLocalizedText("Item removed"), 2000, Notification.Position.MIDDLE);
         } else {
-            shoppingCartItem.setQuantity(newValue.intValue());
+            shoppingCartItem.setQuantity(newValue);
             ShoppingCartOperations.save(shoppingCartItem);
             setTotalPriceLabel();
             Notification.show(LanguageManager.getLocalizedText("Quantity updated"), 2000, Notification.Position.MIDDLE);

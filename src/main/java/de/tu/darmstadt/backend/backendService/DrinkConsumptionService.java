@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 
 public class DrinkConsumptionService {
 
-    // Regex pattern for items in the form: "Item Name * quantity"
-    private static final Pattern ITEM_PATTERN = Pattern.compile("([A-Za-z ]+)\\s*\\*\\s*(\\d+)");
+    // Regex pattern for items in the form: "Item Name x quantity"
+    private static final Pattern ITEM_PATTERN = Pattern.compile("([A-Za-z ]+)\\s*x\\s*(\\d+)");
 
     public static Map<String, Integer> calculateDrinkConsumption(List<Transaction> transactions) {
         Map<String, Integer> drinkConsumption = new HashMap<>();
@@ -55,5 +55,6 @@ public class DrinkConsumptionService {
         return drinkConsumption;
     }
 }
+
 
 

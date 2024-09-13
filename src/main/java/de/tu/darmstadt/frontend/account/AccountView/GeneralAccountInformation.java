@@ -53,8 +53,15 @@ public class GeneralAccountInformation extends Details {
         properties.add(new Property(LanguageManager.getLocalizedText("Password"), currentAccount.getPassword()));
         properties.add(new Property(LanguageManager.getLocalizedText("Birth Date"), currentAccount.getBirthDate().toString()));
         properties.add(new Property(LanguageManager.getLocalizedText("Phone Number"), currentAccount.getPhoneNumber()));
-        properties.add(new Property(LanguageManager.getLocalizedText("Account Balance"), String.valueOf(currentAccount.getSaldo())));
-        properties.add(new Property(LanguageManager.getLocalizedText("Debt Limit"), String.valueOf(currentAccount.getDebtLimit())));
+        properties.add(new Property(
+                LanguageManager.getLocalizedText("Account Balance"),
+                String.format("%.2f €", currentAccount.getSaldo())
+        ));
+
+        properties.add(new Property(
+                LanguageManager.getLocalizedText("Debt Limit"),
+                String.format("%.2f €", currentAccount.getDebtLimit())
+        ));
         properties.add(new Property(LanguageManager.getLocalizedText("Status"), String.valueOf(currentAccount.getStatus())));
 
         propertyGrid.setItems(properties);

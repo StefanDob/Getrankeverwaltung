@@ -14,6 +14,7 @@ import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.Utils.SessionManagement;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -101,7 +102,7 @@ public class TransactionInformation extends Details {
         transactionGrid.removeAllColumns();
 
         // Manually define the columns with appropriate headers and alignment
-        transactionGrid.addColumn(Transaction::getAmount)
+        transactionGrid.addColumn(transaction -> String.format("%.2f €", transaction.getAmount()))
                 .setHeader(LanguageManager.getLocalizedText("Amount"))
                 .setTextAlign(ColumnTextAlign.END);
 
@@ -117,7 +118,9 @@ public class TransactionInformation extends Details {
                 .setHeader(LanguageManager.getLocalizedText("Text"))
                 .setTextAlign(ColumnTextAlign.START);
 
-        transactionGrid.addColumn(Transaction::getTransactionDate)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+
+        transactionGrid.addColumn(transaction -> transaction.getTransactionDate().format(formatter))
                 .setHeader(LanguageManager.getLocalizedText("Date"))
                 .setTextAlign(ColumnTextAlign.START);
     }

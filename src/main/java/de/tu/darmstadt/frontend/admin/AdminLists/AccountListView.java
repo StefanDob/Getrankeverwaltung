@@ -68,9 +68,12 @@ public class AccountListView extends VerticalLayout {
 
         grid.addColumn(Account::getFirstName).setHeader(LanguageManager.getLocalizedText("First Name"));
         grid.addColumn(Account::getLastName).setHeader(LanguageManager.getLocalizedText("Last Name"));
-        grid.addColumn(Account::getSaldo).setHeader(LanguageManager.getLocalizedText("Balance"));
+        grid.addColumn(account -> String.format("%.2f €", account.getSaldo()))
+                .setHeader(LanguageManager.getLocalizedText("Balance"));
         grid.addColumn(Account::getPhoneNumber).setHeader(LanguageManager.getLocalizedText("Phone Number"));
-        grid.addColumn(Account::getDebtLimit).setHeader(LanguageManager.getLocalizedText("Debt Limit"));
+        grid.addColumn(account -> String.format("%.2f €", account.getDebtLimit()))
+                .setHeader(LanguageManager.getLocalizedText("Debt Limit"));
+
         grid.addColumn(Account::getStatus).setHeader(LanguageManager.getLocalizedText("State"));
 
         // Add item click listener to open account details view when a row is clicked
