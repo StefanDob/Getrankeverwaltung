@@ -19,7 +19,7 @@ public class ChartJsComponent extends Div {
         super.onAttach(attachEvent);
 
         // Add the canvas element to the DOM
-        getElement().setProperty("innerHTML", "<canvas id='drinkChart' width='600' height='400'></canvas>");
+        getElement().setProperty("innerHTML", "<canvas id='drinkChart' width='800' height='500'></canvas>");
 
         // Ensure the JS runs after canvas is attached
         getElement().executeJs(generateChartJsCode(data));

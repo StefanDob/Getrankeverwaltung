@@ -13,6 +13,7 @@ import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.Utils.SessionManagement;
+import de.tu.darmstadt.frontend.FrontendUtils.ViewTransactionDialog;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -108,20 +109,31 @@ public class TransactionInformation extends Details {
 
         transactionGrid.addColumn(Transaction::getSenderName)
                 .setHeader(LanguageManager.getLocalizedText("Sender"))
-                .setTextAlign(ColumnTextAlign.START);
+                .setTextAlign(ColumnTextAlign.START)
+                .setSortable(true);
 
         transactionGrid.addColumn(Transaction::getReceiverName)
                 .setHeader(LanguageManager.getLocalizedText("Receiver"))
-                .setTextAlign(ColumnTextAlign.START);
+                .setTextAlign(ColumnTextAlign.START)
+                .setSortable(true);
 
         transactionGrid.addColumn(Transaction::getTransactionText)
                 .setHeader(LanguageManager.getLocalizedText("Text"))
-                .setTextAlign(ColumnTextAlign.START);
+                .setTextAlign(ColumnTextAlign.START)
+                .setSortable(true);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
         transactionGrid.addColumn(transaction -> transaction.getTransactionDate().format(formatter))
                 .setHeader(LanguageManager.getLocalizedText("Date"))
                 .setTextAlign(ColumnTextAlign.START);
+
+        // Add item click listener to open transaction details when a row is clicked
+        transactionGrid.addItemClickListener(event -> {
+            Transaction clickedTransaction = event.getItem();
+            ViewTransactionDialog viewTransactionDialog = new ViewTransactionDialog(clickedTransaction);
+            viewTransactionDialog.open();
+
+        });
     }
 }

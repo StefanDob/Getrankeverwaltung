@@ -11,8 +11,8 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.backendService.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.frontend.ItemManagment.CreateItemDialog;
-import de.tu.darmstadt.frontend.ItemManagment.ItemAdminDialog;
+import de.tu.darmstadt.frontend.FrontendUtils.ItemManagment.CreateItemDialog;
+import de.tu.darmstadt.frontend.FrontendUtils.ItemManagment.ItemAdminDialog;
 
 import java.util.List;
 

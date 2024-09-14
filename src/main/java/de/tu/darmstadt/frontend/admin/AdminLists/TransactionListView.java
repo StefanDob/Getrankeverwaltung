@@ -12,6 +12,7 @@ import de.tu.darmstadt.backend.backendService.TransactionOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
+import de.tu.darmstadt.frontend.FrontendUtils.ViewTransactionDialog;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -116,7 +117,9 @@ public class TransactionListView extends VerticalLayout {
         // Add item click listener to open transaction details when a row is clicked
         grid.addItemClickListener(event -> {
             Transaction clickedTransaction = event.getItem();
-            // TODO: Open a dialog to allow editing transactions
+            ViewTransactionDialog viewTransactionDialog = new ViewTransactionDialog(clickedTransaction);
+            viewTransactionDialog.open();
+
         });
 
         return grid;

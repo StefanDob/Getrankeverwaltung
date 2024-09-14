@@ -1,5 +1,6 @@
 package de.tu.darmstadt.frontend.admin;
 
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import de.tu.darmstadt.Utils.Constants;
 import de.tu.darmstadt.backend.backendService.DrinkConsumptionService;
@@ -16,9 +17,11 @@ public class DrinkConsumptionChartView extends VerticalLayout {
 
         // Fetch and pass the drink consumption data
         Map<String, Integer> drinkConsumption = DrinkConsumptionService.calculateDrinkConsumption(getTransactions());
-        System.out.println(drinkConsumption.toString());
         ChartJsComponent chartJsComponent = new ChartJsComponent(drinkConsumption);
         add(chartJsComponent);
+        setWidthFull();
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
     }
 
     private List<Transaction> getTransactions() {

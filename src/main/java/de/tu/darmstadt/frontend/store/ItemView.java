@@ -14,7 +14,7 @@ import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
-import de.tu.darmstadt.frontend.ItemManagment.ViewItemDialog;
+import de.tu.darmstadt.frontend.FrontendUtils.ItemManagment.ViewItemDialog;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.Utils.SessionManagement;
 import org.jetbrains.annotations.NotNull;
