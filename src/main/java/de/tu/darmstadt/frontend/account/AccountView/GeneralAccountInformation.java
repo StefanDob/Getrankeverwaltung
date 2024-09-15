@@ -76,7 +76,7 @@ public class GeneralAccountInformation extends Details {
         getStyle().set("border-radius", "6px");
         setOpened(true);
 
-        propertyGrid.setHeight("55vh");
+
         add(propertyGrid);
     }
 

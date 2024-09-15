@@ -1,6 +1,6 @@
 package de.tu.darmstadt.Utils;
 
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendOperations.AccountOperations;
 import de.tu.darmstadt.dataModel.Account;
 
 public class Constants {

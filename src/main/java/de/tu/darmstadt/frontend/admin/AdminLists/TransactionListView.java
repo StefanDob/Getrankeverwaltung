@@ -1,14 +1,14 @@
 package de.tu.darmstadt.frontend.admin.AdminLists;
 
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
-import de.tu.darmstadt.backend.backendService.TransactionOperations;
+import de.tu.darmstadt.backend.backendOperations.AccountOperations;
+import de.tu.darmstadt.backend.backendOperations.TransactionOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
@@ -47,7 +47,7 @@ public class TransactionListView extends VerticalLayout {
      */
     private void initializeTransactionListView() {
         // Add a title for the transaction list
-        H3 title = new H3(LanguageManager.getLocalizedText("Transactions List"));
+        H2 title = new H2(LanguageManager.getLocalizedText("Transactions List"));
         add(title);
 
         // Create and add the search field
@@ -133,6 +133,9 @@ public class TransactionListView extends VerticalLayout {
         // Retrieve all transactions
         List<Transaction> transactions = TransactionOperations.getAllTransactions();
 
+        //reverse list in order to have the newest transactions first
+        transactions = transactions.reversed();
+
         // If transactions are available, set them to the grid; otherwise, clear the grid
         if (transactions != null) {
             dataProvider = new ListDataProvider<>(transactions); // Set up the data provider
@@ -140,6 +143,8 @@ public class TransactionListView extends VerticalLayout {
         } else {
             transactionGrid.setItems();  // Clear the grid if no transactions are found
         }
+
+
     }
 
     /**

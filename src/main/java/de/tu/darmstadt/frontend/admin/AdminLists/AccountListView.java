@@ -1,13 +1,13 @@
 package de.tu.darmstadt.frontend.admin.AdminLists;
 
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendOperations.AccountOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.frontend.admin.AdminAccountsDetailsView;
 
@@ -38,7 +38,7 @@ public class AccountListView extends VerticalLayout {
      */
     private void initializeAccountListView() {
         // Add title for the account list
-        H3 title = new H3(LanguageManager.getLocalizedText("Accounts List"));
+        H2 title = new H2(LanguageManager.getLocalizedText("Accounts List"));
         add(title);
 
         // Create and add the search field

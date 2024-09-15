@@ -1,7 +1,7 @@
 package de.tu.darmstadt.dataModel;
 
 import com.vaadin.flow.server.StreamResource;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.backend.backendOperations.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.InvalidItemIDFormatException;
 import de.tu.darmstadt.backend.exceptions.items.ItemPropertiesException;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;

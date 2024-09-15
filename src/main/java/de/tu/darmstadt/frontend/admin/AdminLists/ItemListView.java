@@ -2,14 +2,14 @@ package de.tu.darmstadt.frontend.admin.AdminLists;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.backend.backendOperations.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.FrontendUtils.ItemManagment.CreateItemDialog;
 import de.tu.darmstadt.frontend.FrontendUtils.ItemManagment.ItemAdminDialog;
@@ -55,18 +55,12 @@ public class ItemListView extends VerticalLayout {
         searchField.addValueChangeListener(event -> filterItemGrid(event.getValue()));
         add(searchField);
 
+        H2 title = new H2(LanguageManager.getLocalizedText("Items List"));
+
         // Add other components
-        add(createTitle(), createItemGrid(), createCreateItemButton());
+        add(title, createItemGrid(), createCreateItemButton());
     }
 
-    /**
-     * Creates the title for the item list view.
-     *
-     * @return H3 title with localized text for "Items List".
-     */
-    private H3 createTitle() {
-        return new H3(LanguageManager.getLocalizedText("Items List"));
-    }
 
     /**
      * Creates and configures the grid to display items.

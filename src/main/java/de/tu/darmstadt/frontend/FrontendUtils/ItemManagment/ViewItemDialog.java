@@ -12,7 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.ProjectUtils;
-import de.tu.darmstadt.backend.backendService.ShoppingCartOperations;
+import de.tu.darmstadt.backend.backendOperations.ShoppingCartOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.Utils.SessionManagement;

@@ -10,6 +10,7 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.AccountStatus;
+import de.tu.darmstadt.frontend.FrontendUtils.Charts.DrinkConsumptionChartView;
 import de.tu.darmstadt.frontend.MainLayout;
 import com.vaadin.flow.component.html.H2;
 import de.tu.darmstadt.frontend.admin.AdminLists.AccountListView;
@@ -23,24 +24,17 @@ import de.tu.darmstadt.frontend.admin.AdminLists.TransactionListView;
  */
 @PageTitle("Admin")
 @Route(value = "admin", layout = MainLayout.class)
-public class AdminView extends Details {
+public class AdminView extends VerticalLayout {
 
     /**
      * Constructs the AdminView page with a layout containing account and item lists.
      */
     public AdminView() {
-        // Set the title and configure the Details component
-        super(createTitle());
-        setOpened(true);
+
         configureDetailsStyle();
 
         if(SessionManagement.getAccount() != null && SessionManagement.getAccount().getStatus() == AccountStatus.ADMIN){
-            // Create the wrapper layout for admin views
-            VerticalLayout wrapper = createWrapperLayout();
-            wrapper.add(new AccountListView(), new ItemListView(), new TransactionListView(), new DrinkConsumptionChartView());
-
-            // Add wrapper to the Details component
-            add(wrapper);
+            add(new AccountListView(), new ItemListView(), new TransactionListView(), new DrinkConsumptionChartView());
         }else{
             displayNoAdminView();
         }
@@ -52,23 +46,22 @@ public class AdminView extends Details {
      */
     private void displayNoAdminView() {
         setSizeFull();
-        VerticalLayout verticalLayout = new VerticalLayout();
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");
         img.setWidth("200px");
-        verticalLayout.add(img);
+        add(img);
 
         H2 header = new H2("You are not an admin");
         header.addClassNames(LumoUtility.Margin.Top.XLARGE, LumoUtility.Margin.Bottom.MEDIUM);
-        verticalLayout.add(header);
+        add(header);
 
         //set Style of Layout
-        verticalLayout.setSizeFull();
-        verticalLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        verticalLayout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        setSizeFull();
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
         getStyle().set("text-align", "center");
 
-        add(verticalLayout);
+
 
     }
 

@@ -1,7 +1,7 @@
 package de.tu.darmstadt.Utils;
 
 import de.tu.darmstadt.backend.ItemShopProperties;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendOperations.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.Account;
 import org.jetbrains.annotations.NotNull;

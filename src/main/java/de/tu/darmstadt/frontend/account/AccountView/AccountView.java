@@ -1,16 +1,11 @@
 package de.tu.darmstadt.frontend.account.AccountView;
 
-import com.vaadin.flow.component.details.Details;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
-import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
 import de.tu.darmstadt.dataModel.Account;
-import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.frontend.MainLayout;
 import de.tu.darmstadt.Utils.SessionManagement;
 

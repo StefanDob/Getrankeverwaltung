@@ -9,7 +9,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.backend.backendOperations.ItemOperations;
 import de.tu.darmstadt.backend.exceptions.items.NegativePriceException;
 import de.tu.darmstadt.dataModel.Item;
 

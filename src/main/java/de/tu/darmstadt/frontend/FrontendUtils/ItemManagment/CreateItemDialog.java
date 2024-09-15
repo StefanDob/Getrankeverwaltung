@@ -1,6 +1,7 @@
 package de.tu.darmstadt.frontend.FrontendUtils.ItemManagment;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
@@ -19,7 +20,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.server.StreamResource;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.ProjectUtils;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.backend.backendOperations.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.Utils.ItemUtils;
 
@@ -157,6 +158,16 @@ public class CreateItemDialog extends ItemDialog {
         priceField = new NumberField(LanguageManager.getLocalizedText("Price"));
         priceField.setMin(0.0);
         priceField.setWidthFull();
+
+        // Add a value change listener to limit the number of decimal places
+        priceField.addValueChangeListener(event -> {
+            Double value = event.getValue();
+            if (value != null) {
+                // Round to two decimal places
+                double roundedValue = Math.round(value * 100.0) / 100.0;
+                priceField.setValue(roundedValue);
+            }
+        });
 
         stockField = new TextField(LanguageManager.getLocalizedText("Stock"));
         stockField.setWidthFull();

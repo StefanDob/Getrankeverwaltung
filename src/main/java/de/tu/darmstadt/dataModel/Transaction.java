@@ -1,13 +1,12 @@
 package de.tu.darmstadt.dataModel;
 
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendOperations.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.AccountPolicyException;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * A transaction is a process where money is transferred from an {@link Account} to another {@link Account}.

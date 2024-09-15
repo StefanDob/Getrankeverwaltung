@@ -7,30 +7,27 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.CookieOperations;
-import de.tu.darmstadt.backend.backendService.TransactionOperations;
+import de.tu.darmstadt.backend.backendOperations.CookieOperations;
+import de.tu.darmstadt.backend.backendOperations.TransactionOperations;
 import de.tu.darmstadt.dataModel.Account;
 import de.tu.darmstadt.dataModel.Transaction;
 import de.tu.darmstadt.Utils.SessionManagement;
+import de.tu.darmstadt.frontend.FrontendUtils.Charts.AccountDrinkConsumptionChartView;
 import de.tu.darmstadt.frontend.FrontendUtils.ViewTransactionDialog;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * The TransactionInformation class displays the current account's transaction history
- * in a grid format. It provides options to view transactions, transfer money, and log out.
- */
 public class TransactionInformation extends Details {
 
     private final Account currentAccount;
     private final Grid<Transaction> transactionGrid = new Grid<>(Transaction.class);
+    private final TextField searchField = new TextField(LanguageManager.getLocalizedText("Search"));
 
-    /**
-     * Constructor for TransactionInformation.
-     * Initializes the transaction information view with grid data and action buttons.
-     */
     public TransactionInformation() {
         super(new H2(LanguageManager.getLocalizedText("Transactions")));
         this.currentAccount = SessionManagement.getAccount();
@@ -40,9 +37,6 @@ public class TransactionInformation extends Details {
         alignColumnsToLeft();
     }
 
-    /**
-     * Sets up the layout for the transaction information, including buttons for adding a transaction and logging out.
-     */
     private void setupLayout() {
         setWidth("100%");
         getStyle().set("border", "1px solid #ccc");
@@ -50,59 +44,64 @@ public class TransactionInformation extends Details {
         setOpened(true);
         transactionGrid.setHeight("55vh");
 
-        // Create and configure the "Add Transaction" button
+        // Configure the search field
+        searchField.setPlaceholder(LanguageManager.getLocalizedText("Search by transaction Text"));
+        searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        searchField.addValueChangeListener(e -> filterTransactions(e.getValue()));
+        searchField.setWidthFull();
+
         Button addTransactionButton = new Button(LanguageManager.getLocalizedText("Transfer Money"));
         addTransactionButton.addClickListener(e -> openNewTransactionDialog());
 
-        // Create and configure the "Logout" button
         Button logoutButton = new Button(LanguageManager.getLocalizedText("Logout"));
         logoutButton.addClickListener(e -> logout());
 
-        // Layout to contain the transaction grid and buttons
-        VerticalLayout layout = new VerticalLayout(addTransactionButton, transactionGrid);
+        VerticalLayout layout = new VerticalLayout(searchField, addTransactionButton, transactionGrid, new AccountDrinkConsumptionChartView());
         add(layout, logoutButton);
     }
 
-    /**
-     * Opens the NewTransactionDialog for the user to create a new transaction.
-     */
+    private void filterTransactions(String searchTerm) {
+        List<Transaction> transactions = TransactionOperations.getTransactionsById(currentAccount.getId());
+
+        if (transactions != null) {
+            transactions = transactions.reversed();
+            // Filter transactions based on the search term
+            transactions = transactions.stream()
+                    .filter(t -> t.getSenderName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                            t.getReceiverName().toLowerCase().contains(searchTerm.toLowerCase()) ||
+                            t.getTransactionText().toLowerCase().contains(searchTerm.toLowerCase()))
+                    .collect(Collectors.toList());
+            transactionGrid.setItems(transactions);
+        }
+    }
+
     private void openNewTransactionDialog() {
         NewTransactionDialog newTransactionDialog = new NewTransactionDialog(currentAccount);
         newTransactionDialog.open();
     }
 
-    /**
-     * Logs out the current user by clearing session data and refreshing the page.
-     */
     private void logout() {
         CookieOperations.deleteCurrentAccount();
         SessionManagement.setAccount(null);
         UI.getCurrent().getPage().reload();
     }
 
-    /**
-     * Aligns all transaction grid columns to the left for consistency.
-     */
     private void alignColumnsToLeft() {
         for (Grid.Column<Transaction> column : transactionGrid.getColumns()) {
             column.setTextAlign(ColumnTextAlign.START);
         }
     }
 
-    /**
-     * Populates the grid with the account's transaction history and sets up column headers and alignment.
-     */
     private void populateGrid() {
         List<Transaction> transactions = TransactionOperations.getTransactionsById(currentAccount.getId());
+        transactions = transactions.reversed();
 
         if (transactions != null) {
             transactionGrid.setItems(transactions);
         }
 
-        // Clear any auto-generated columns
         transactionGrid.removeAllColumns();
 
-        // Manually define the columns with appropriate headers and alignment
         transactionGrid.addColumn(transaction -> String.format("%.2f €", transaction.getAmount()))
                 .setHeader(LanguageManager.getLocalizedText("Amount"))
                 .setTextAlign(ColumnTextAlign.END);
@@ -128,12 +127,10 @@ public class TransactionInformation extends Details {
                 .setHeader(LanguageManager.getLocalizedText("Date"))
                 .setTextAlign(ColumnTextAlign.START);
 
-        // Add item click listener to open transaction details when a row is clicked
         transactionGrid.addItemClickListener(event -> {
             Transaction clickedTransaction = event.getItem();
             ViewTransactionDialog viewTransactionDialog = new ViewTransactionDialog(clickedTransaction);
             viewTransactionDialog.open();
-
         });
     }
 }

@@ -20,14 +20,12 @@ import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.Utils.ProjectUtils;
 import de.tu.darmstadt.Utils.SessionManagement;
 import de.tu.darmstadt.backend.AccountStatus;
-import de.tu.darmstadt.frontend.Contact.SupportView;
+import de.tu.darmstadt.frontend.support.SupportView;
 import de.tu.darmstadt.frontend.account.AccountView.AccountView;
 import de.tu.darmstadt.frontend.admin.AdminView;
 import de.tu.darmstadt.frontend.account.LoginDialog;
 import de.tu.darmstadt.frontend.store.StoreView;
 import de.tu.darmstadt.frontend.ShoppingCart.ShoppingCartView;
-import org.apache.commons.codec.language.bm.Lang;
-import org.intellij.lang.annotations.Language;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 import java.util.Locale;

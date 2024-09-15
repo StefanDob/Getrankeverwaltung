@@ -1,6 +1,6 @@
 package de.tu.darmstadt.backend.database.Item;
 
-import de.tu.darmstadt.backend.backendService.EmailOperations;
+import de.tu.darmstadt.backend.backendOperations.EmailOperations;
 import de.tu.darmstadt.dataModel.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

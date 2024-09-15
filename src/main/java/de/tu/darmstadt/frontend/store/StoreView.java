@@ -1,7 +1,6 @@
 package de.tu.darmstadt.frontend.store;
 
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,11 +10,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import de.tu.darmstadt.Utils.LanguageManager;
-import de.tu.darmstadt.backend.backendService.ItemOperations;
+import de.tu.darmstadt.backend.backendOperations.ItemOperations;
 import de.tu.darmstadt.dataModel.Item;
 import de.tu.darmstadt.frontend.MainLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

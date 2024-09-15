@@ -5,7 +5,7 @@ import de.tu.darmstadt.Utils.AccountUtils;
 import de.tu.darmstadt.Utils.LanguageManager;
 import de.tu.darmstadt.backend.AccountStatus;
 import de.tu.darmstadt.backend.ItemShopProperties;
-import de.tu.darmstadt.backend.backendService.AccountOperations;
+import de.tu.darmstadt.backend.backendOperations.AccountOperations;
 import de.tu.darmstadt.backend.exceptions.accountPolicy.*;
 import de.tu.darmstadt.dataModel.shoppingCart.ShoppingCart;
 import jakarta.persistence.*;
@@ -13,10 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
-
-import static de.tu.darmstadt.backend.ItemShopProperties.*;
-import static de.tu.darmstadt.Utils.ProjectUtils.*;
-import static de.tu.darmstadt.Utils.ExceptionChecker.*;
 
 /**
  * An {@link Account} for the drink shop is a superclass of those classes that grants a user of the drink shop an
