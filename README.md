@@ -17,6 +17,7 @@ For testing account features this are a few example accounts that are currently 
 <br>Restricted Account: monamartinez@example.com; Passwort: password010
 <br>Standard   Account: paulclark@example.com; Passwort: password343
 <br>Admin      Account: dobreastefan68@gmail.com; Passwort: stefan123
+<br>Closed     Account: alicesmith@example.com; Passwort: password123
 
 
 ## Deploying to Production
