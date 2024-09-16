@@ -24,26 +24,4 @@ public enum AccountStatus {
      * A closed {@link Account} cannot be logged in anymore, e.g., due to terms of use violations.
      */
     CLOSED;
-
-    //TODO redo this or delete it
-    /*
-    /**
-     * This attribute stores the name of an enum.
-
-    private final String name;
-
-    /**
-     * Constructs a new {@link AccountStatus} with a specified name.
-     * @param s the specified name
-
-    AccountStatus(String s) {
-        name = s;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-     */
 }
