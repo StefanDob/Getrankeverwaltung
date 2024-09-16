@@ -19,16 +19,11 @@ import static de.tu.darmstadt.backend.ItemShopProperties.*;
 import static de.tu.darmstadt.backend.ItemShopProperties.PHONE_NUMBER_FORMAT;
 
 public class AccountUtils {
-    //TODO @Toni redo or delete if not needed
-    public static void main(String[] args) {
-        try {
-            for(int i = 0 ; i < 50 ; i++){}
-                //System.out.println(generateID());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * method for converting localDate to Date
+     * @param localDate input date
+     * @return converted Date
+     */
     public static Date convertToDate(LocalDate localDate) {
         // Convert LocalDate to LocalDateTime at the start of the day
         LocalDateTime localDateTime = localDate.atStartOfDay();

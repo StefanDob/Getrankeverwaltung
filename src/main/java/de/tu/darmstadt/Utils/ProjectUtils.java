@@ -24,19 +24,6 @@ import java.util.Random;
  */
 public final class ProjectUtils {
 
-    public static void main(String[] args) {
-
-        System.out.println(
-                randomString(
-                        24,
-                        new char[]{'a', 'z'},
-                        new char[]{'0', '9'},
-                        new char[]{'A', 'Z'},
-                        new char[]{'-'}
-                )
-        );
-    }
-
 
     /**
      * A {@link Random} object is used to create random primitive data.

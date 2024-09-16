@@ -23,8 +23,8 @@ import java.util.List;
  * View class for displaying the shopping cart.
  * Shows the list of items in the cart with their details and provides options to update quantities and proceed to purchase.
  */
-@PageTitle("Warenkorb")
-@Route(value = "warenkorb", layout = MainLayout.class)
+@PageTitle("Cart")
+@Route(value = "Cart", layout = MainLayout.class)
 public class ShoppingCartView extends VerticalLayout {
 
     private final Div totalPriceLabel = new Div();

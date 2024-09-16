@@ -98,10 +98,18 @@ public class GeneralAccountInformation extends Details {
             this.value = value;
         }
 
+        /**
+         * getter for name
+         * @return name
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * getter for value
+         * @return value
+         */
         public String getValue() {
             return value;
         }

@@ -7,11 +7,23 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
+/**
+ * The {@code MailjetEmailSender} class provides static methods for sending emails using the
+ * Mailjet SMTP server. It includes methods to send emails to individual recipients and
+ * to all admin users.
+ */
 public class MailjetEmailSender {
 
-    private static String fromEmail = "dobreastefan68@gmail.com";
+    // Default email address for sending emails
+    private static final String fromEmail = "dobreastefan68@gmail.com";
 
-    // Static method to send an email
+    /**
+     * Sends an email to a specified recipient using the Mailjet SMTP server.
+     *
+     * @param toEmail the recipient's email address.
+     * @param subject the subject of the email.
+     * @param body    the body of the email.
+     */
     public static void sendEmail(String toEmail, String subject, String body) {
         // Mailjet SMTP server details
         final String smtpHost = "in-v3.mailjet.com";
@@ -28,22 +40,22 @@ public class MailjetEmailSender {
 
         // Authenticate with the Mailjet SMTP server
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
         });
 
         try {
-            // Create a message
+            // Create and configure the email message
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(fromEmail));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject(subject);
             message.setText(body);
 
-            // Send the message
+            // Send the email
             Transport.send(message);
-
             System.out.println("Email sent successfully!");
 
         } catch (MessagingException e) {
@@ -52,15 +64,22 @@ public class MailjetEmailSender {
         }
     }
 
-    public static void sendEmailToAdmins(String subject, String body){
-        for(Account account: AccountOperations.getAllAccounts()) {
+    /**
+     * Sends an email to all admin users with the specified subject and body content.
+     * The email will be customized with a personalized greeting for each admin.
+     *
+     * @param subject the subject of the email.
+     * @param body    the body of the email.
+     */
+    public static void sendEmailToAdmins(String subject, String body) {
+        for (Account account : AccountOperations.getAllAccounts()) {
             if (account.getStatus() == AccountStatus.ADMIN) {
-                String start = "Dear Mr/Ms. " + account.getLastName() + " , \n";
-                String end = "\nBest regards, \n" +
-                        "The Webshop Team";
+                String start = "Dear Mr/Ms. " + account.getLastName() + ",\n";
+                String end = "\nBest regards,\nThe Webshop Team";
                 MailjetEmailSender.sendEmail(account.getEmail(), subject, start + body + end);
             }
         }
     }
 }
+
 

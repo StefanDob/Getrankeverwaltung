@@ -22,12 +22,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The {@code TransactionInformation} class extends the Vaadin {@link Details} component to display a list of
+ * transactions for the currently logged-in account. It includes a search field to filter transactions,
+ * a button to add new transactions, and a logout option.
+ */
 public class TransactionInformation extends Details {
 
     private final Account currentAccount;
     private final Grid<Transaction> transactionGrid = new Grid<>(Transaction.class);
     private final TextField searchField = new TextField(LanguageManager.getLocalizedText("Search"));
 
+    /**
+     * Constructor for {@code TransactionInformation}. Initializes the layout and populates the grid
+     * with transactions for the current account.
+     */
     public TransactionInformation() {
         super(new H2(LanguageManager.getLocalizedText("Transactions")));
         this.currentAccount = SessionManagement.getAccount();
@@ -37,6 +46,10 @@ public class TransactionInformation extends Details {
         alignColumnsToLeft();
     }
 
+    /**
+     * Sets up the layout of the component, including the search field, add transaction button,
+     * and a logout button. Also adds a chart to the layout.
+     */
     private void setupLayout() {
         setWidth("100%");
         getStyle().set("border", "1px solid #ccc");
@@ -60,6 +73,11 @@ public class TransactionInformation extends Details {
         add(layout, logoutButton);
     }
 
+    /**
+     * Filters the transactions based on the search term entered in the search field.
+     *
+     * @param searchTerm the search term to filter the transactions.
+     */
     private void filterTransactions(String searchTerm) {
         List<Transaction> transactions = TransactionOperations.getTransactionsById(currentAccount.getId());
 
@@ -75,23 +93,36 @@ public class TransactionInformation extends Details {
         }
     }
 
+    /**
+     * Opens a dialog for creating a new transaction.
+     */
     private void openNewTransactionDialog() {
         NewTransactionDialog newTransactionDialog = new NewTransactionDialog(currentAccount);
         newTransactionDialog.open();
     }
 
+    /**
+     * Logs out the current user, deletes the account session, and reloads the page.
+     */
     private void logout() {
         CookieOperations.deleteCurrentAccount();
         SessionManagement.setAccount(null);
         UI.getCurrent().getPage().reload();
     }
 
+    /**
+     * Aligns all the columns of the transaction grid to the left.
+     */
     private void alignColumnsToLeft() {
         for (Grid.Column<Transaction> column : transactionGrid.getColumns()) {
             column.setTextAlign(ColumnTextAlign.START);
         }
     }
 
+    /**
+     * Populates the transaction grid with data for the current account and customizes the columns
+     * to display transaction details such as amount, sender, receiver, text, and date.
+     */
     private void populateGrid() {
         List<Transaction> transactions = TransactionOperations.getTransactionsById(currentAccount.getId());
         transactions = transactions.reversed();
@@ -134,3 +165,4 @@ public class TransactionInformation extends Details {
         });
     }
 }
+

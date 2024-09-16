@@ -2,14 +2,34 @@ package de.tu.darmstadt.backend.backendOperations;
 
 import de.tu.darmstadt.dataModel.Item;
 
+/**
+ * The {@link EmailOperations} class provides utility methods to send various types of notifications via email.
+ * It includes methods for sending suggestions to admins and low stock notifications.
+ */
 public class EmailOperations {
 
-    public static void sendSuggestionToAdmin(String message){
-        MailjetEmailSender.sendEmailToAdmins( "Suggestion received", "You received the following Sugggestion:\n" + message);
+    /**
+     * Sends a suggestion message to the admin via email.
+     *
+     * @param message the suggestion message to be sent to the admin.
+     */
+    public static void sendSuggestionToAdmin(String message) {
+        String subject = "Suggestion received";
+        String body = "You received the following suggestion:\n" + message;
+
+        MailjetEmailSender.sendEmailToAdmins(subject, body);
     }
 
-    public static void sendLowStockNotification(Item item){
-        MailjetEmailSender.sendEmailToAdmins( "Low Stock Notification" , "The stock for the item: " + item.getName() + " is low. It i" +
-                "is currently at: " + item.getStock() + "." );
+    /**
+     * Sends a low stock notification for the specified {@link Item} to the admin via email.
+     *
+     * @param item the {@link Item} that is low in stock.
+     */
+    public static void sendLowStockNotification(Item item) {
+        String subject = "Low Stock Notification";
+        String body = "The stock for the item: " + item.getName() + " is low. It is currently at: " + item.getStock() + ".";
+
+        MailjetEmailSender.sendEmailToAdmins(subject, body);
     }
 }
+

@@ -133,7 +133,7 @@ public class LanguageManager {
         addTranslation("You cannot send money to yourself", "You cannot send money to yourself", "Es ist verboten sich selber Geld zuzusenden");
         addTranslation("Search by transaction Text", "Search by transaction Text", "Suche anhand Transactionstext");
         addTranslation("Consumption Chart", "Consumption Chart", "Verbrauchsgrafik");
-        //addTranslation("", "", "");
+        addTranslation("Cart", "Cart", "Einkaufswagen");
         //addTranslation("", "", "");
         //addTranslation("", "", "");
         //addTranslation("", "", "");
