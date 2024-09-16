@@ -215,6 +215,11 @@ public class Transaction {
 
     }
 
+    /**
+     * Retrieves the full name of the receiver associated with this transaction.
+     *
+     * @return the sender's full name (first and last name)
+     */
     public String getReceiverName() {
         try {
             Account account = AccountOperations.getAccountByID(receiver);
